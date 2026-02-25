@@ -1,6 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/600.css";
+@import "@fontsource/jetbrains-mono/700.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -47,71 +50,131 @@
 
 :root {
     --radius: 0.625rem;
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.141 0.005 285.823);
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.141 0.005 285.823);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.141 0.005 285.823);
-    --primary: oklch(0.21 0.006 285.885);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.967 0.001 286.375);
-    --secondary-foreground: oklch(0.21 0.006 285.885);
-    --muted: oklch(0.967 0.001 286.375);
-    --muted-foreground: oklch(0.552 0.016 285.938);
-    --accent: oklch(0.967 0.001 286.375);
-    --accent-foreground: oklch(0.21 0.006 285.885);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.92 0.004 286.32);
-    --input: oklch(0.92 0.004 286.32);
-    --ring: oklch(0.705 0.015 286.067);
-    --chart-1: oklch(0.646 0.222 41.116);
-    --chart-2: oklch(0.6 0.118 184.704);
-    --chart-3: oklch(0.398 0.07 227.392);
-    --chart-4: oklch(0.828 0.189 84.429);
-    --chart-5: oklch(0.769 0.188 70.08);
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.141 0.005 285.823);
-    --sidebar-primary: oklch(0.21 0.006 285.885);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.967 0.001 286.375);
-    --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-    --sidebar-border: oklch(0.92 0.004 286.32);
-    --sidebar-ring: oklch(0.705 0.015 286.067);
+    /* Palette */
+    --color-black-50: #f1eff5;
+    --color-black-100: #e2dfec;
+    --color-black-200: #c6bfd9;
+    --color-black-300: #a99fc6;
+    --color-black-400: #8c80b3;
+    --color-black-500: #70609f;
+    --color-black-600: #594d80;
+    --color-black-700: #433960;
+    --color-black-800: #2d2640;
+    --color-black-900: #161320;
+    --color-black-950: #100d16;
+
+    --color-electric-rose-50: #fbe9f6;
+    --color-electric-rose-100: #f7d4ee;
+    --color-electric-rose-200: #efa9dc;
+    --color-electric-rose-300: #e77ecb;
+    --color-electric-rose-400: #df53ba;
+    --color-electric-rose-500: #d728a9;
+    --color-electric-rose-600: #ac2087;
+    --color-electric-rose-700: #811865;
+    --color-electric-rose-800: #561043;
+    --color-electric-rose-900: #2b0822;
+    --color-electric-rose-950: #1e0618;
+
+    --color-vibrant-coral-50: #fee9e6;
+    --color-vibrant-coral-100: #fed3cd;
+    --color-vibrant-coral-200: #fca79c;
+    --color-vibrant-coral-300: #fb7b6a;
+    --color-vibrant-coral-400: #fa4f38;
+    --color-vibrant-coral-500: #f92306;
+    --color-vibrant-coral-600: #c71c05;
+    --color-vibrant-coral-700: #951504;
+    --color-vibrant-coral-800: #630e03;
+    --color-vibrant-coral-900: #320701;
+    --color-vibrant-coral-950: #230501;
+
+    --color-dark-orange-50: #fff2e5;
+    --color-dark-orange-100: #ffe5cc;
+    --color-dark-orange-200: #ffca99;
+    --color-dark-orange-300: #ffb066;
+    --color-dark-orange-400: #ff9633;
+    --color-dark-orange-500: #ff7b00;
+    --color-dark-orange-600: #cc6300;
+    --color-dark-orange-700: #994a00;
+    --color-dark-orange-800: #663100;
+    --color-dark-orange-900: #331900;
+    --color-dark-orange-950: #241100;
+
+    --color-velvet-orchid-50: #f5edf8;
+    --color-velvet-orchid-100: #ebdbf0;
+    --color-velvet-orchid-200: #d6b6e2;
+    --color-velvet-orchid-300: #c292d3;
+    --color-velvet-orchid-400: #ad6dc5;
+    --color-velvet-orchid-500: #9949b6;
+    --color-velvet-orchid-600: #7a3a92;
+    --color-velvet-orchid-700: #5c2c6d;
+    --color-velvet-orchid-800: #3d1d49;
+    --color-velvet-orchid-900: #1f0f24;
+    --color-velvet-orchid-950: #150a1a;
+    --background: var(--color-black-50);
+    --foreground: var(--color-black-900);
+    --card: var(--color-black-50);
+    --card-foreground: var(--color-black-900);
+    --popover: var(--color-black-50);
+    --popover-foreground: var(--color-black-900);
+    --primary: var(--color-electric-rose-500);
+    --primary-foreground: var(--color-black-50);
+    --secondary: var(--color-black-200);
+    --secondary-foreground: var(--color-black-900);
+    --muted: var(--color-black-200);
+    --muted-foreground: var(--color-black-600);
+    --accent: var(--color-velvet-orchid-400);
+    --accent-foreground: var(--color-black-50);
+    --destructive: var(--color-vibrant-coral-500);
+    --border: var(--color-black-200);
+    --input: var(--color-black-200);
+    --ring: var(--color-electric-rose-400);
+    --chart-1: var(--color-velvet-orchid-500);
+    --chart-2: var(--color-electric-rose-400);
+    --chart-3: var(--color-vibrant-coral-400);
+    --chart-4: var(--color-dark-orange-500);
+    --chart-5: var(--color-black-700);
+    --sidebar: var(--color-black-50);
+    --sidebar-foreground: var(--color-black-900);
+    --sidebar-primary: var(--color-electric-rose-500);
+    --sidebar-primary-foreground: var(--color-black-50);
+    --sidebar-accent: var(--color-black-200);
+    --sidebar-accent-foreground: var(--color-black-900);
+    --sidebar-border: var(--color-black-200);
+    --sidebar-ring: var(--color-electric-rose-400);
 }
 
 .dark {
-    --background: oklch(0.141 0.005 285.823);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.21 0.006 285.885);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.21 0.006 285.885);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.92 0.004 286.32);
-    --primary-foreground: oklch(0.21 0.006 285.885);
-    --secondary: oklch(0.274 0.006 286.033);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.274 0.006 286.033);
-    --muted-foreground: oklch(0.705 0.015 286.067);
-    --accent: oklch(0.274 0.006 286.033);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.552 0.016 285.938);
-    --chart-1: oklch(0.488 0.243 264.376);
-    --chart-2: oklch(0.696 0.17 162.48);
-    --chart-3: oklch(0.769 0.188 70.08);
-    --chart-4: oklch(0.627 0.265 303.9);
-    --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.21 0.006 285.885);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.274 0.006 286.033);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.552 0.016 285.938);
+    --background: var(--color-black-950);
+    --foreground: var(--color-black-50);
+    --card: var(--color-black-900);
+    --card-foreground: var(--color-black-50);
+    --popover: var(--color-black-900);
+    --popover-foreground: var(--color-black-50);
+    --primary: var(--color-electric-rose-500);
+    --primary-foreground: var(--color-black-50);
+    --secondary: var(--color-black-800);
+    --secondary-foreground: var(--color-black-50);
+    --muted: var(--color-black-800);
+    --muted-foreground: var(--color-black-300);
+    --accent: var(--color-velvet-orchid-500);
+    --accent-foreground: var(--color-black-50);
+    --destructive: var(--color-vibrant-coral-500);
+    --border: color-mix(in srgb, var(--color-black-700) 85%, transparent);
+    --input: color-mix(in srgb, var(--color-black-800) 90%, transparent);
+    --ring: var(--color-electric-rose-400);
+    --chart-1: var(--color-velvet-orchid-500);
+    --chart-2: var(--color-electric-rose-400);
+    --chart-3: var(--color-vibrant-coral-400);
+    --chart-4: var(--color-dark-orange-500);
+    --chart-5: var(--color-black-600);
+    --sidebar: var(--color-black-900);
+    --sidebar-foreground: var(--color-black-50);
+    --sidebar-primary: var(--color-electric-rose-500);
+    --sidebar-primary-foreground: var(--color-black-50);
+    --sidebar-accent: var(--color-black-800);
+    --sidebar-accent-foreground: var(--color-black-50);
+    --sidebar-border: color-mix(in srgb, var(--color-black-700) 85%, transparent);
+    --sidebar-ring: var(--color-electric-rose-400);
 }
 
 @layer base {
@@ -120,5 +183,6 @@
     }
   body {
     @apply bg-background text-foreground;
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
 }
