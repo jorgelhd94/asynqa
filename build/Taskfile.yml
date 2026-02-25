@@ -112,10 +112,8 @@ tasks:
   dev:frontend:
     summary: Runs the frontend in development mode
     dir: frontend
-    deps:
-      - task: install:frontend:deps
     cmds:
-      - npm run dev -- --port {{.VITE_PORT}} --strictPort
+      - npx vite --port {{.VITE_PORT}} --strictPort
 
   update:build-assets:
     summary: Updates the build assets

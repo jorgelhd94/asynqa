@@ -4,8 +4,12 @@ import (
 	"embed"
 	_ "embed"
 	"log"
+	"log/slog"
+	"os"
 	"strings"
 	"time"
+
+	"github.com/jorgelhd94-tpp/asynqa/infrastructure/database"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
@@ -20,6 +24,18 @@ var assets embed.FS
 
 const APPNAME = "AsynQA"
 
+func initLogger() {
+	var handler slog.Handler
+
+	opts := &slog.HandlerOptions{
+		Level: slog.LevelInfo,
+	}
+	handler = slog.NewTextHandler(os.Stdout, opts)
+
+	logger := slog.New(handler)
+	slog.SetDefault(logger)
+}
+
 func init() {
 	// Register a custom event whose associated data type is string.
 	// This is not required, but the binding generator will pick up registered events
@@ -31,6 +47,15 @@ func init() {
 // and starts a goroutine that emits a time-based event every second. It subsequently runs the application and
 // logs any error that might occur.
 func main() {
+	initLogger()
+	db, err := database.InitSqlite()
+	if err != nil {
+		log.Fatalf("Error starting DB <%s>", err)
+		os.Exit(1)
+	}
+
+	sqlDB, _ := db.DB()
+	defer sqlDB.Close()
 
 	// Create a new Wails application by providing the necessary options.
 	// Variables 'Name' and 'Description' are for application metadata.
@@ -78,10 +103,11 @@ func main() {
 	}()
 
 	// Run the application. This blocks until the application has been exited.
-	err := app.Run()
+	err = app.Run()
 
 	// If an error occurred while running the application, log it and exit.
 	if err != nil {
 		log.Fatal(err)
 	}
+
 }
