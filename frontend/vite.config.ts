@@ -15,9 +15,9 @@ export default defineConfig({
     wails("./bindings"),
     tailwindcss(),
   ],
-  server: {
-    port: 9245,
-    strictPort: true,
-    host: "127.0.0.1",
+  resolve: {
+    alias: {
+      "@": "/src",
+    },
   },
 });

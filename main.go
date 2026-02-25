@@ -4,6 +4,7 @@ import (
 	"embed"
 	_ "embed"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
@@ -16,6 +17,8 @@ import (
 
 //go:embed all:frontend/dist
 var assets embed.FS
+
+const APPNAME = "AsynQA"
 
 func init() {
 	// Register a custom event whose associated data type is string.
@@ -35,7 +38,7 @@ func main() {
 	// 'Bind' is a list of Go struct instances. The frontend has access to the methods of these instances.
 	// 'Mac' options tailor the application when running an macOS.
 	app := application.New(application.Options{
-		Name:        "asynqa",
+		Name:        strings.ToLower(APPNAME),
 		Description: "A demo of using raw HTML & CSS",
 		Services: []application.Service{
 			application.NewService(&GreetService{}),
@@ -54,7 +57,7 @@ func main() {
 	// 'BackgroundColour' is the background colour of the window.
 	// 'URL' is the URL that will be loaded into the webview.
 	app.Window.NewWithOptions(application.WebviewWindowOptions{
-		Title: "Window 1",
+		Title: APPNAME,
 		Mac: application.MacWindow{
 			InvisibleTitleBarHeight: 50,
 			Backdrop:                application.MacBackdropTranslucent,
