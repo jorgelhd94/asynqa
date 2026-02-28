@@ -90,6 +90,9 @@ func main() {
 		},
 		BackgroundColour: application.NewRGB(27, 38, 54),
 		URL:              "/",
+		StartState:       application.WindowStateMaximised,
+		MinWidth:         800,
+		MinHeight:        600,
 	})
 
 	// Create a goroutine that emits an event containing the current time every second.
