@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { sileo } from "sileo";
 
 const environments: EnvironmentInfo[] = [
   {
@@ -34,12 +35,13 @@ const environments: EnvironmentInfo[] = [
   },
 ];
 
-export const Route = createFileRoute('/' as unknown as undefined)({
+export const Route = createFileRoute("/")({
   component: IndexPage,
-})
+});
 
 export default function IndexPage() {
   const [open, setOpen] = useState(false);
+
 
   return (
     <div
