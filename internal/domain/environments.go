@@ -4,5 +4,10 @@ import "gorm.io/gorm"
 
 type Environment struct {
 	gorm.Model
-	Name string
+	Name          string
+	Host          string
+	Password      string
+	DB            int
+	UseTLS        bool
+	TLSSkipVerify bool
 }
