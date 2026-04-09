@@ -18,6 +18,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": "/src",
+      "@bindings": "/bindings/github.com/jorgelhd94-tpp/asynqa",
     },
   },
 });

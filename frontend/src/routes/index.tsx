@@ -3,42 +3,44 @@ import { EnvironmentCard } from "@/components/environments/environment-card";
 import { EnvironmentDialog } from "@/components/environments/environment-dialog";
 import { EnvironmentsHeader } from "@/components/environments/header";
 import { HeroSection } from "@/components/environments/hero-section";
-import { EnvironmentInfo } from "@/components/environments/types";
-import { Button } from "@/components/ui/button";
+import type { Environment } from "@/components/environments/types";
+import {
+  useEnvironments,
+  useDeleteEnvironment,
+} from "@/hooks/use-environments";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { sileo } from "sileo";
-
-const environments: EnvironmentInfo[] = [
-  {
-    id: "local",
-    name: "Localhost",
-    host: "127.0.0.1:6379",
-  },
-  {
-    id: "prod",
-    name: "Production - AWS",
-    host: "redis-01.aws-east.internal:6380",
-  },
-  {
-    id: "stg",
-    name: "Staging - Cluster 1",
-    host: "10.0.4.155:6379",
-  },
-];
 
 export const Route = createFileRoute("/")({
   component: IndexPage,
 });
 
 export default function IndexPage() {
-  const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editingEnv, setEditingEnv] = useState<Environment | undefined>();
 
-  const openToast = () => {
-    sileo.success({
-      title: "Environment added successfully",
-      description: "Environment added successfully",
+  const { data: environments = [], isLoading } = useEnvironments();
+  const deleteMutation = useDeleteEnvironment();
+
+  const handleEdit = (env: Environment) => {
+    setEditingEnv(env);
+    setDialogOpen(true);
+  };
+
+  const handleDelete = (env: Environment) => {
+    deleteMutation.mutate(env.ID, {
+      onSuccess: () => {
+        sileo.success({ title: `"${env.Name}" deleted` });
+      },
     });
+  };
+
+  const handleDialogChange = (open: boolean) => {
+    setDialogOpen(open);
+    if (!open) {
+      setEditingEnv(undefined);
+    }
   };
 
   return (
@@ -54,16 +56,34 @@ export default function IndexPage() {
 
         <section className="mt-14 flex w-full max-w-md flex-col gap-4">
           <EnvironmentsHeader total={environments.length} />
-          {environments.map((env, idx) => (
-            <EnvironmentCard key={env.id} env={env} highlighted={idx === 0} />
-          ))}
 
-          <Button onClick={openToast}>Open Toast</Button>
+          {isLoading && (
+            <div className="py-8 text-center text-sm text-[--color-black-400]">
+              Loading environments...
+            </div>
+          )}
+
+          {!isLoading && environments.length === 0 && (
+            <div className="py-8 text-center text-sm text-[--color-black-400]">
+              No saved environments. Create one to get started.
+            </div>
+          )}
+
+          {environments.map((env, idx) => (
+            <EnvironmentCard
+              key={env.ID}
+              env={env}
+              highlighted={idx === 0}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
+          ))}
 
           <EnvironmentDialog
             trigger={<AddEnvironmentButton />}
-            open={open}
-            onOpenChange={setOpen}
+            open={dialogOpen}
+            onOpenChange={handleDialogChange}
+            environment={editingEnv}
           />
         </section>
       </div>
