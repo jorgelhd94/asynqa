@@ -1,12 +1,10 @@
 import { Plus } from "lucide-react";
-import * as React from "react";
+import { forwardRef, type ButtonHTMLAttributes } from "react";
 import { Button } from "../ui/button";
 
-type AddEnvironmentButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
-
-export const AddEnvironmentButton = React.forwardRef<
+export const AddEnvironmentButton = forwardRef<
   HTMLButtonElement,
-  AddEnvironmentButtonProps
+  ButtonHTMLAttributes<HTMLButtonElement>
 >(({ className = "", ...props }, ref) => {
   return (
     <Button

@@ -23,7 +23,8 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@bindings/*": ["./bindings/github.com/jorgelhd94-tpp/asynqa/*"]
     }
   },
   "include": ["src", "bindings"]
