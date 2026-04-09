@@ -2,38 +2,38 @@
   "version": 1,
   "skills": {
     "frontend-design": {
-      "source": "anthropics/skills",
-      "sourceType": "github",
+      "source": "C:\\Users\\Jorgito\\Desktop\\Personal\\asynqa",
+      "sourceType": "local",
       "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
     },
     "shadcn-ui": {
-      "source": "google-labs-code/stitch-skills",
-      "sourceType": "github",
+      "source": "C:\\Users\\Jorgito\\Desktop\\Personal\\asynqa",
+      "sourceType": "local",
       "computedHash": "119a14a004bd30fa99d386df599bd0db8d057cca146f7ee08349daed48b2ea55"
     },
     "tailwind-design-system": {
-      "source": "wshobson/agents",
-      "sourceType": "github",
+      "source": "C:\\Users\\Jorgito\\Desktop\\Personal\\asynqa",
+      "sourceType": "local",
       "computedHash": "c88178d861802fa836be54e377e82bb67899b6c378807679a1feecd21bf63cb8"
     },
     "tanstack-query-best-practices": {
-      "source": "deckardger/tanstack-agent-skills",
-      "sourceType": "github",
+      "source": "C:\\Users\\Jorgito\\Desktop\\Personal\\asynqa",
+      "sourceType": "local",
       "computedHash": "addf4358803d7746f7fe0475a3370d835775217e00dd5fc7bbd8a7d6c53d81e5"
     },
     "tanstack-router-best-practices": {
-      "source": "deckardger/tanstack-agent-skills",
-      "sourceType": "github",
+      "source": "C:\\Users\\Jorgito\\Desktop\\Personal\\asynqa",
+      "sourceType": "local",
       "computedHash": "090ae367732367c6a9a693dde029072e0eda8463e2a1047da76a4ec9b7d58b63"
     },
     "vercel-react-best-practices": {
-      "source": "vercel-labs/agent-skills",
-      "sourceType": "github",
-      "computedHash": "61f8c307aa8ce0c4c52da8886d42e344dab83f76f9b5360cf8923b25fb1d67bb"
+      "source": "C:\\Users\\Jorgito\\Desktop\\Personal\\asynqa",
+      "sourceType": "local",
+      "computedHash": "c791557c34b478ef1e615ed6af527445fd1625216e37a1d1752f6baf3fc2d7d9"
     },
     "vite": {
-      "source": "antfu/skills",
-      "sourceType": "github",
+      "source": "C:\\Users\\Jorgito\\Desktop\\Personal\\asynqa",
+      "sourceType": "local",
       "computedHash": "f406fceb1b9020cd759a728d8424de7ffd8dfe5874bd97be2724571741e54852"
     }
   }
