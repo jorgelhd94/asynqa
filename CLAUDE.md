@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Asynqa is a cross-platform desktop application for managing Redis/async queue environments, built with **Wails v3** (Go backend + embedded web frontend).
+Asynqa is a cross-platform desktop application for developers who use the [asynq](https://github.com/hibiken/asynq) library in Go. It provides a visual interface to manage, monitor, and inspect asynq task queues backed by Redis. The app is built with **Wails v3** (Go backend + embedded web frontend) and is specifically designed for Go/asynq workflows — it is not a general-purpose Redis client.
 
 ## Tech Stack
 
