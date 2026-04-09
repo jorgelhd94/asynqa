@@ -1,10 +1,20 @@
 {
   "version": 1,
   "skills": {
+    "clean-code": {
+      "source": "sickn33/antigravity-awesome-skills",
+      "sourceType": "github",
+      "computedHash": "53e960930ce5af70af8d57539ee5682feeeace5f7befa8035bfe71e33e3cb4c0"
+    },
     "frontend-design": {
       "source": "C:\\Users\\Jorgito\\Desktop\\Personal\\asynqa",
       "sourceType": "local",
       "computedHash": "516bd2154eb843a8240e43d5b285229129853114ad7075a5e141e1c08e408c84"
+    },
+    "golang-pro": {
+      "source": "jeffallan/claude-skills",
+      "sourceType": "github",
+      "computedHash": "517209072b5cbeb7dfdb41f634ecff658e34e7c9e081e425d618378e9818a941"
     },
     "shadcn-ui": {
       "source": "C:\\Users\\Jorgito\\Desktop\\Personal\\asynqa",
