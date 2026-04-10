@@ -4,7 +4,8 @@
       "Bash(grep -E \"\\\\.go$\")",
       "WebFetch(domain:v3alpha.wails.io)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "Bash(gh api:*)"
+      "Bash(gh api:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }

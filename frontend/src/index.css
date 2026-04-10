@@ -167,13 +167,13 @@
     --chart-3: var(--color-vibrant-coral-400);
     --chart-4: var(--color-dark-orange-500);
     --chart-5: var(--color-black-600);
-    --sidebar: var(--color-black-900);
+    --sidebar: color-mix(in srgb, var(--color-black-950) 85%, transparent);
     --sidebar-foreground: var(--color-black-50);
     --sidebar-primary: var(--color-electric-rose-500);
     --sidebar-primary-foreground: var(--color-black-50);
     --sidebar-accent: var(--color-black-800);
     --sidebar-accent-foreground: var(--color-black-50);
-    --sidebar-border: color-mix(in srgb, var(--color-black-700) 85%, transparent);
+    --sidebar-border: color-mix(in srgb, var(--color-black-700) 50%, transparent);
     --sidebar-ring: var(--color-electric-rose-400);
 }
 
