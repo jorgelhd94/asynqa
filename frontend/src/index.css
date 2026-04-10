@@ -188,4 +188,7 @@
   [data-sileo-viewport] {
     z-index: 100 !important;
     }
+  [data-sileo-viewport][data-theme=dark] [data-sileo-description] {
+    color: rgba(255, 255, 255, 0.7) !important;
+    }
 }

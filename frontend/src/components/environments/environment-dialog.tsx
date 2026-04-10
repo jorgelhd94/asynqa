@@ -180,14 +180,7 @@ export function EnvironmentDialog({
           </div>
         </div>
 
-        <DialogFooter className="mt-2 gap-2 sm:flex-row sm:justify-end">
-          <Button
-            variant="ghost"
-            className="text-[--color-black-200] hover:bg-[--color-black-800]"
-            onClick={() => onOpenChange(false)}
-          >
-            Cancel
-          </Button>
+        <DialogFooter className="mt-2 !flex-row items-center !justify-between">
           <Button
             variant="outline"
             className="border-[--color-dark-orange-400] text-[--color-black-50] hover:bg-[--color-dark-orange-500]/15"
@@ -198,15 +191,30 @@ export function EnvironmentDialog({
                   sileo.success({ title: "Connection successful" });
                 },
                 onError: (error) => {
+                  let description = error.message;
+                  try {
+                    const parsed = JSON.parse(description);
+                    description = parsed.message ?? description;
+                  } catch {
+                    // use raw message
+                  }
                   sileo.error({
                     title: "Connection failed",
-                    description: error.message,
+                    description,
                   });
                 },
               })
             }
           >
             {testMutation.isPending ? "Testing..." : "Test connection"}
+          </Button>
+          <div className="flex gap-2">
+          <Button
+            variant="ghost"
+            className="text-[--color-black-200] hover:bg-[--color-black-800]"
+            onClick={() => onOpenChange(false)}
+          >
+            Cancel
           </Button>
           <Button
             className="bg-[--color-electric-rose-500] text-[--color-black-50] hover:bg-[--color-electric-rose-400]"
@@ -215,6 +223,7 @@ export function EnvironmentDialog({
           >
             {isPending ? "Saving..." : "Save"}
           </Button>
+          </div>
         </DialogFooter>
       </DialogContent>
     </Dialog>
