@@ -183,7 +183,7 @@ export function EnvironmentDialog({
         <DialogFooter className="mt-2 !flex-row items-center !justify-between">
           <Button
             variant="outline"
-            className="border-[--color-dark-orange-400] text-[--color-black-50] hover:bg-[--color-dark-orange-500]/15"
+            className="cursor-pointer border-[--color-dark-orange-400] text-[--color-black-50] hover:bg-[--color-dark-orange-500]/15"
             disabled={testMutation.isPending || !form.Host}
             onClick={() =>
               testMutation.mutate(form, {
@@ -211,13 +211,13 @@ export function EnvironmentDialog({
           <div className="flex gap-2">
           <Button
             variant="ghost"
-            className="text-[--color-black-200] hover:bg-[--color-black-800]"
+            className="cursor-pointer text-[--color-black-200] hover:bg-[--color-black-800]"
             onClick={() => onOpenChange(false)}
           >
             Cancel
           </Button>
           <Button
-            className="bg-[--color-electric-rose-500] text-[--color-black-50] hover:bg-[--color-electric-rose-400]"
+            className="cursor-pointer bg-[--color-electric-rose-500] text-[--color-black-50] hover:bg-accent"
             onClick={handleSubmit}
             disabled={isPending || !form.Name || !form.Host}
           >

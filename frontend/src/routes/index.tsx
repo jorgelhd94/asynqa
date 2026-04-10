@@ -1,6 +1,7 @@
 import { AddEnvironmentButton } from "@/components/environments/add-button";
 import { EnvironmentCard } from "@/components/environments/environment-card";
 import { EnvironmentDialog } from "@/components/environments/environment-dialog";
+import { DeleteEnvironmentDialog } from "@/components/environments/delete-dialog";
 import { EnvironmentsHeader } from "@/components/environments/header";
 import { HeroSection } from "@/components/environments/hero-section";
 import type { Environment } from "@/components/environments/types";
@@ -8,7 +9,7 @@ import {
   useEnvironments,
   useDeleteEnvironment,
 } from "@/hooks/use-environments";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { sileo } from "sileo";
 
@@ -17,21 +18,37 @@ export const Route = createFileRoute("/")({
 });
 
 export default function IndexPage() {
+  const navigate = useNavigate();
+
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingEnv, setEditingEnv] = useState<Environment | undefined>();
 
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [deletingEnv, setDeletingEnv] = useState<Environment | undefined>();
+
   const { data: environments = [], isLoading } = useEnvironments();
   const deleteMutation = useDeleteEnvironment();
+
+  const handleSelect = (env: Environment) => {
+    navigate({ to: "/environment/$id", params: { id: String(env.ID) } });
+  };
 
   const handleEdit = (env: Environment) => {
     setEditingEnv(env);
     setDialogOpen(true);
   };
 
-  const handleDelete = (env: Environment) => {
+  const handleDeleteRequest = (env: Environment) => {
+    setDeletingEnv(env);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = (env: Environment) => {
     deleteMutation.mutate(env.ID, {
       onSuccess: () => {
         sileo.success({ title: `"${env.Name}" deleted` });
+        setDeleteDialogOpen(false);
+        setDeletingEnv(undefined);
       },
     });
   };
@@ -69,13 +86,13 @@ export default function IndexPage() {
             </div>
           )}
 
-          {environments.map((env, idx) => (
+          {environments.map((env) => (
             <EnvironmentCard
               key={env.ID}
               env={env}
-              highlighted={idx === 0}
+              onSelect={handleSelect}
               onEdit={handleEdit}
-              onDelete={handleDelete}
+              onDelete={handleDeleteRequest}
             />
           ))}
 
@@ -84,6 +101,13 @@ export default function IndexPage() {
             open={dialogOpen}
             onOpenChange={handleDialogChange}
             environment={editingEnv}
+          />
+
+          <DeleteEnvironmentDialog
+            environment={deletingEnv}
+            open={deleteDialogOpen}
+            onOpenChange={setDeleteDialogOpen}
+            onConfirm={handleDeleteConfirm}
           />
         </section>
       </div>
