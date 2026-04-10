@@ -1,7 +1,6 @@
 package services
 
 import (
-	"crypto/tls"
 	"fmt"
 
 	"github.com/hibiken/asynq"
@@ -38,19 +37,7 @@ func (s *EnvironmentService) Delete(id uint) error {
 }
 
 func (s *EnvironmentService) TestConnection(env domain.Environment) error {
-	opts := asynq.RedisClientOpt{
-		Addr:     env.Host,
-		Password: env.Password,
-		DB:       env.DB,
-	}
-
-	if env.UseTLS {
-		opts.TLSConfig = &tls.Config{
-			InsecureSkipVerify: env.TLSSkipVerify,
-		}
-	}
-
-	inspector := asynq.NewInspector(opts)
+	inspector := asynq.NewInspector(newRedisOpts(env))
 	defer inspector.Close()
 
 	_, err := inspector.Queues()

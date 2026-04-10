@@ -41,12 +41,14 @@ func main() {
 	defer sqlDB.Close()
 
 	envService := services.NewEnvironmentService(db)
+	dashboardService := services.NewDashboardService(db)
 
 	app := application.New(application.Options{
 		Name:        strings.ToLower(appName),
 		Description: "Desktop tool for managing asynq task queues",
 		Services: []application.Service{
 			application.NewService(envService),
+			application.NewService(dashboardService),
 		},
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),
