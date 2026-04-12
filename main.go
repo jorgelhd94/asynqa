@@ -1,16 +1,19 @@
 package main
 
 import (
+	"context"
 	"embed"
 	"log"
 	"log/slog"
 	"os"
-	"strings"
 
 	"github.com/jorgelhd94-tpp/asynqa/infrastructure/database"
 	"github.com/jorgelhd94-tpp/asynqa/internal/services"
 
-	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/wailsapp/wails/v2"
+	"github.com/wailsapp/wails/v2/pkg/options"
+	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v2/pkg/options/mac"
 )
 
 //go:embed all:frontend/dist
@@ -43,36 +46,36 @@ func main() {
 	envService := services.NewEnvironmentService(db)
 	dashboardService := services.NewDashboardService(db)
 
-	app := application.New(application.Options{
-		Name:        strings.ToLower(appName),
-		Description: "Desktop tool for managing asynq task queues",
-		Services: []application.Service{
-			application.NewService(envService),
-			application.NewService(dashboardService),
-		},
-		Assets: application.AssetOptions{
-			Handler: application.AssetFileServerFS(assets),
-		},
-		Mac: application.MacOptions{
-			ApplicationShouldTerminateAfterLastWindowClosed: true,
-		},
-	})
-
-	app.Window.NewWithOptions(application.WebviewWindowOptions{
-		Title: appName,
-		Mac: application.MacWindow{
-			InvisibleTitleBarHeight: 50,
-			Backdrop:                application.MacBackdropTranslucent,
-			TitleBar:                application.MacTitleBarHiddenInset,
-		},
-		BackgroundColour: application.NewRGB(27, 38, 54),
-		URL:              "/",
-		StartState:       application.WindowStateMaximised,
+	err = wails.Run(&options.App{
+		Title:            appName,
+		Width:            1024,
+		Height:           768,
 		MinWidth:         800,
 		MinHeight:        600,
+		WindowStartState: options.Maximised,
+		AssetServer: &assetserver.Options{
+			Assets: assets,
+		},
+		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
+		OnStartup: func(ctx context.Context) {
+			// Context available for runtime calls if needed later
+		},
+		Mac: &mac.Options{
+			TitleBar:             mac.TitleBarHiddenInset(),
+			WebviewIsTransparent: true,
+			WindowIsTranslucent:  true,
+			About: &mac.AboutInfo{
+				Title:   appName,
+				Message: "Desktop tool for managing asynq task queues",
+			},
+		},
+		Bind: []interface{}{
+			envService,
+			dashboardService,
+		},
 	})
 
-	if err := app.Run(); err != nil {
+	if err != nil {
 		log.Fatal(err)
 	}
 }
