@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { EnvironmentService } from "@bindings/internal/services";
-import { Environment } from "@bindings/internal/domain/models";
+import * as EnvironmentService from "../../wailsjs/go/services/EnvironmentService";
+import { domain } from "../../wailsjs/go/models";
 import type { EnvironmentFormData } from "@/components/environments/types";
 
 const ENVIRONMENTS_KEY = ["environments"];
@@ -16,7 +16,7 @@ export function useCreateEnvironment() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: EnvironmentFormData) =>
-      EnvironmentService.Create(new Environment(data)),
+      EnvironmentService.Create(new domain.Environment(data)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ENVIRONMENTS_KEY });
     },
@@ -27,7 +27,7 @@ export function useUpdateEnvironment() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: EnvironmentFormData & { ID: number }) =>
-      EnvironmentService.Update(new Environment(data)),
+      EnvironmentService.Update(new domain.Environment(data)),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ENVIRONMENTS_KEY });
     },
@@ -37,7 +37,7 @@ export function useUpdateEnvironment() {
 export function useTestConnection() {
   return useMutation({
     mutationFn: (data: EnvironmentFormData) =>
-      EnvironmentService.TestConnection(new Environment(data)),
+      EnvironmentService.TestConnection(new domain.Environment(data)),
   });
 }
 

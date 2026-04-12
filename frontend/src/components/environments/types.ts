@@ -1,4 +1,6 @@
-export { Environment } from "@bindings/internal/domain/models";
+import { domain } from "../../../wailsjs/go/models";
+
+export type Environment = domain.Environment;
 
 export type EnvironmentFormData = {
   Name: string;
