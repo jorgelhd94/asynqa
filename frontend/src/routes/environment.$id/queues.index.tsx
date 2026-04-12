@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { PageHeader } from "@/components/environment/page-header";
 import { StatCard } from "@/components/environment/stat-card";
 import {
@@ -48,7 +48,7 @@ import {
 } from "lucide-react";
 import { sileo } from "sileo";
 
-export const Route = createFileRoute("/environment/$id/queues")({
+export const Route = createFileRoute("/environment/$id/queues/")({
   component: QueuesPage,
 });
 
@@ -62,6 +62,7 @@ function formatBytes(bytes: number): string {
 
 function QueuesPage() {
   const { id } = Route.useParams();
+  const navigate = useNavigate();
   const environmentId = Number(id);
   const { data, isLoading, isError, error } = useQueues(environmentId);
   const pauseMutation = usePauseQueue(environmentId);
@@ -206,7 +207,13 @@ function QueuesPage() {
               {queues.map((q) => (
                 <TableRow
                   key={q.queue}
-                  className="border-[--color-black-800] hover:bg-[--color-black-800]/50"
+                  className="border-[--color-black-800] hover:bg-[--color-black-800]/50 cursor-pointer"
+                  onClick={() =>
+                    navigate({
+                      to: "/environment/$id/queues/$queueName",
+                      params: { id, queueName: q.queue },
+                    })
+                  }
                 >
                   <TableCell className="font-medium text-[--color-black-50]">
                     {q.queue}
@@ -260,7 +267,7 @@ function QueuesPage() {
                       </Badge>
                     )}
                   </TableCell>
-                  <TableCell>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon-xs" className="text-[--color-black-400] hover:text-[--color-black-50]">

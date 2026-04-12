@@ -159,6 +159,114 @@ export namespace dto {
 
 export namespace queue {
 	
+	export class BulkActionResult {
+	    count: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new BulkActionResult(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.count = source["count"];
+	    }
+	}
+	export class DailyStats {
+	    date: string;
+	    processed: number;
+	    failed: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new DailyStats(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.date = source["date"];
+	        this.processed = source["processed"];
+	        this.failed = source["failed"];
+	    }
+	}
+	export class TaskInfo {
+	    id: string;
+	    queue: string;
+	    type: string;
+	    payload: string;
+	    state: string;
+	    maxRetry: number;
+	    retried: number;
+	    lastErr: string;
+	    lastFailedAt: string;
+	    nextProcessAt: string;
+	    timeoutSecs: number;
+	    retentionSecs: number;
+	    deadline: string;
+	    completedAt: string;
+	    group: string;
+	    result: string;
+	    isOrphaned: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new TaskInfo(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.queue = source["queue"];
+	        this.type = source["type"];
+	        this.payload = source["payload"];
+	        this.state = source["state"];
+	        this.maxRetry = source["maxRetry"];
+	        this.retried = source["retried"];
+	        this.lastErr = source["lastErr"];
+	        this.lastFailedAt = source["lastFailedAt"];
+	        this.nextProcessAt = source["nextProcessAt"];
+	        this.timeoutSecs = source["timeoutSecs"];
+	        this.retentionSecs = source["retentionSecs"];
+	        this.deadline = source["deadline"];
+	        this.completedAt = source["completedAt"];
+	        this.group = source["group"];
+	        this.result = source["result"];
+	        this.isOrphaned = source["isOrphaned"];
+	    }
+	}
+	export class PaginatedTaskList {
+	    tasks: TaskInfo[];
+	    totalCount: number;
+	    page: number;
+	    pageSize: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new PaginatedTaskList(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.tasks = this.convertValues(source["tasks"], TaskInfo);
+	        this.totalCount = source["totalCount"];
+	        this.page = source["page"];
+	        this.pageSize = source["pageSize"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
 	export class QueueInfo {
 	    queue: string;
 	    size: number;
@@ -199,6 +307,39 @@ export namespace queue {
 	        this.paused = source["paused"];
 	    }
 	}
+	export class QueueDetailData {
+	    info: QueueInfo;
+	    history: DailyStats[];
+	
+	    static createFrom(source: any = {}) {
+	        return new QueueDetailData(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.info = this.convertValues(source["info"], QueueInfo);
+	        this.history = this.convertValues(source["history"], DailyStats);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
 	export class QueuesData {
 	    queues: QueueInfo[];
 	    totalQueues: number;
