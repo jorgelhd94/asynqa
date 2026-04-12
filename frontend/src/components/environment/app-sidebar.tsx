@@ -31,7 +31,7 @@ import {
   ListChecks,
   PanelLeft,
   Play,
-  Server,
+  HardHat,
 } from "lucide-react";
 import { useEnvironment } from "@/hooks/use-environment";
 import { useEnvironments } from "@/hooks/use-environments";
@@ -40,7 +40,7 @@ const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, to: "/environment/$id/dashboard" as const },
   { label: "Queues", icon: Layers, to: "/environment/$id/queues" as const },
   { label: "Tasks", icon: ListChecks, to: "/environment/$id/tasks" as const },
-  { label: "Servers", icon: Server, to: "/environment/$id/servers" as const },
+  { label: "Workers", icon: HardHat, to: "/environment/$id/workers" as const },
   { label: "Schedulers", icon: CalendarClock, to: "/environment/$id/schedulers" as const },
 ];
 

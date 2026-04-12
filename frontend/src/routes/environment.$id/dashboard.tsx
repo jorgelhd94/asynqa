@@ -105,7 +105,7 @@ function DashboardPage() {
         <StatCard
           title="Failed"
           value={(data?.totalFailed ?? 0).toLocaleString()}
-          subtitle={`${data?.serverCount ?? 0} server(s)`}
+          subtitle={`${data?.serverCount ?? 0} worker(s)`}
           icon={AlertTriangle}
           iconColor="text-[--color-vibrant-coral-400]"
         />
