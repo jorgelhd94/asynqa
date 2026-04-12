@@ -153,7 +153,19 @@ tasks:
 
   run:
     cmds:
+      - task: wait:frontend
       - '{{.BIN_DIR}}/{{.APP_NAME}}.exe'
+
+  wait:frontend:
+    summary: Waits for the frontend dev server to be ready
+    internal: true
+    cmds:
+      - |
+        for i in $(seq 1 30); do
+          curl -s http://localhost:{{.VITE_PORT}} > /dev/null 2>&1 && exit 0
+          sleep 1
+        done
+        echo "Frontend dev server did not start in time" && exit 1
 
   sign:
     summary: Signs the Windows executable
