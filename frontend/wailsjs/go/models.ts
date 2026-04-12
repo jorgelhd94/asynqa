@@ -157,3 +157,86 @@ export namespace dto {
 
 }
 
+export namespace queue {
+	
+	export class QueueInfo {
+	    queue: string;
+	    size: number;
+	    pending: number;
+	    active: number;
+	    scheduled: number;
+	    retry: number;
+	    archived: number;
+	    completed: number;
+	    processed: number;
+	    failed: number;
+	    processedTotal: number;
+	    failedTotal: number;
+	    latencyMs: number;
+	    memoryUsage: number;
+	    paused: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new QueueInfo(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.queue = source["queue"];
+	        this.size = source["size"];
+	        this.pending = source["pending"];
+	        this.active = source["active"];
+	        this.scheduled = source["scheduled"];
+	        this.retry = source["retry"];
+	        this.archived = source["archived"];
+	        this.completed = source["completed"];
+	        this.processed = source["processed"];
+	        this.failed = source["failed"];
+	        this.processedTotal = source["processedTotal"];
+	        this.failedTotal = source["failedTotal"];
+	        this.latencyMs = source["latencyMs"];
+	        this.memoryUsage = source["memoryUsage"];
+	        this.paused = source["paused"];
+	    }
+	}
+	export class QueuesData {
+	    queues: QueueInfo[];
+	    totalQueues: number;
+	    activeQueues: number;
+	    pausedQueues: number;
+	    totalTasks: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new QueuesData(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.queues = this.convertValues(source["queues"], QueueInfo);
+	        this.totalQueues = source["totalQueues"];
+	        this.activeQueues = source["activeQueues"];
+	        this.pausedQueues = source["pausedQueues"];
+	        this.totalTasks = source["totalTasks"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+

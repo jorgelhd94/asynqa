@@ -11,6 +11,7 @@ import (
 	dashservice "github.com/jorgelhd94-tpp/asynqa/internal/dashboard/service"
 	envservice "github.com/jorgelhd94-tpp/asynqa/internal/environment/service"
 	envstore "github.com/jorgelhd94-tpp/asynqa/internal/environment/store"
+	queuepkg "github.com/jorgelhd94-tpp/asynqa/internal/queue"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -51,6 +52,7 @@ func main() {
 	// Services
 	environmentService := envservice.NewEnvironmentService(environmentStore)
 	dashboardService := dashservice.NewDashboardService(environmentStore)
+	queueService := queuepkg.NewQueueService(environmentStore)
 
 	err = wails.Run(&options.App{
 		Title:            appName,
@@ -76,6 +78,7 @@ func main() {
 		Bind: []any{
 			environmentService,
 			dashboardService,
+			queueService,
 		},
 	})
 
