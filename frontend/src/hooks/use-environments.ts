@@ -36,8 +36,10 @@ export function useUpdateEnvironment() {
 
 export function useTestConnection() {
   return useMutation({
-    mutationFn: (data: EnvironmentFormData) =>
-      EnvironmentService.TestConnection(new domain.Environment(data)),
+    mutationFn: (data: EnvironmentFormData | domain.Environment) =>
+      EnvironmentService.TestConnection(
+        data instanceof domain.Environment ? data : new domain.Environment(data),
+      ),
   });
 }
 

@@ -8,6 +8,7 @@ import type { Environment } from "@/components/environments/types";
 import {
   useEnvironments,
   useDeleteEnvironment,
+  useTestConnection,
 } from "@/hooks/use-environments";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
@@ -26,11 +27,36 @@ export default function IndexPage() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [deletingEnv, setDeletingEnv] = useState<Environment | undefined>();
 
+  const [connectingId, setConnectingId] = useState<number | null>(null);
+
   const { data: environments = [], isLoading } = useEnvironments();
   const deleteMutation = useDeleteEnvironment();
+  const testConnection = useTestConnection();
 
   const handleSelect = (env: Environment) => {
-    navigate({ to: "/environment/$id", params: { id: String(env.ID) } });
+    if (connectingId !== null) return;
+    setConnectingId(env.ID);
+    testConnection.mutate(env, {
+      onSuccess: () => {
+        navigate({ to: "/environment/$id", params: { id: String(env.ID) } });
+      },
+      onError: (error) => {
+        let description = error.message;
+        try {
+          const parsed = JSON.parse(description);
+          description = parsed.message ?? description;
+        } catch {
+          // use raw message
+        }
+        sileo.error({
+          title: "Connection failed",
+          description,
+        });
+      },
+      onSettled: () => {
+        setConnectingId(null);
+      },
+    });
   };
 
   const handleEdit = (env: Environment) => {
@@ -90,6 +116,7 @@ export default function IndexPage() {
             <EnvironmentCard
               key={env.ID}
               env={env}
+              connecting={connectingId === env.ID}
               onSelect={handleSelect}
               onEdit={handleEdit}
               onDelete={handleDeleteRequest}
