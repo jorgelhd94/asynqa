@@ -8,7 +8,9 @@ import (
 	"os"
 
 	"github.com/jorgelhd94-tpp/asynqa/infrastructure/database"
-	"github.com/jorgelhd94-tpp/asynqa/internal/services"
+	dashservice "github.com/jorgelhd94-tpp/asynqa/internal/dashboard/service"
+	envservice "github.com/jorgelhd94-tpp/asynqa/internal/environment/service"
+	envstore "github.com/jorgelhd94-tpp/asynqa/internal/environment/store"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -43,8 +45,12 @@ func main() {
 	}
 	defer sqlDB.Close()
 
-	envService := services.NewEnvironmentService(db)
-	dashboardService := services.NewDashboardService(db)
+	// Stores
+	environmentStore := envstore.NewEnvironmentStore(db)
+
+	// Services
+	environmentService := envservice.NewEnvironmentService(environmentStore)
+	dashboardService := dashservice.NewDashboardService(environmentStore)
 
 	err = wails.Run(&options.App{
 		Title:            appName,
@@ -57,7 +63,7 @@ func main() {
 			Assets: assets,
 		},
 		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
-		OnStartup: func(_ context.Context) {},
+		OnStartup:        func(_ context.Context) {},
 		Mac: &mac.Options{
 			TitleBar:             mac.TitleBarHiddenInset(),
 			WebviewIsTransparent: true,
@@ -67,8 +73,8 @@ func main() {
 				Message: "Desktop tool for managing asynq task queues",
 			},
 		},
-		Bind: []interface{}{
-			envService,
+		Bind: []any{
+			environmentService,
 			dashboardService,
 		},
 	})

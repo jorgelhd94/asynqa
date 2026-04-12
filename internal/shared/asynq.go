@@ -1,4 +1,4 @@
-package services
+package shared
 
 import (
 	"crypto/tls"
@@ -7,7 +7,7 @@ import (
 	"github.com/jorgelhd94-tpp/asynqa/internal/domain"
 )
 
-func newRedisOpts(env domain.Environment) asynq.RedisClientOpt {
+func NewRedisOpts(env domain.Environment) asynq.RedisClientOpt {
 	opts := asynq.RedisClientOpt{
 		Addr:     env.Host,
 		Password: env.Password,

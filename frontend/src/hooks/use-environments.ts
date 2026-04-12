@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import * as EnvironmentService from "../../wailsjs/go/services/EnvironmentService";
+import * as EnvironmentService from "../../wailsjs/go/service/EnvironmentService";
 import { domain } from "../../wailsjs/go/models";
 import type { EnvironmentFormData } from "@/components/environments/types";
 

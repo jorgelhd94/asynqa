@@ -6,6 +6,9 @@
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(gh api:*)",
       "Bash(npx tsc:*)"
+    ],
+    "additionalDirectories": [
+      "C:\\Users\\Jorgito\\Desktop\\Trabajo\\Proyectos\\revo"
     ]
   }
 }

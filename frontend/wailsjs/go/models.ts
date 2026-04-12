@@ -54,7 +54,7 @@ export namespace domain {
 
 }
 
-export namespace services {
+export namespace dto {
 	
 	export class DailyStats {
 	    date: string;
