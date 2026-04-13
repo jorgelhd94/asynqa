@@ -589,6 +589,30 @@ export namespace scheduler {
 
 export namespace taskrunner {
 	
+	export class CreateSavedRequestInput {
+	    name: string;
+	    queue: string;
+	    taskType: string;
+	    payload: string;
+	    maxRetry: number;
+	    timeoutSecs: number;
+	    delaySecs: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new CreateSavedRequestInput(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.queue = source["queue"];
+	        this.taskType = source["taskType"];
+	        this.payload = source["payload"];
+	        this.maxRetry = source["maxRetry"];
+	        this.timeoutSecs = source["timeoutSecs"];
+	        this.delaySecs = source["delaySecs"];
+	    }
+	}
 	export class EnqueueRequest {
 	    queue: string;
 	    taskType: string;
@@ -621,6 +645,70 @@ export namespace taskrunner {
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.taskID = source["taskID"];
+	    }
+	}
+	export class RenameSavedRequestInput {
+	    name: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new RenameSavedRequestInput(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	    }
+	}
+	export class SavedRequest {
+	    id: number;
+	    environmentId: number;
+	    name: string;
+	    queue: string;
+	    taskType: string;
+	    payload: string;
+	    maxRetry: number;
+	    timeoutSecs: number;
+	    delaySecs: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new SavedRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.environmentId = source["environmentId"];
+	        this.name = source["name"];
+	        this.queue = source["queue"];
+	        this.taskType = source["taskType"];
+	        this.payload = source["payload"];
+	        this.maxRetry = source["maxRetry"];
+	        this.timeoutSecs = source["timeoutSecs"];
+	        this.delaySecs = source["delaySecs"];
+	    }
+	}
+	export class UpdateSavedRequestInput {
+	    name: string;
+	    queue: string;
+	    taskType: string;
+	    payload: string;
+	    maxRetry: number;
+	    timeoutSecs: number;
+	    delaySecs: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new UpdateSavedRequestInput(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.queue = source["queue"];
+	        this.taskType = source["taskType"];
+	        this.payload = source["payload"];
+	        this.maxRetry = source["maxRetry"];
+	        this.timeoutSecs = source["timeoutSecs"];
+	        this.delaySecs = source["delaySecs"];
 	    }
 	}
 
