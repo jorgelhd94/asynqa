@@ -101,7 +101,7 @@ function DashboardPage() {
           value={totalProcessed.toLocaleString()}
           subtitle={`${data?.totalActive ?? 0} active now`}
           icon={Zap}
-          iconColor="text-[--color-accent-light]"
+          iconColor="text-[--color-success]"
         />
         <StatCard
           title="Failed"
@@ -138,7 +138,7 @@ function DashboardPage() {
               {queues.map((q) => (
                 <TableRow
                   key={q.queue}
-                  className="border-[--color-divider] hover:bg-[--color-hover] cursor-pointer transition-colors"
+                  className="border-[--color-divider] hover:bg-[#2a2520] cursor-pointer transition-colors"
                   onClick={() =>
                     navigate({
                       to: "/environment/$id/queues/$queueName",
@@ -156,7 +156,7 @@ function DashboardPage() {
                     {q.pending}
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={q.active > 0 ? "text-[--color-accent-light]" : "text-[--color-text-secondary]"}>
+                    <span className={q.active > 0 ? "text-[--color-success]" : "text-[--color-text-secondary]"}>
                       {q.active}
                     </span>
                   </TableCell>
@@ -182,7 +182,7 @@ function DashboardPage() {
                         Paused
                       </Badge>
                     ) : (
-                      <Badge variant="outline" className="border-[--color-accent-val] text-[--color-accent-light]">
+                      <Badge variant="outline" className="border-[--color-success] text-[--color-success]">
                         Active
                       </Badge>
                     )}
@@ -220,7 +220,7 @@ function DashboardPage() {
                   <span className="text-[10px] text-[--color-text-secondary]">
                     {new Date(day.date).toLocaleDateString("en", { month: "short", day: "numeric" })}
                   </span>
-                  <span className="text-xs font-semibold text-[--color-accent-light]">
+                  <span className="text-xs font-semibold text-[--color-success]">
                     {day.processed}
                   </span>
                   {day.failed > 0 && (

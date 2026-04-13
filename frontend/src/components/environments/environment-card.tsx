@@ -22,7 +22,7 @@ export function EnvironmentCard({
       role="button"
       tabIndex={connecting ? -1 : 0}
       aria-disabled={connecting}
-      className={`group relative overflow-hidden border border-[--color-divider] bg-[--color-primary-light] p-4 transition-all ${connecting ? "pointer-events-none opacity-70" : "cursor-pointer hover:border-[--color-accent-val] hover:bg-[--color-accent-glow]"} focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-accent-val]`}
+      className={`group relative overflow-hidden border border-[--color-divider] bg-[--color-primary-light] p-4 transition-all ${connecting ? "pointer-events-none opacity-70" : "cursor-pointer hover:border-[#d4a843] hover:bg-[#2a2520]"} focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-accent-val]`}
       onClick={() => !connecting && onSelect(env)}
       onKeyDown={(e) => {
         if (!connecting && (e.key === "Enter" || e.key === " ")) {

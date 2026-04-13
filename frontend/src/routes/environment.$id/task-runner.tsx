@@ -2,12 +2,14 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEnqueueTask } from "@/hooks/use-task-runner";
 import { useQueues } from "@/hooks/use-queues";
+import { useClipboard } from "@/hooks/use-clipboard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertTriangle,
+  Check,
   CheckCircle2,
   Clock,
   Copy,
@@ -18,7 +20,7 @@ import {
   Zap,
 } from "lucide-react";
 import { taskrunner } from "../../../wailsjs/go/models";
-import { sileo } from "sileo";
+
 
 export const Route = createFileRoute("/environment/$id/task-runner")({
   component: TaskRunnerPage,
@@ -29,6 +31,7 @@ function TaskRunnerPage() {
   const environmentId = Number(id);
   const { data: queuesData, isLoading: queuesLoading } = useQueues(environmentId);
   const enqueueMutation = useEnqueueTask(environmentId);
+  const { copy: copyTaskId, copied: taskIdCopied } = useClipboard();
 
   const queueNames = (queuesData?.queues ?? []).map((q) => q.queue);
 
@@ -74,8 +77,7 @@ function TaskRunnerPage() {
 
   const handleCopyTaskId = () => {
     if (enqueueMutation.data?.taskID) {
-      navigator.clipboard.writeText(enqueueMutation.data.taskID);
-      sileo.success({ title: "Task ID copied" });
+      copyTaskId(enqueueMutation.data.taskID);
     }
   };
 
@@ -268,7 +270,7 @@ function TaskRunnerPage() {
           <div className="flex items-center gap-2 border-b border-[--color-divider] px-4 py-2">
             <span className="text-xs font-semibold text-[--color-text-primary]">Response</span>
             {enqueueMutation.isSuccess && (
-              <Badge variant="outline" className="border-[--color-accent-val] text-[--color-accent-light] text-[10px]">
+              <Badge variant="outline" className="border-[--color-success] text-[--color-success] text-[10px]">
                 200 OK
               </Badge>
             )}
@@ -311,8 +313,8 @@ function TaskRunnerPage() {
             {enqueueMutation.isSuccess && (
               <div className="flex flex-1 flex-col p-4">
                 <div className="flex items-center gap-2 rounded-lg border border-[--color-accent-val]/20 bg-[--color-accent-val]/5 p-3">
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-[--color-accent-light]" />
-                  <span className="text-xs font-medium text-[--color-accent-light]">Task enqueued successfully</span>
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-[--color-success]" />
+                  <span className="text-xs font-medium text-[--color-success]">Task enqueued successfully</span>
                 </div>
 
                 <div className="mt-4 space-y-1.5">
@@ -324,10 +326,10 @@ function TaskRunnerPage() {
                       variant="ghost"
                       size="xs"
                       onClick={handleCopyTaskId}
-                      className="h-5 text-[10px] text-[--color-text-secondary] hover:text-[--color-text-primary]"
+                      className={`h-5 text-[10px] transition-colors ${taskIdCopied ? "text-[--color-accent-light]" : "text-[--color-text-secondary] hover:text-[--color-text-primary]"}`}
                     >
-                      <Copy className="h-2.5 w-2.5" />
-                      Copy
+                      {taskIdCopied ? <Check className="h-2.5 w-2.5" /> : <Copy className="h-2.5 w-2.5" />}
+                      {taskIdCopied ? "Copied!" : "Copy"}
                     </Button>
                   </div>
                   <pre className="rounded-lg border border-[--color-divider] bg-[--color-primary-contrast] p-3 font-mono text-xs text-[--color-accent] select-all">

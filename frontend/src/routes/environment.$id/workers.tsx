@@ -107,7 +107,7 @@ function WorkersPage() {
             value={data?.totalWorkers ?? 0}
             subtitle="processing tasks"
             icon={HardHat}
-            iconColor="text-[--color-accent-light]"
+            iconColor="text-[--color-success]"
           />
         </div>
 
@@ -135,7 +135,7 @@ function WorkersPage() {
                 {servers.map((srv) => (
                   <TableRow
                     key={srv.id}
-                    className="border-[--color-divider] hover:bg-[--color-hover] cursor-pointer transition-colors"
+                    className="border-[--color-divider] hover:bg-[#2a2520] cursor-pointer transition-colors"
                     onClick={() => setSelectedServer(srv)}
                   >
                     <TableCell className="font-medium text-[--color-text-primary]">
@@ -157,7 +157,7 @@ function WorkersPage() {
                       {srv.concurrency}
                     </TableCell>
                     <TableCell className="text-right">
-                      <span className={(srv.activeWorkers?.length ?? 0) > 0 ? "text-[--color-accent-light]" : "text-[--color-text-secondary]"}>
+                      <span className={(srv.activeWorkers?.length ?? 0) > 0 ? "text-[--color-success]" : "text-[--color-text-secondary]"}>
                         {srv.activeWorkers?.length ?? 0}
                       </span>
                     </TableCell>
@@ -169,7 +169,7 @@ function WorkersPage() {
                         variant="outline"
                         className={
                           srv.status === "active"
-                            ? "border-[--color-accent-val] text-[--color-accent-light]"
+                            ? "border-[--color-success] text-[--color-success]"
                             : "border-[--color-warning] text-[--color-warning]"
                         }
                       >
@@ -208,7 +208,7 @@ function WorkersPage() {
                       variant="outline"
                       className={
                         selectedServer.status === "active"
-                          ? "border-[--color-accent-val] text-[--color-accent-light]"
+                          ? "border-[--color-success] text-[--color-success]"
                           : "border-[--color-warning] text-[--color-warning]"
                       }
                     >

@@ -2,6 +2,14 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/environment/page-header";
 import {
+  TASK_STATES,
+  ROW_ACTIONS,
+  TaskDetailContent,
+  type RowAction,
+  formatDate,
+} from "@/components/environment/task-shared";
+import {
+  useQueueDetail,
   useTaskList,
   useRunTask,
   useDeleteTask,
@@ -35,7 +43,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { Separator } from "@/components/ui/separator";
 import {
   Archive,
   ChevronLeft,
@@ -55,50 +62,17 @@ export const Route = createFileRoute("/environment/$id/tasks")({
 
 const PAGE_SIZE = 20;
 
-const TASK_STATES: { value: TaskState; label: string }[] = [
-  { value: "pending", label: "Pending" },
-  { value: "active", label: "Active" },
-  { value: "scheduled", label: "Scheduled" },
-  { value: "retry", label: "Retry" },
-  { value: "archived", label: "Archived" },
-  { value: "completed", label: "Completed" },
-];
-
-type RowAction = "run" | "delete" | "archive" | "cancel";
-
-const ROW_ACTIONS: Record<TaskState, RowAction[]> = {
-  pending: ["delete", "archive"],
-  active: ["cancel"],
-  scheduled: ["run", "delete", "archive"],
-  retry: ["run", "delete", "archive"],
-  archived: ["run", "delete"],
-  completed: ["delete"],
-};
-
-function formatDate(dateStr: string): string {
-  if (!dateStr) return "\u2014";
-  return new Date(dateStr).toLocaleString("en", {
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
-}
-
-function formatDuration(seconds: number): string {
-  if (seconds <= 0) return "\u2014";
-  if (seconds < 60) return `${seconds}s`;
-  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ${seconds % 60}s`;
-  return `${Math.floor(seconds / 3600)}h ${Math.floor((seconds % 3600) / 60)}m`;
-}
-
-function tryFormatJSON(str: string): string {
-  try {
-    return JSON.stringify(JSON.parse(str), null, 2);
-  } catch {
-    return str;
-  }
+function getStateCount(info: queue.QueueInfo | undefined, state: TaskState): number {
+  if (!info) return 0;
+  const map: Record<TaskState, number> = {
+    pending: info.pending,
+    active: info.active,
+    scheduled: info.scheduled,
+    retry: info.retry,
+    archived: info.archived,
+    completed: info.completed,
+  };
+  return map[state];
 }
 
 function TasksPage() {
@@ -115,6 +89,7 @@ function TasksPage() {
 
   const currentQueue = selectedQueue || queueNames[0] || "";
 
+  const { data: queueDetail } = useQueueDetail(environmentId, currentQueue);
   const taskList = useTaskList(environmentId, currentQueue, activeTab, page, PAGE_SIZE);
   const runTask = useRunTask(environmentId, currentQueue);
   const deleteTask = useDeleteTask(environmentId, currentQueue);
@@ -145,6 +120,7 @@ function TasksPage() {
   };
 
   const rowActions = ROW_ACTIONS[activeTab];
+  const queueInfo = queueDetail?.info;
 
   return (
     <div className="p-4 space-y-4">
@@ -178,15 +154,26 @@ function TasksPage() {
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
               <div className="border-b border-[--color-divider] px-4">
                 <TabsList className="h-auto bg-transparent p-0">
-                  {TASK_STATES.map((s) => (
-                    <TabsTrigger
-                      key={s.value}
-                      value={s.value}
-                      className="rounded-none border-b-2 border-transparent px-3 py-2.5 text-xs data-[state=active]:border-[--color-accent-val] data-[state=active]:bg-transparent data-[state=active]:text-[--color-accent]"
-                    >
-                      {s.label}
-                    </TabsTrigger>
-                  ))}
+                  {TASK_STATES.map((s) => {
+                    const count = getStateCount(queueInfo, s.value);
+                    return (
+                      <TabsTrigger
+                        key={s.value}
+                        value={s.value}
+                        className="rounded-none border-b-2 border-transparent px-3 py-2.5 text-xs data-[state=active]:border-[--color-accent-val] data-[state=active]:bg-transparent data-[state=active]:text-[--color-accent]"
+                      >
+                        {s.label}
+                        {count > 0 && (
+                          <Badge
+                            variant="secondary"
+                            className="ml-1.5 h-5 min-w-5 px-1 text-[10px]"
+                          >
+                            {count}
+                          </Badge>
+                        )}
+                      </TabsTrigger>
+                    );
+                  })}
                 </TabsList>
               </div>
 
@@ -200,7 +187,7 @@ function TasksPage() {
                     <div className="flex items-center justify-center py-16 text-sm text-[--color-text-secondary]">
                       <div className="text-center">
                         <ListChecks className="mx-auto mb-2 h-6 w-6 text-[--color-text-muted]" />
-                        <p>No {s.label.toLowerCase()} tasks in "{currentQueue}"</p>
+                        <p>No {s.label.toLowerCase()} tasks in &ldquo;{currentQueue}&rdquo;</p>
                       </div>
                     </div>
                   ) : (
@@ -239,7 +226,7 @@ function TasksPage() {
                           {tasks.map((t) => (
                             <TableRow
                               key={t.id}
-                              className="border-[--color-divider] hover:bg-[--color-hover] cursor-pointer transition-colors"
+                              className="border-[--color-divider] hover:bg-[#2a2520] cursor-pointer transition-colors"
                               onClick={() => setSelectedTask(t)}
                             >
                               <TableCell className="font-mono text-xs text-[--color-text-secondary]">
@@ -275,7 +262,7 @@ function TasksPage() {
                                       Orphaned
                                     </Badge>
                                   ) : (
-                                    <Badge variant="outline" className="border-[--color-accent-val] text-[--color-accent-light] text-[10px]">
+                                    <Badge variant="outline" className="border-[--color-success] text-[--color-success] text-[10px]">
                                       Running
                                     </Badge>
                                   )}
@@ -363,140 +350,5 @@ function TasksPage() {
         </Sheet>
       </div>
     </div>
-  );
-}
-
-function TaskDetailContent({
-  task,
-  onAction,
-}: {
-  task: queue.TaskInfo;
-  onAction: (action: RowAction, taskID: string) => void;
-}) {
-  const state = task.state as TaskState;
-  const actions = ROW_ACTIONS[state] ?? [];
-
-  return (
-    <div className="space-y-5 pt-4">
-      <div className="space-y-3">
-        <DetailRow label="ID" value={task.id} mono />
-        <DetailRow label="Type" value={task.type} />
-        <DetailRow label="State">
-          <StateBadge state={state} />
-        </DetailRow>
-        <DetailRow label="Queue" value={task.queue} />
-        {task.group && <DetailRow label="Group" value={task.group} />}
-      </div>
-
-      <Separator className="bg-[--color-divider]" />
-
-      <div className="space-y-2">
-        <span className="text-xs font-semibold uppercase text-[--color-text-secondary]">Payload</span>
-        <pre className="max-h-48 overflow-auto rounded-lg border border-[--color-divider] bg-[--color-primary-bg] p-3 text-xs text-[--color-text-secondary]">
-          {task.payload ? tryFormatJSON(task.payload) : "\u2014"}
-        </pre>
-      </div>
-
-      {state === "completed" && task.result && (
-        <>
-          <Separator className="bg-[--color-divider]" />
-          <div className="space-y-2">
-            <span className="text-xs font-semibold uppercase text-[--color-text-secondary]">Result</span>
-            <pre className="max-h-48 overflow-auto rounded-lg border border-[--color-divider] bg-[--color-primary-bg] p-3 text-xs text-[--color-accent-light]">
-              {tryFormatJSON(task.result)}
-            </pre>
-          </div>
-        </>
-      )}
-
-      {task.lastErr && (
-        <>
-          <Separator className="bg-[--color-divider]" />
-          <div className="space-y-2">
-            <span className="text-xs font-semibold uppercase text-[--color-text-secondary]">Last Error</span>
-            <pre className="max-h-32 overflow-auto rounded-lg border border-[--color-error]/20 bg-[--color-error]/5 p-3 text-xs text-[--color-error]">
-              {task.lastErr}
-            </pre>
-            {task.lastFailedAt && (
-              <span className="text-[10px] text-[--color-text-secondary]">
-                Failed at: {formatDate(task.lastFailedAt)}
-              </span>
-            )}
-          </div>
-        </>
-      )}
-
-      <Separator className="bg-[--color-divider]" />
-
-      <div className="space-y-3">
-        <DetailRow label="Max Retry" value={String(task.maxRetry)} />
-        <DetailRow label="Retried" value={String(task.retried)} />
-        {task.nextProcessAt && <DetailRow label="Next Run" value={formatDate(task.nextProcessAt)} />}
-        {task.completedAt && <DetailRow label="Completed" value={formatDate(task.completedAt)} />}
-        {task.deadline && <DetailRow label="Deadline" value={formatDate(task.deadline)} />}
-        <DetailRow label="Timeout" value={formatDuration(task.timeoutSecs)} />
-        <DetailRow label="Retention" value={formatDuration(task.retentionSecs)} />
-      </div>
-
-      {actions.length > 0 && (
-        <>
-          <Separator className="bg-[--color-divider]" />
-          <div className="flex gap-2">
-            {actions.map((action) => (
-              <Button
-                key={action}
-                variant={action === "delete" ? "destructive" : "outline"}
-                size="sm"
-                onClick={() => onAction(action, task.id)}
-              >
-                {action === "run" && <><Play className="h-4 w-4" /> Run</>}
-                {action === "archive" && <><Archive className="h-4 w-4" /> Archive</>}
-                {action === "delete" && <><Trash2 className="h-4 w-4" /> Delete</>}
-                {action === "cancel" && <><XCircle className="h-4 w-4" /> Cancel</>}
-              </Button>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
-
-function DetailRow({
-  label,
-  value,
-  mono,
-  children,
-}: {
-  label: string;
-  value?: string;
-  mono?: boolean;
-  children?: React.ReactNode;
-}) {
-  return (
-    <div className="flex items-center justify-between gap-4">
-      <span className="shrink-0 text-xs text-[--color-text-secondary]">{label}</span>
-      {children ?? (
-        <span className={`truncate text-right text-xs text-[--color-text-secondary] ${mono ? "font-mono" : ""}`}>
-          {value || "\u2014"}
-        </span>
-      )}
-    </div>
-  );
-}
-
-function StateBadge({ state }: { state: TaskState }) {
-  const styles: Record<TaskState, string> = {
-    pending: "border-[--color-text-muted] text-[--color-text-secondary]",
-    active: "border-[--color-accent-val] text-[--color-accent-light]",
-    scheduled: "border-blue-500 text-blue-400",
-    retry: "border-[--color-warning] text-[--color-warning]",
-    archived: "border-[--color-error] text-[--color-error]",
-    completed: "border-[--color-accent-val] text-[--color-accent-light]",
-  };
-  return (
-    <Badge variant="outline" className={styles[state]}>
-      {state}
-    </Badge>
   );
 }
