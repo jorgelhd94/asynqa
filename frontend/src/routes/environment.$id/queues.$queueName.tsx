@@ -5,9 +5,12 @@ import { StatCard } from "@/components/environment/stat-card";
 import {
   TASK_STATES,
   ROW_ACTIONS,
+  DATE_COLUMN_LABEL,
   TaskDetailContent,
   formatBytes,
   formatDate,
+  getDateFieldForState,
+  sortTasksByDate,
   getStateCount,
   type RowAction,
 } from "@/components/environment/task-shared";
@@ -318,7 +321,8 @@ function QueueDetailPage() {
                   <TabsTrigger
                     key={s.value}
                     value={s.value}
-                    className="rounded-none border-b-2 border-transparent px-3 py-2.5 text-xs data-[state=active]:border-[--color-accent-val] data-[state=active]:bg-transparent data-[state=active]:text-[--color-accent]"
+                    className="rounded-none border-b-2 border-transparent px-3 py-2.5 text-xs data-[state=active]:bg-transparent"
+                    data-color={s.value}
                   >
                     {s.label}
                     {count > 0 && (
@@ -512,8 +516,8 @@ function TaskStateContent({
                 <TableHead className="text-[--color-text-secondary]">ID</TableHead>
                 <TableHead className="text-[--color-text-secondary]">Type</TableHead>
                 <TableHead className="text-[--color-text-secondary]">Payload</TableHead>
-                {(state === "scheduled" || state === "retry") && (
-                  <TableHead className="text-[--color-text-secondary]">Next Run</TableHead>
+                {DATE_COLUMN_LABEL[state] && (
+                  <TableHead className="text-[--color-text-secondary]">{DATE_COLUMN_LABEL[state]}</TableHead>
                 )}
                 {state === "retry" && (
                   <TableHead className="text-[--color-text-secondary]">Retries</TableHead>
@@ -524,14 +528,11 @@ function TaskStateContent({
                 {state === "active" && (
                   <TableHead className="text-[--color-text-secondary]">Status</TableHead>
                 )}
-                {state === "completed" && (
-                  <TableHead className="text-[--color-text-secondary]">Completed</TableHead>
-                )}
                 <TableHead className="w-10" />
               </TableRow>
             </TableHeader>
             <TableBody>
-              {tasks.map((t) => (
+              {sortTasksByDate(tasks, state).map((t) => (
                 <TableRow
                   key={t.id}
                   className="border-[--color-divider] hover:bg-[#2a2520] cursor-pointer transition-colors"
@@ -546,9 +547,9 @@ function TaskStateContent({
                   <TableCell className="max-w-48 truncate text-xs text-[--color-text-secondary]">
                     {t.payload?.slice(0, 60)}
                   </TableCell>
-                  {(state === "scheduled" || state === "retry") && (
+                  {DATE_COLUMN_LABEL[state] && (
                     <TableCell className="text-xs text-[--color-text-secondary]">
-                      {formatDate(t.nextProcessAt)}
+                      {formatDate(getDateFieldForState(t, state))}
                     </TableCell>
                   )}
                   {state === "retry" && (

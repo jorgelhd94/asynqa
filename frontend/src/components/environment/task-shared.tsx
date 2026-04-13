@@ -17,14 +17,50 @@ import type { queue } from "../../../wailsjs/go/models";
 // Constants
 // ---------------------------------------------------------------------------
 
-export const TASK_STATES: { value: TaskState; label: string }[] = [
-  { value: "pending", label: "Pending" },
-  { value: "active", label: "Active" },
-  { value: "scheduled", label: "Scheduled" },
-  { value: "retry", label: "Retry" },
-  { value: "archived", label: "Archived" },
-  { value: "completed", label: "Completed (retention)" },
+export const TASK_STATES: { value: TaskState; label: string; color: string; activeColor: string }[] = [
+  { value: "pending", label: "Pending", color: "text-[--color-text-secondary]", activeColor: "border-[--color-text-secondary] text-[--color-text-primary]" },
+  { value: "active", label: "Active", color: "text-[--color-success]", activeColor: "border-[--color-success] text-[--color-success]" },
+  { value: "scheduled", label: "Scheduled", color: "text-[--color-info]", activeColor: "border-[--color-info] text-[--color-info]" },
+  { value: "retry", label: "Retry", color: "text-[--color-warning]", activeColor: "border-[--color-warning] text-[--color-warning]" },
+  { value: "archived", label: "Archived", color: "text-[--color-error]", activeColor: "border-[--color-error] text-[--color-error]" },
+  { value: "completed", label: "Completed (retention)", color: "text-[--color-accent-val]", activeColor: "border-[--color-accent-val] text-[--color-accent-val]" },
 ];
+
+export const TAB_COLORS: Record<TaskState, string> = {
+  pending: "#a3a3a3",
+  active: "#10b981",
+  scheduled: "#3b82f6",
+  retry: "#f59e0b",
+  archived: "#f43f5e",
+  completed: "#d4a843",
+};
+
+export function getDateFieldForState(task: { lastFailedAt: string; nextProcessAt: string; completedAt: string }, state: TaskState): string {
+  switch (state) {
+    case "scheduled": return task.nextProcessAt;
+    case "retry": return task.lastFailedAt;
+    case "archived": return task.lastFailedAt;
+    case "completed": return task.completedAt;
+    default: return "";
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function sortTasksByDate(tasks: any[], state: TaskState): any[] {
+  return [...tasks].sort((a, b) => {
+    const dateA = getDateFieldForState(a, state);
+    const dateB = getDateFieldForState(b, state);
+    if (!dateA || !dateB) return 0;
+    return dateB.localeCompare(dateA);
+  });
+}
+
+export const DATE_COLUMN_LABEL: Partial<Record<TaskState, string>> = {
+  scheduled: "Next Run",
+  retry: "Last Failed",
+  archived: "Last Failed",
+  completed: "Completed At",
+};
 
 export type RowAction = "run" | "delete" | "archive" | "cancel";
 
