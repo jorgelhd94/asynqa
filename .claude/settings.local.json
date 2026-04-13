@@ -5,7 +5,11 @@
       "WebFetch(domain:wails.io)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "Bash(gh api:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(go doc:*)",
+      "Bash(go build:*)"
     ],
     "additionalDirectories": [
       "C:\\Users\\Jorgito\\Desktop\\Trabajo\\Proyectos\\revo"

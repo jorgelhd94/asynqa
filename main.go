@@ -12,6 +12,10 @@ import (
 	envservice "github.com/jorgelhd94-tpp/asynqa/internal/environment/service"
 	envstore "github.com/jorgelhd94-tpp/asynqa/internal/environment/store"
 	queuepkg "github.com/jorgelhd94-tpp/asynqa/internal/queue"
+	redispkg "github.com/jorgelhd94-tpp/asynqa/internal/redis"
+	"github.com/jorgelhd94-tpp/asynqa/internal/scheduler"
+	"github.com/jorgelhd94-tpp/asynqa/internal/taskrunner"
+	"github.com/jorgelhd94-tpp/asynqa/internal/worker"
 
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -53,6 +57,10 @@ func main() {
 	environmentService := envservice.NewEnvironmentService(environmentStore)
 	dashboardService := dashservice.NewDashboardService(environmentStore)
 	queueService := queuepkg.NewQueueService(environmentStore)
+	workerService := worker.NewWorkerService(environmentStore)
+	schedulerService := scheduler.NewSchedulerService(environmentStore)
+	redisService := redispkg.NewRedisService(environmentStore)
+	taskRunnerService := taskrunner.NewTaskRunnerService(environmentStore)
 
 	err = wails.Run(&options.App{
 		Title:            appName,
@@ -79,6 +87,10 @@ func main() {
 			environmentService,
 			dashboardService,
 			queueService,
+			workerService,
+			schedulerService,
+			redisService,
+			taskRunnerService,
 		},
 	})
 
