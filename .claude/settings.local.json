@@ -9,7 +9,10 @@
       "WebFetch(domain:api.github.com)",
       "WebFetch(domain:github.com)",
       "Bash(go doc:*)",
-      "Bash(go build:*)"
+      "Bash(go build:*)",
+      "Bash(npm run:*)",
+      "WebFetch(domain:hoppscotch.io)",
+      "WebFetch(domain:docs.hoppscotch.io)"
     ],
     "additionalDirectories": [
       "C:\\Users\\Jorgito\\Desktop\\Trabajo\\Proyectos\\revo"

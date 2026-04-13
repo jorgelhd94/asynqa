@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/environment/app-sidebar";
+import { StatusBar } from "@/components/environment/status-bar";
 
 export const Route = createFileRoute("/environment/$id")({
   component: EnvironmentLayout,
@@ -10,18 +11,13 @@ function EnvironmentLayout() {
   const { id } = Route.useParams();
 
   return (
-    <SidebarProvider
-      className=""
-      style={{
-        background:
-          "radial-gradient(circle at 15% 20%, rgba(215,40,169,0.08), transparent 32%), radial-gradient(circle at 80% 0%, rgba(153,73,182,0.12), transparent 30%), linear-gradient(145deg, #161320, #100d16 55%, #0d0a15)",
-      }}
-    >
+    <SidebarProvider className="!min-h-screen">
       <AppSidebar environmentId={Number(id)} />
-      <SidebarInset>
-        <main className="flex-1 p-6">
+      <SidebarInset className="flex flex-col">
+        <main className="flex flex-1 flex-col overflow-auto [&:has(>[data-full-bleed])]:overflow-hidden">
           <Outlet />
         </main>
+        <StatusBar environmentId={Number(id)} />
       </SidebarInset>
     </SidebarProvider>
   );

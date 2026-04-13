@@ -30,7 +30,7 @@ import {
   LayoutDashboard,
   ListChecks,
   PanelLeft,
-  Play,
+  Send,
   HardHat,
 } from "lucide-react";
 import { useEnvironment } from "@/hooks/use-environment";
@@ -43,10 +43,6 @@ const navItems = [
   { label: "Workers", icon: HardHat, to: "/environment/$id/workers" as const },
   { label: "Schedulers", icon: CalendarClock, to: "/environment/$id/schedulers" as const },
   { label: "Redis", icon: Database, to: "/environment/$id/redis" as const },
-];
-
-const toolItems = [
-  { label: "Task Runner", icon: Play, to: "/environment/$id/task-runner" as const },
 ];
 
 type AppSidebarProps = {
@@ -66,7 +62,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r-[--color-black-800]/50">
+    <Sidebar collapsible="icon" className="border-r border-[--color-divider]">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -74,29 +70,29 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="cursor-pointer data-[state=open]:bg-sidebar-accent"
+                  className="data-[state=open]:bg-[--color-primary-light]"
                 >
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[--color-electric-rose-500]/15">
-                    <Database className="h-4 w-4 text-[--color-electric-rose-300]" />
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-[--color-accent]/10">
+                    <Database className="h-3.5 w-3.5 text-[--color-accent]" />
                   </div>
-                  <div className="grid flex-1 text-left text-sm leading-tight">
+                  <div className="grid flex-1 text-left text-xs leading-tight">
                     {isLoading ? (
                       <>
-                        <Skeleton className="h-3.5 w-24" />
-                        <Skeleton className="mt-1 h-3 w-32" />
+                        <Skeleton className="h-3 w-20" />
+                        <Skeleton className="mt-1 h-2.5 w-28" />
                       </>
                     ) : (
                       <>
-                        <span className="truncate font-semibold">
+                        <span className="truncate font-semibold text-[--color-text-primary]">
                           {environment?.Name ?? "Unknown"}
                         </span>
-                        <span className="truncate text-xs text-sidebar-foreground/60">
+                        <span className="truncate text-[10px] text-[--color-text-muted]">
                           {environment?.Host}
                         </span>
                       </>
                     )}
                   </div>
-                  <ChevronsUpDown className="ml-auto h-4 w-4 text-sidebar-foreground/40" />
+                  <ChevronsUpDown className="ml-auto h-3.5 w-3.5 text-[--color-text-muted]" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
@@ -108,7 +104,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                 {environments.map((env) => (
                   <DropdownMenuItem
                     key={env.ID}
-                    className={`cursor-pointer gap-2 ${env.ID === environmentId ? "bg-accent" : ""}`}
+                    className={`gap-2 ${env.ID === environmentId ? "bg-[--color-primary-light]" : ""}`}
                     onClick={() =>
                       navigate({
                         to: "/environment/$id/dashboard",
@@ -116,10 +112,10 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                       })
                     }
                   >
-                    <Database className="h-4 w-4 text-[--color-electric-rose-300]" />
-                    <div className="grid text-sm leading-tight">
-                      <span className="font-medium">{env.Name}</span>
-                      <span className="text-xs text-muted-foreground">
+                    <Database className="h-3.5 w-3.5 text-[--color-accent]" />
+                    <div className="grid text-xs leading-tight">
+                      <span className="font-medium text-[--color-text-primary]">{env.Name}</span>
+                      <span className="text-[10px] text-[--color-text-muted]">
                         {env.Host}
                       </span>
                     </div>
@@ -127,10 +123,10 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                 ))}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  className="cursor-pointer gap-2"
+                  className="gap-2"
                   onClick={() => navigate({ to: "/" })}
                 >
-                  <Home className="h-4 w-4" />
+                  <Home className="h-3.5 w-3.5" />
                   <span>Manage environments</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -141,7 +137,9 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Monitoring</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[10px] uppercase tracking-wider text-[--color-text-muted]">
+            Monitoring
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navItems.map((item) => (
@@ -151,10 +149,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                     isActive={isActive(item.to)}
                     tooltip={item.label}
                   >
-                    <Link
-                      to={item.to}
-                      params={{ id }}
-                    >
+                    <Link to={item.to} params={{ id }}>
                       <item.icon />
                       <span>{item.label}</span>
                     </Link>
@@ -165,29 +160,26 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarSeparator />
+        <SidebarSeparator className="bg-[--color-divider]" />
 
         <SidebarGroup>
-          <SidebarGroupLabel>Tools</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-[10px] uppercase tracking-wider text-[--color-text-muted]">
+            Task Runner
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {toolItems.map((item) => (
-                <SidebarMenuItem key={item.to}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={isActive(item.to)}
-                    tooltip={item.label}
-                  >
-                    <Link
-                      to={item.to}
-                      params={{ id }}
-                    >
-                      <item.icon />
-                      <span>{item.label}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  asChild
+                  isActive={isActive("/environment/$id/task-runner")}
+                  tooltip="Task Runner"
+                >
+                  <Link to="/environment/$id/task-runner" params={{ id }}>
+                    <Send />
+                    <span>New Request</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -196,11 +188,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton
-              asChild
-              tooltip="Toggle sidebar"
-              className="cursor-pointer"
-            >
+            <SidebarMenuButton asChild tooltip="Toggle sidebar">
               <SidebarTrigger>
                 <PanelLeft />
                 <span>Collapse</span>

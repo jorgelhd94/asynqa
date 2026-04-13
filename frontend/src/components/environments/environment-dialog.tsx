@@ -82,24 +82,24 @@ export function EnvironmentDialog({
   const isPending = createMutation.isPending || updateMutation.isPending;
 
   const inputClass =
-    "border-[--color-black-700] bg-[--color-black-800] text-[--color-black-50] placeholder:text-[--color-black-500] focus:border-[--color-electric-rose-400] focus:ring-[--color-electric-rose-500]";
+    "border-[--color-divider] bg-[--color-primary-dark] text-[--color-text-primary] placeholder:text-[--color-text-muted] focus:border-[--color-accent-val] focus:ring-[--color-accent-val]";
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent className="max-w-lg border-[--color-black-800] text-[--color-black-50] shadow-[0_20px_60px_rgba(0,0,0,0.6)]">
+      <DialogContent className="max-w-lg border-[--color-divider] text-[--color-text-primary]">
         <DialogHeader className="space-y-2">
-          <DialogTitle className="text-lg font-semibold text-[--color-black-50]">
+          <DialogTitle className="text-lg font-semibold text-[--color-text-primary]">
             {isEdit ? "Edit Redis connection" : "New Redis connection"}
           </DialogTitle>
-          <DialogDescription className="text-[--color-black-300]">
+          <DialogDescription className="text-[--color-text-secondary]">
             Set up the connection details. You can test it before saving.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="env-name" className="text-sm text-[--color-black-200]">
+            <Label htmlFor="env-name" className="text-sm text-[--color-text-secondary]">
               Name
             </Label>
             <Input
@@ -112,7 +112,7 @@ export function EnvironmentDialog({
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="env-host" className="text-sm text-[--color-black-200]">
+            <Label htmlFor="env-host" className="text-sm text-[--color-text-secondary]">
               Host
             </Label>
             <Input
@@ -126,7 +126,7 @@ export function EnvironmentDialog({
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
-              <Label htmlFor="env-password" className="text-sm text-[--color-black-200]">
+              <Label htmlFor="env-password" className="text-sm text-[--color-text-secondary]">
                 Password
               </Label>
               <Input
@@ -139,7 +139,7 @@ export function EnvironmentDialog({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="env-db" className="text-sm text-[--color-black-200]">
+              <Label htmlFor="env-db" className="text-sm text-[--color-text-secondary]">
                 DB
               </Label>
               <Input
@@ -157,7 +157,7 @@ export function EnvironmentDialog({
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-            <label className="flex items-center gap-2 text-sm text-[--color-black-200]">
+            <label className="flex items-center gap-2 text-sm text-[--color-text-secondary]">
               <Checkbox
                 id="env-tls"
                 checked={form.UseTLS}
@@ -167,7 +167,7 @@ export function EnvironmentDialog({
               />
               <span>Use TLS</span>
             </label>
-            <label className="flex items-center gap-2 text-sm text-[--color-black-200]">
+            <label className="flex items-center gap-2 text-sm text-[--color-text-secondary]">
               <Checkbox
                 id="env-skip"
                 checked={form.TLSSkipVerify}
@@ -183,7 +183,7 @@ export function EnvironmentDialog({
         <DialogFooter className="mt-2 !flex-row items-center !justify-between">
           <Button
             variant="outline"
-            className="cursor-pointer border-[--color-dark-orange-400] text-[--color-black-50] hover:bg-[--color-dark-orange-500]/15"
+            className="border-[--color-warning] text-[--color-text-primary] hover:bg-[--color-warning]/10"
             disabled={testMutation.isPending || !form.Host}
             onClick={() =>
               testMutation.mutate(form, {
@@ -211,13 +211,13 @@ export function EnvironmentDialog({
           <div className="flex gap-2">
           <Button
             variant="ghost"
-            className="cursor-pointer text-[--color-black-200] hover:bg-[--color-black-800]"
+            className="text-[--color-text-secondary] hover:bg-[--color-primary-dark]"
             onClick={() => onOpenChange(false)}
           >
             Cancel
           </Button>
           <Button
-            className="cursor-pointer bg-[--color-electric-rose-500] text-[--color-black-50] hover:bg-accent"
+            className="bg-[--color-accent-val] text-white hover:bg-[--color-accent-dark]"
             onClick={handleSubmit}
             disabled={isPending || !form.Name || !form.Host}
           >

@@ -13,21 +13,23 @@ export function StatCard({
   value,
   subtitle,
   icon: Icon,
-  iconColor = "text-[--color-electric-rose-300]",
+  iconColor = "text-[--color-accent]",
 }: StatCardProps) {
   return (
-    <div className="rounded-xl border border-[--color-black-800] bg-[--color-black-900]/60 p-4 backdrop-blur">
+    <div className="group border border-[--color-divider] bg-[--color-primary-light] p-3 transition-colors hover:bg-[--color-hover]">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-medium uppercase tracking-wider text-[--color-black-400]">
+        <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
           {title}
         </span>
-        <Icon className={`h-4 w-4 ${iconColor}`} />
+        <div className="flex h-6 w-6 items-center justify-center rounded bg-[--color-accent-glow]">
+          <Icon className={`h-3.5 w-3.5 ${iconColor}`} />
+        </div>
       </div>
-      <div className="mt-2 text-2xl font-bold text-[--color-black-50]">
+      <div className="mt-1.5 text-lg font-bold text-[--color-text-primary]">
         {value}
       </div>
       {subtitle && (
-        <p className="mt-0.5 text-xs text-[--color-black-400]">{subtitle}</p>
+        <p className="mt-0.5 text-[10px] text-[--color-text-secondary]">{subtitle}</p>
       )}
     </div>
   );

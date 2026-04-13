@@ -76,23 +76,23 @@ function QueuesPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="p-4 space-y-4">
         <PageHeader title="Queues" />
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-24 rounded-xl" />
+            <Skeleton key={i} className="h-24 rounded" />
           ))}
         </div>
-        <Skeleton className="h-64 rounded-xl" />
+        <Skeleton className="h-64 rounded" />
       </div>
     );
   }
 
   if (isError) {
     return (
-      <div className="space-y-6">
+      <div className="p-4 space-y-4">
         <PageHeader title="Queues" />
-        <div className="flex items-center gap-3 rounded-xl border border-[--color-vibrant-coral-500]/30 bg-[--color-vibrant-coral-500]/10 p-4 text-sm text-[--color-vibrant-coral-400]">
+        <div className="flex items-center gap-3 rounded border border-[--color-error]/30 bg-[--color-error]/10 p-4 text-sm text-[--color-error]">
           <AlertTriangle className="h-4 w-4 shrink-0" />
           <span>
             Failed to load queue data.{" "}
@@ -144,7 +144,7 @@ function QueuesPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="p-4 space-y-4">
       <PageHeader
         title="Queues"
         description="Manage and monitor task queues."
@@ -160,46 +160,46 @@ function QueuesPage() {
           title="Total Tasks"
           value={(data?.totalTasks ?? 0).toLocaleString()}
           icon={ListTodo}
-          iconColor="text-[--color-dark-orange-400]"
+          iconColor="text-[--color-warning]"
         />
         <StatCard
           title="Active"
           value={data?.activeQueues ?? 0}
           subtitle="processing"
           icon={Play}
-          iconColor="text-emerald-400"
+          iconColor="text-[--color-accent-light]"
         />
         <StatCard
           title="Paused"
           value={data?.pausedQueues ?? 0}
           icon={Pause}
-          iconColor="text-[--color-dark-orange-400]"
+          iconColor="text-[--color-warning]"
         />
       </div>
 
       {queues.length > 0 && (
-        <div className="rounded-xl border border-[--color-black-800] bg-[--color-black-900]/60 backdrop-blur">
-          <div className="flex items-center gap-2 border-b border-[--color-black-800] px-4 py-3">
-            <Activity className="h-4 w-4 text-[--color-electric-rose-300]" />
-            <h2 className="text-sm font-semibold text-[--color-black-50]">
+        <div className="rounded border border-[--color-divider] bg-[--color-primary-light]">
+          <div className="flex items-center gap-2 border-b border-[--color-divider] px-4 py-3">
+            <Activity className="h-4 w-4 text-[--color-accent]" />
+            <h2 className="text-sm font-semibold text-[--color-text-primary]">
               All Queues
             </h2>
           </div>
           <Table>
             <TableHeader>
-              <TableRow className="border-[--color-black-800] hover:bg-transparent">
-                <TableHead className="text-[--color-black-400]">Queue</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Size</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Pending</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Active</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Scheduled</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Retry</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Archived</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Processed</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Failed</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Latency</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Memory</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Status</TableHead>
+              <TableRow className="border-[--color-divider] hover:bg-transparent">
+                <TableHead className="text-[--color-text-secondary]">Queue</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Size</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Pending</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Active</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Scheduled</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Retry</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Archived</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Processed</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Failed</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Latency</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Memory</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Status</TableHead>
                 <TableHead className="w-10" />
               </TableRow>
             </TableHeader>
@@ -207,7 +207,7 @@ function QueuesPage() {
               {queues.map((q) => (
                 <TableRow
                   key={q.queue}
-                  className="border-[--color-black-800] hover:bg-[--color-black-800]/50 cursor-pointer"
+                  className="border-[--color-divider] hover:bg-[--color-hover] cursor-pointer transition-colors"
                   onClick={() =>
                     navigate({
                       to: "/environment/$id/queues/$queueName",
@@ -215,54 +215,54 @@ function QueuesPage() {
                     })
                   }
                 >
-                  <TableCell className="font-medium text-[--color-black-50]">
+                  <TableCell className="font-medium text-[--color-text-primary]">
                     {q.queue}
                   </TableCell>
-                  <TableCell className="text-right text-[--color-black-200]">
+                  <TableCell className="text-right text-[--color-text-secondary]">
                     {q.size}
                   </TableCell>
-                  <TableCell className="text-right text-[--color-black-200]">
+                  <TableCell className="text-right text-[--color-text-secondary]">
                     {q.pending}
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={q.active > 0 ? "text-emerald-400" : "text-[--color-black-200]"}>
+                    <span className={q.active > 0 ? "text-[--color-accent-light]" : "text-[--color-text-secondary]"}>
                       {q.active}
                     </span>
                   </TableCell>
-                  <TableCell className="text-right text-[--color-black-200]">
+                  <TableCell className="text-right text-[--color-text-secondary]">
                     {q.scheduled}
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={q.retry > 0 ? "text-[--color-dark-orange-400]" : "text-[--color-black-200]"}>
+                    <span className={q.retry > 0 ? "text-[--color-warning]" : "text-[--color-text-secondary]"}>
                       {q.retry}
                     </span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={q.archived > 0 ? "text-[--color-vibrant-coral-400]" : "text-[--color-black-200]"}>
+                    <span className={q.archived > 0 ? "text-[--color-error]" : "text-[--color-text-secondary]"}>
                       {q.archived}
                     </span>
                   </TableCell>
-                  <TableCell className="text-right text-[--color-black-200]">
+                  <TableCell className="text-right text-[--color-text-secondary]">
                     {q.processedTotal.toLocaleString()}
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={q.failedTotal > 0 ? "text-[--color-vibrant-coral-400]" : "text-[--color-black-200]"}>
+                    <span className={q.failedTotal > 0 ? "text-[--color-error]" : "text-[--color-text-secondary]"}>
                       {q.failedTotal.toLocaleString()}
                     </span>
                   </TableCell>
-                  <TableCell className="text-right text-[--color-black-200]">
+                  <TableCell className="text-right text-[--color-text-secondary]">
                     {q.latencyMs}ms
                   </TableCell>
-                  <TableCell className="text-right text-[--color-black-200]">
+                  <TableCell className="text-right text-[--color-text-secondary]">
                     {formatBytes(q.memoryUsage)}
                   </TableCell>
                   <TableCell className="text-right">
                     {q.paused ? (
-                      <Badge variant="outline" className="border-[--color-dark-orange-400] text-[--color-dark-orange-400]">
+                      <Badge variant="outline" className="border-[--color-warning] text-[--color-warning]">
                         Paused
                       </Badge>
                     ) : (
-                      <Badge variant="outline" className="border-emerald-500 text-emerald-400">
+                      <Badge variant="outline" className="border-[--color-accent-val] text-[--color-accent-light]">
                         Active
                       </Badge>
                     )}
@@ -270,7 +270,7 @@ function QueuesPage() {
                   <TableCell onClick={(e) => e.stopPropagation()}>
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" size="icon-xs" className="text-[--color-black-400] hover:text-[--color-black-50]">
+                        <Button variant="ghost" size="icon-xs" className="text-[--color-text-secondary] hover:text-[--color-text-primary]">
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </DropdownMenuTrigger>
@@ -311,9 +311,9 @@ function QueuesPage() {
       )}
 
       {queues.length === 0 && (
-        <div className="flex items-center justify-center rounded-xl border border-dashed border-[--color-black-700] py-16 text-sm text-[--color-black-400]">
+        <div className="flex items-center justify-center rounded border border-dashed border-[--color-divider] py-16 text-sm text-[--color-text-secondary]">
           <div className="text-center">
-            <Layers className="mx-auto mb-2 h-8 w-8 text-[--color-black-600]" />
+            <Layers className="mx-auto mb-2 h-8 w-8 text-[--color-text-muted]" />
             <p>No queues found in this environment.</p>
             <p className="mt-1 text-xs">Start an asynq worker to create queues.</p>
           </div>
