@@ -25,25 +25,25 @@ export function DeleteEnvironmentDialog({
 }: DeleteEnvironmentDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent className="max-w-md border-[--color-divider] text-[--color-text-primary]">
+      <AlertDialogContent className="max-w-md border-[var(--color-divider)] text-[var(--color-text-primary)]">
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-[--color-text-primary]">
+          <AlertDialogTitle className="text-[var(--color-text-primary)]">
             Delete environment
           </AlertDialogTitle>
-          <AlertDialogDescription className="text-[--color-text-secondary]">
+          <AlertDialogDescription className="text-[var(--color-text-secondary)]">
             Are you sure you want to delete{" "}
-            <span className="font-semibold text-[--color-text-primary]">
+            <span className="font-semibold text-[var(--color-text-primary)]">
               "{environment?.Name}"
             </span>
             ? This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="border-[--color-divider] text-[--color-text-secondary] hover:bg-[--color-primary-dark] hover:text-[--color-text-primary]">
+          <AlertDialogCancel className="border-[var(--color-divider)] text-[var(--color-text-secondary)] hover:bg-[var(--color-primary-dark)] hover:text-[var(--color-text-primary)]">
             Cancel
           </AlertDialogCancel>
           <AlertDialogAction
-            className="bg-[--color-error] text-white hover:bg-[--color-error]/80"
+            className="bg-[var(--color-error)] text-white hover:bg-[var(--color-error)]/80"
             onClick={() => environment && onConfirm(environment)}
           >
             Delete

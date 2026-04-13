@@ -22,7 +22,7 @@ export function EnvironmentCard({
       role="button"
       tabIndex={connecting ? -1 : 0}
       aria-disabled={connecting}
-      className={`group relative overflow-hidden border border-[--color-divider] bg-[--color-primary-light] p-4 transition-all ${connecting ? "pointer-events-none opacity-70" : "cursor-pointer hover:border-[var(--color-accent-val)] hover:bg-[var(--color-row-hover)]"} focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-accent-val)]`}
+      className={`group relative overflow-hidden border border-[var(--color-divider)] bg-[var(--color-primary-light)] p-4 transition-all ${connecting ? "pointer-events-none opacity-70" : "cursor-pointer hover:border-[var(--color-accent-val)] hover:bg-[var(--color-row-hover)]"} focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-accent-val)]`}
       onClick={() => !connecting && onSelect(env)}
       onKeyDown={(e) => {
         if (!connecting && (e.key === "Enter" || e.key === " ")) {
@@ -32,22 +32,22 @@ export function EnvironmentCard({
       }}
     >
       {/* Left accent bar */}
-      <div className="absolute left-0 top-0 h-full w-0.5 bg-[--color-divider] transition-colors group-hover:bg-[var(--color-accent-val)]" />
+      <div className="absolute left-0 top-0 h-full w-0.5 bg-[var(--color-divider)] transition-colors group-hover:bg-[var(--color-accent-val)]" />
 
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center bg-[--color-primary-dark] transition-colors group-hover:bg-[var(--color-accent-subtle)]">
+          <div className="flex h-9 w-9 items-center justify-center bg-[var(--color-primary-dark)] transition-colors group-hover:bg-[var(--color-accent-subtle)]">
             {connecting ? (
               <Loader2 className="h-5 w-5 animate-spin text-[var(--color-accent-val)]" />
             ) : (
-              <Database className="h-5 w-5 text-[--color-text-muted] transition-colors group-hover:text-[var(--color-accent-val)]" />
+              <Database className="h-5 w-5 text-[var(--color-text-muted)] transition-colors group-hover:text-[var(--color-accent-val)]" />
             )}
           </div>
           <div>
-            <div className="text-base font-semibold leading-tight text-[--color-text-primary]">
+            <div className="text-base font-semibold leading-tight text-[var(--color-text-primary)]">
               {env.Name}
             </div>
-            <div className="text-xs text-[--color-text-muted] transition-colors group-hover:text-[--color-text-secondary]">
+            <div className="text-xs text-[var(--color-text-muted)] transition-colors group-hover:text-[var(--color-text-secondary)]">
               {connecting ? "Connecting..." : env.Host}
             </div>
           </div>
@@ -57,7 +57,7 @@ export function EnvironmentCard({
             variant="ghost"
             size="icon-sm"
             aria-label={`Edit ${env.Name}`}
-            className="text-[--color-text-muted] hover:bg-[--color-primary-dark] hover:text-[var(--color-accent-val)] focus-visible:ring-[var(--color-accent-val)]"
+            className="text-[var(--color-text-muted)] hover:bg-[var(--color-primary-dark)] hover:text-[var(--color-accent-val)] focus-visible:ring-[var(--color-accent-val)]"
             onClick={(e) => {
               e.stopPropagation();
               onEdit(env);
@@ -69,7 +69,7 @@ export function EnvironmentCard({
             variant="ghost"
             size="icon-sm"
             aria-label={`Delete ${env.Name}`}
-            className="text-[--color-text-muted] hover:bg-[--color-error]/10 hover:text-[--color-error] focus-visible:ring-[--color-error]"
+            className="text-[var(--color-text-muted)] hover:bg-[var(--color-error)]/10 hover:text-[var(--color-error)] focus-visible:ring-[var(--color-error)]"
             onClick={(e) => {
               e.stopPropagation();
               onDelete(env);

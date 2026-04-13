@@ -16,11 +16,11 @@ import type { queue } from "../../../wailsjs/go/models";
 // ---------------------------------------------------------------------------
 
 export const TASK_STATES: { value: TaskState; label: string; color: string; activeColor: string }[] = [
-  { value: "pending", label: "Pending", color: "text-[--color-text-secondary]", activeColor: "border-[--color-text-secondary] text-[--color-text-primary]" },
-  { value: "active", label: "Active", color: "text-[--color-success]", activeColor: "border-[--color-success] text-[--color-success]" },
-  { value: "scheduled", label: "Scheduled", color: "text-[--color-info]", activeColor: "border-[--color-info] text-[--color-info]" },
-  { value: "retry", label: "Retry", color: "text-[--color-warning]", activeColor: "border-[--color-warning] text-[--color-warning]" },
-  { value: "archived", label: "Archived", color: "text-[--color-error]", activeColor: "border-[--color-error] text-[--color-error]" },
+  { value: "pending", label: "Pending", color: "text-[var(--color-text-secondary)]", activeColor: "border-[var(--color-text-secondary)] text-[var(--color-text-primary)]" },
+  { value: "active", label: "Active", color: "text-[var(--color-success)]", activeColor: "border-[var(--color-success)] text-[var(--color-success)]" },
+  { value: "scheduled", label: "Scheduled", color: "text-[var(--color-info)]", activeColor: "border-[var(--color-info)] text-[var(--color-info)]" },
+  { value: "retry", label: "Retry", color: "text-[var(--color-warning)]", activeColor: "border-[var(--color-warning)] text-[var(--color-warning)]" },
+  { value: "archived", label: "Archived", color: "text-[var(--color-error)]", activeColor: "border-[var(--color-error)] text-[var(--color-error)]" },
   { value: "completed", label: "Completed (retention)", color: "text-[var(--color-accent-val)]", activeColor: "border-[var(--color-accent-val)] text-[var(--color-accent-val)]" },
 ];
 
@@ -128,12 +128,12 @@ export function getStateCount(info: queue.QueueInfo | undefined, state: TaskStat
 
 export function StateBadge({ state }: { state: TaskState }) {
   const styles: Record<TaskState, string> = {
-    pending: "border-[--color-text-muted] text-[--color-text-secondary]",
-    active: "border-[--color-success] text-[--color-success]",
-    scheduled: "border-[--color-info] text-[--color-info]",
-    retry: "border-[--color-warning] text-[--color-warning]",
-    archived: "border-[--color-error] text-[--color-error]",
-    completed: "border-[--color-success] text-[--color-success]",
+    pending: "border-[var(--color-text-muted)] text-[var(--color-text-secondary)]",
+    active: "border-[var(--color-success)] text-[var(--color-success)]",
+    scheduled: "border-[var(--color-info)] text-[var(--color-info)]",
+    retry: "border-[var(--color-warning)] text-[var(--color-warning)]",
+    archived: "border-[var(--color-error)] text-[var(--color-error)]",
+    completed: "border-[var(--color-success)] text-[var(--color-success)]",
   };
   return (
     <Badge variant="outline" className={styles[state]}>
@@ -155,9 +155,9 @@ export function DetailRow({
 }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <span className="shrink-0 text-xs text-[--color-text-secondary]">{label}</span>
+      <span className="shrink-0 text-xs text-[var(--color-text-secondary)]">{label}</span>
       {children ?? (
-        <span className={`truncate text-right text-xs text-[--color-text-secondary] ${mono ? "font-mono" : ""}`}>
+        <span className={`truncate text-right text-xs text-[var(--color-text-secondary)] ${mono ? "font-mono" : ""}`}>
           {value || "\u2014"}
         </span>
       )}
@@ -186,7 +186,7 @@ export function TaskDetailContent({
         {task.group && <DetailRow label="Group" value={task.group} />}
       </div>
 
-      <Separator className="bg-[--color-divider]" />
+      <Separator className="bg-[var(--color-divider)]" />
 
       {task.payload && (
         <CodeBlock content={task.payload} label="Payload" />
@@ -194,24 +194,24 @@ export function TaskDetailContent({
 
       {state === "completed" && task.result && (
         <>
-          <Separator className="bg-[--color-divider]" />
+          <Separator className="bg-[var(--color-divider)]" />
           <CodeBlock content={task.result} label="Result" variant="success" />
         </>
       )}
 
       {task.lastErr && (
         <>
-          <Separator className="bg-[--color-divider]" />
+          <Separator className="bg-[var(--color-divider)]" />
           <CodeBlock content={task.lastErr} label="Last Error" variant="error" maxHeight="max-h-40" />
           {task.lastFailedAt && (
-            <span className="text-[10px] text-[--color-text-secondary]">
+            <span className="text-xs text-[var(--color-text-secondary)]">
               Failed at: {formatDate(task.lastFailedAt)}
             </span>
           )}
         </>
       )}
 
-      <Separator className="bg-[--color-divider]" />
+      <Separator className="bg-[var(--color-divider)]" />
 
       <div className="space-y-3">
         <DetailRow label="Max Retry" value={String(task.maxRetry)} />
@@ -223,7 +223,7 @@ export function TaskDetailContent({
         <DetailRow label="Retention" value={formatDuration(task.retentionSecs)} />
         {task.isOrphaned && (
           <DetailRow label="Orphaned">
-            <Badge variant="outline" className="border-[--color-error] text-[--color-error]">
+            <Badge variant="outline" className="border-[var(--color-error)] text-[var(--color-error)]">
               Yes
             </Badge>
           </DetailRow>
@@ -232,7 +232,7 @@ export function TaskDetailContent({
 
       {actions.length > 0 && (
         <>
-          <Separator className="bg-[--color-divider]" />
+          <Separator className="bg-[var(--color-divider)]" />
           <div className="flex gap-2">
             {actions.map((action) => (
               <Button

@@ -62,7 +62,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-[--color-divider]">
+    <Sidebar collapsible="icon" className="border-r border-[var(--color-divider)]">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -70,7 +70,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-[--color-primary-light]"
+                  className="data-[state=open]:bg-[var(--color-primary-light)]"
                 >
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-[var(--color-accent-val)]/10">
                     <Database className="h-3.5 w-3.5 text-[var(--color-accent-val)]" />
@@ -83,20 +83,20 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                       </>
                     ) : (
                       <>
-                        <span className="truncate font-semibold text-[--color-text-primary]">
+                        <span className="truncate font-semibold text-[var(--color-text-primary)]">
                           {environment?.Name ?? "Unknown"}
                         </span>
-                        <span className="truncate text-[10px] text-[--color-text-muted]">
+                        <span className="truncate text-xs text-[var(--color-text-muted)]">
                           {environment?.Host}
                         </span>
                       </>
                     )}
                   </div>
-                  <ChevronsUpDown className="ml-auto h-3.5 w-3.5 text-[--color-text-muted]" />
+                  <ChevronsUpDown className="ml-auto h-3.5 w-3.5 text-[var(--color-text-muted)]" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-[--radix-dropdown-menu-trigger-width] min-w-56"
+                className="w-[var(--radix-dropdown-menu-trigger-width)] min-w-56"
                 align="start"
                 side="bottom"
                 sideOffset={4}
@@ -114,8 +114,8 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                   >
                     <Database className="h-3.5 w-3.5 text-[var(--color-accent-val)]" />
                     <div className="grid text-xs leading-tight">
-                      <span className="font-medium text-[--color-text-primary]">{env.Name}</span>
-                      <span className="text-[10px] text-[--color-text-muted]">
+                      <span className="font-medium text-[var(--color-text-primary)]">{env.Name}</span>
+                      <span className="text-xs text-[var(--color-text-muted)]">
                         {env.Host}
                       </span>
                     </div>
@@ -137,7 +137,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
 
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] uppercase tracking-wider text-[--color-text-muted]">
+          <SidebarGroupLabel className="text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
             Monitoring
           </SidebarGroupLabel>
           <SidebarGroupContent>
@@ -160,10 +160,10 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
           </SidebarGroupContent>
         </SidebarGroup>
 
-        <SidebarSeparator className="bg-[--color-divider]" />
+        <SidebarSeparator className="bg-[var(--color-divider)]" />
 
         <SidebarGroup>
-          <SidebarGroupLabel className="text-[10px] uppercase tracking-wider text-[--color-text-muted]">
+          <SidebarGroupLabel className="text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
             Task Runner
           </SidebarGroupLabel>
           <SidebarGroupContent>

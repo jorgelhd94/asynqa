@@ -12,8 +12,8 @@ export const Route = createRootRoute({
           fill: "#1c1c1e",
           roundness: 4,
           styles: {
-            title: "!text-[--color-text-primary]",
-            description: "!text-[--color-text-secondary]",
+            title: "!text-[var(--color-text-primary)]",
+            description: "!text-[var(--color-text-secondary)]",
           },
         }}
       />
