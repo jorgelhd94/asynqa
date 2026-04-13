@@ -145,6 +145,14 @@
     color: rgba(255, 255, 255, 0.7) !important;
     }
 
+  /* Colored task state tabs */
+  [data-color="pending"][data-state="active"] { border-color: #a3a3a3 !important; color: #e5e5e5 !important; }
+  [data-color="active"][data-state="active"] { border-color: #10b981 !important; color: #10b981 !important; }
+  [data-color="scheduled"][data-state="active"] { border-color: #3b82f6 !important; color: #3b82f6 !important; }
+  [data-color="retry"][data-state="active"] { border-color: #f59e0b !important; color: #f59e0b !important; }
+  [data-color="archived"][data-state="active"] { border-color: #f43f5e !important; color: #f43f5e !important; }
+  [data-color="completed"][data-state="active"] { border-color: #d4a843 !important; color: #d4a843 !important; }
+
   /* Hoppscotch-style scrollbar */
   ::-webkit-scrollbar {
     width: 8px;

@@ -4,9 +4,12 @@ import { PageHeader } from "@/components/environment/page-header";
 import {
   TASK_STATES,
   ROW_ACTIONS,
+  DATE_COLUMN_LABEL,
   TaskDetailContent,
   type RowAction,
   formatDate,
+  getDateFieldForState,
+  sortTasksByDate,
 } from "@/components/environment/task-shared";
 import {
   useQueueDetail,
@@ -160,7 +163,8 @@ function TasksPage() {
                       <TabsTrigger
                         key={s.value}
                         value={s.value}
-                        className="rounded-none border-b-2 border-transparent px-3 py-2.5 text-xs data-[state=active]:border-[--color-accent-val] data-[state=active]:bg-transparent data-[state=active]:text-[--color-accent]"
+                        className="rounded-none border-b-2 border-transparent px-3 py-2.5 text-xs data-[state=active]:bg-transparent"
+                        data-color={s.value}
                       >
                         {s.label}
                         {count > 0 && (
@@ -207,8 +211,8 @@ function TasksPage() {
                             <TableHead className="text-[--color-text-secondary]">ID</TableHead>
                             <TableHead className="text-[--color-text-secondary]">Type</TableHead>
                             <TableHead className="text-[--color-text-secondary]">Payload</TableHead>
-                            {(activeTab === "scheduled" || activeTab === "retry") && (
-                              <TableHead className="text-[--color-text-secondary]">Next Run</TableHead>
+                            {DATE_COLUMN_LABEL[activeTab] && (
+                              <TableHead className="text-[--color-text-secondary]">{DATE_COLUMN_LABEL[activeTab]}</TableHead>
                             )}
                             {activeTab === "retry" && (
                               <TableHead className="text-[--color-text-secondary]">Retries</TableHead>
@@ -219,14 +223,11 @@ function TasksPage() {
                             {activeTab === "active" && (
                               <TableHead className="text-[--color-text-secondary]">Status</TableHead>
                             )}
-                            {activeTab === "completed" && (
-                              <TableHead className="text-[--color-text-secondary]">Completed</TableHead>
-                            )}
                             <TableHead className="w-10" />
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {tasks.map((t) => (
+                          {sortTasksByDate(tasks, activeTab).map((t) => (
                             <TableRow
                               key={t.id}
                               className="border-[--color-divider] hover:bg-[#2a2520] cursor-pointer transition-colors"
@@ -241,9 +242,9 @@ function TasksPage() {
                               <TableCell className="max-w-48 truncate text-xs text-[--color-text-secondary]">
                                 {t.payload?.slice(0, 60)}
                               </TableCell>
-                              {(activeTab === "scheduled" || activeTab === "retry") && (
+                              {DATE_COLUMN_LABEL[activeTab] && (
                                 <TableCell className="text-xs text-[--color-text-secondary]">
-                                  {formatDate(t.nextProcessAt)}
+                                  {formatDate(getDateFieldForState(t, activeTab))}
                                 </TableCell>
                               )}
                               {activeTab === "retry" && (
