@@ -23,7 +23,7 @@ export const TASK_STATES: { value: TaskState; label: string }[] = [
   { value: "scheduled", label: "Scheduled" },
   { value: "retry", label: "Retry" },
   { value: "archived", label: "Archived" },
-  { value: "completed", label: "Completed" },
+  { value: "completed", label: "Completed (retention)" },
 ];
 
 export type RowAction = "run" | "delete" | "archive" | "cancel";
