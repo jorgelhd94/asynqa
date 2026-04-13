@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/environment/page-header";
+import { RefreshIndicator } from "@/components/environment/refresh-indicator";
 import { StatCard } from "@/components/environment/stat-card";
 import { useWorkers } from "@/hooks/use-workers";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -46,7 +47,7 @@ function formatDate(dateStr: string): string {
 function WorkersPage() {
   const { id } = Route.useParams();
   const environmentId = Number(id);
-  const { data, isLoading, isError, error } = useWorkers(environmentId);
+  const { data, isLoading, isError, error, dataUpdatedAt, isFetching, refetch } = useWorkers(environmentId);
   const [selectedServer, setSelectedServer] = useState<worker.ServerInfo | null>(null);
 
   if (isLoading) {
@@ -94,6 +95,14 @@ function WorkersPage() {
         <PageHeader
           title="Workers"
           description="Connected worker instances processing tasks."
+          actions={
+            <RefreshIndicator
+              intervalMs={5000}
+              dataUpdatedAt={dataUpdatedAt}
+              onRefresh={refetch}
+              isFetching={isFetching}
+            />
+          }
         />
 
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
