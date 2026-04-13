@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { PageHeader } from "@/components/environment/page-header";
 import { StatCard } from "@/components/environment/stat-card";
 import { useDashboard } from "@/hooks/use-dashboard";
@@ -35,6 +35,7 @@ function formatBytes(bytes: number): string {
 
 function DashboardPage() {
   const { id } = Route.useParams();
+  const navigate = useNavigate();
   const { data, isLoading, isError, error } = useDashboard(Number(id));
 
   if (isLoading) {
@@ -137,7 +138,13 @@ function DashboardPage() {
               {queues.map((q) => (
                 <TableRow
                   key={q.queue}
-                  className="border-[--color-black-800] hover:bg-[--color-black-800]/50"
+                  className="border-[--color-black-800] hover:bg-[--color-black-800]/50 cursor-pointer"
+                  onClick={() =>
+                    navigate({
+                      to: "/environment/$id/queues/$queueName",
+                      params: { id, queueName: q.queue },
+                    })
+                  }
                 >
                   <TableCell className="font-medium text-[--color-black-50]">
                     {q.queue}

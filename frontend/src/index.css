@@ -185,6 +185,17 @@
     @apply bg-background text-foreground;
     font-family: 'JetBrains Mono', 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
+  button,
+  [role="button"],
+  a,
+  [role="tab"],
+  [role="menuitem"],
+  [role="option"],
+  select,
+  summary,
+  label[for] {
+    cursor: pointer;
+    }
   [data-sileo-viewport] {
     z-index: 100 !important;
     }

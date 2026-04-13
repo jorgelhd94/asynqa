@@ -42,6 +42,7 @@ const navItems = [
   { label: "Tasks", icon: ListChecks, to: "/environment/$id/tasks" as const },
   { label: "Workers", icon: HardHat, to: "/environment/$id/workers" as const },
   { label: "Schedulers", icon: CalendarClock, to: "/environment/$id/schedulers" as const },
+  { label: "Redis", icon: Database, to: "/environment/$id/redis" as const },
 ];
 
 const toolItems = [

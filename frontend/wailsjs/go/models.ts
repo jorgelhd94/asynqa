@@ -381,3 +381,338 @@ export namespace queue {
 
 }
 
+export namespace redis {
+	
+	export class RedisEntry {
+	    key: string;
+	    value: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new RedisEntry(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.key = source["key"];
+	        this.value = source["value"];
+	    }
+	}
+	export class RedisSection {
+	    name: string;
+	    entries: RedisEntry[];
+	
+	    static createFrom(source: any = {}) {
+	        return new RedisSection(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.name = source["name"];
+	        this.entries = this.convertValues(source["entries"], RedisEntry);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class RedisInfoData {
+	    sections: RedisSection[];
+	    rawInfo: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new RedisInfoData(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.sections = this.convertValues(source["sections"], RedisSection);
+	        this.rawInfo = source["rawInfo"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
+export namespace scheduler {
+	
+	export class EnqueueEvent {
+	    taskID: string;
+	    enqueuedAt: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new EnqueueEvent(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.taskID = source["taskID"];
+	        this.enqueuedAt = source["enqueuedAt"];
+	    }
+	}
+	export class PaginatedEvents {
+	    events: EnqueueEvent[];
+	    totalCount: number;
+	    page: number;
+	    pageSize: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new PaginatedEvents(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.events = this.convertValues(source["events"], EnqueueEvent);
+	        this.totalCount = source["totalCount"];
+	        this.page = source["page"];
+	        this.pageSize = source["pageSize"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	export class SchedulerEntry {
+	    id: string;
+	    spec: string;
+	    taskType: string;
+	    taskPayload: string;
+	    options: string[];
+	    nextEnqueueAt: string;
+	    prevEnqueueAt: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new SchedulerEntry(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.spec = source["spec"];
+	        this.taskType = source["taskType"];
+	        this.taskPayload = source["taskPayload"];
+	        this.options = source["options"];
+	        this.nextEnqueueAt = source["nextEnqueueAt"];
+	        this.prevEnqueueAt = source["prevEnqueueAt"];
+	    }
+	}
+	export class SchedulersData {
+	    entries: SchedulerEntry[];
+	
+	    static createFrom(source: any = {}) {
+	        return new SchedulersData(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.entries = this.convertValues(source["entries"], SchedulerEntry);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
+export namespace taskrunner {
+	
+	export class EnqueueRequest {
+	    queue: string;
+	    taskType: string;
+	    payload: string;
+	    maxRetry: number;
+	    timeoutSecs: number;
+	    delaySecs: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new EnqueueRequest(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.queue = source["queue"];
+	        this.taskType = source["taskType"];
+	        this.payload = source["payload"];
+	        this.maxRetry = source["maxRetry"];
+	        this.timeoutSecs = source["timeoutSecs"];
+	        this.delaySecs = source["delaySecs"];
+	    }
+	}
+	export class EnqueueResult {
+	    taskID: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new EnqueueResult(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.taskID = source["taskID"];
+	    }
+	}
+
+}
+
+export namespace worker {
+	
+	export class WorkerInfo {
+	    taskID: string;
+	    queue: string;
+	    type: string;
+	    payload: string;
+	    started: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new WorkerInfo(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.taskID = source["taskID"];
+	        this.queue = source["queue"];
+	        this.type = source["type"];
+	        this.payload = source["payload"];
+	        this.started = source["started"];
+	    }
+	}
+	export class ServerInfo {
+	    id: string;
+	    host: string;
+	    pid: number;
+	    queues: string[];
+	    strictPriority: boolean;
+	    started: string;
+	    status: string;
+	    concurrency: number;
+	    activeWorkers: WorkerInfo[];
+	
+	    static createFrom(source: any = {}) {
+	        return new ServerInfo(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.id = source["id"];
+	        this.host = source["host"];
+	        this.pid = source["pid"];
+	        this.queues = source["queues"];
+	        this.strictPriority = source["strictPriority"];
+	        this.started = source["started"];
+	        this.status = source["status"];
+	        this.concurrency = source["concurrency"];
+	        this.activeWorkers = this.convertValues(source["activeWorkers"], WorkerInfo);
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+	
+	export class WorkersData {
+	    servers: ServerInfo[];
+	    totalWorkers: number;
+	
+	    static createFrom(source: any = {}) {
+	        return new WorkersData(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.servers = this.convertValues(source["servers"], ServerInfo);
+	        this.totalWorkers = source["totalWorkers"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
