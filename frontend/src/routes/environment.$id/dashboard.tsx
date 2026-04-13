@@ -57,7 +57,7 @@ function DashboardPage() {
     return (
       <div className="p-4 space-y-4">
         <PageHeader title="Dashboard" />
-        <div className="flex items-center gap-3 rounded border border-[--color-error]/30 bg-[--color-error]/10 p-4 text-sm text-[--color-error]">
+        <div className="flex items-center gap-3 rounded border border-[var(--color-error)]/30 bg-[var(--color-error)]/10 p-4 text-sm text-[var(--color-error)]">
           <AlertTriangle className="h-4 w-4 shrink-0" />
           <span>
             Failed to load dashboard data.{" "}
@@ -97,51 +97,51 @@ function DashboardPage() {
           value={data?.totalTasks ?? 0}
           subtitle={`${data?.totalPending ?? 0} pending`}
           icon={Clock}
-          iconColor="text-[--color-warning]"
+          iconColor="text-[var(--color-warning)]"
         />
         <StatCard
           title="Processed"
           value={totalProcessed.toLocaleString()}
           subtitle={`${data?.totalActive ?? 0} active now`}
           icon={Zap}
-          iconColor="text-[--color-success]"
+          iconColor="text-[var(--color-success)]"
         />
         <StatCard
           title="Failed"
           value={(data?.totalFailed ?? 0).toLocaleString()}
           subtitle={`${data?.serverCount ?? 0} worker(s)`}
           icon={AlertTriangle}
-          iconColor="text-[--color-error]"
+          iconColor="text-[var(--color-error)]"
         />
       </div>
 
       {queues.length > 0 && (
-        <div className="rounded border border-[--color-divider] bg-[--color-primary-light]">
-          <div className="flex items-center gap-2 border-b border-[--color-divider] px-4 py-3">
+        <div className="rounded border border-[var(--color-divider)] bg-[var(--color-primary-light)]">
+          <div className="flex items-center gap-2 border-b border-[var(--color-divider)] px-4 py-3">
             <Activity className="h-4 w-4 text-[var(--color-accent-val)]" />
-            <h2 className="text-sm font-semibold text-[--color-text-primary]">
+            <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">
               Queue Overview
             </h2>
           </div>
           <Table>
             <TableHeader>
-              <TableRow className="border-[--color-divider] hover:bg-transparent">
-                <TableHead className="text-[--color-text-secondary]">Queue</TableHead>
-                <TableHead className="text-right text-[--color-text-secondary]">Size</TableHead>
-                <TableHead className="text-right text-[--color-text-secondary]">Pending</TableHead>
-                <TableHead className="text-right text-[--color-text-secondary]">Active</TableHead>
-                <TableHead className="text-right text-[--color-text-secondary]">Retry</TableHead>
-                <TableHead className="text-right text-[--color-text-secondary]">Archived</TableHead>
-                <TableHead className="text-right text-[--color-text-secondary]">Latency</TableHead>
-                <TableHead className="text-right text-[--color-text-secondary]">Memory</TableHead>
-                <TableHead className="text-right text-[--color-text-secondary]">Status</TableHead>
+              <TableRow className="border-[var(--color-divider)] hover:bg-transparent">
+                <TableHead className="text-[var(--color-text-secondary)]">Queue</TableHead>
+                <TableHead className="text-right text-[var(--color-text-secondary)]">Size</TableHead>
+                <TableHead className="text-right text-[var(--color-text-secondary)]">Pending</TableHead>
+                <TableHead className="text-right text-[var(--color-text-secondary)]">Active</TableHead>
+                <TableHead className="text-right text-[var(--color-text-secondary)]">Retry</TableHead>
+                <TableHead className="text-right text-[var(--color-text-secondary)]">Archived</TableHead>
+                <TableHead className="text-right text-[var(--color-text-secondary)]">Latency</TableHead>
+                <TableHead className="text-right text-[var(--color-text-secondary)]">Memory</TableHead>
+                <TableHead className="text-right text-[var(--color-text-secondary)]">Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {queues.map((q) => (
                 <TableRow
                   key={q.queue}
-                  className="border-[--color-divider] hover:bg-[var(--color-row-hover)] cursor-pointer transition-colors"
+                  className="border-[var(--color-divider)] hover:bg-[var(--color-row-hover)] cursor-pointer transition-colors"
                   onClick={() =>
                     navigate({
                       to: "/environment/$id/queues/$queueName",
@@ -149,43 +149,43 @@ function DashboardPage() {
                     })
                   }
                 >
-                  <TableCell className="font-medium text-[--color-text-primary]">
+                  <TableCell className="font-medium text-[var(--color-text-primary)]">
                     {q.queue}
                   </TableCell>
-                  <TableCell className="text-right text-[--color-text-secondary]">
+                  <TableCell className="text-right text-[var(--color-text-secondary)]">
                     {q.size}
                   </TableCell>
-                  <TableCell className="text-right text-[--color-text-secondary]">
+                  <TableCell className="text-right text-[var(--color-text-secondary)]">
                     {q.pending}
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={q.active > 0 ? "text-[--color-success]" : "text-[--color-text-secondary]"}>
+                    <span className={q.active > 0 ? "text-[var(--color-success)]" : "text-[var(--color-text-secondary)]"}>
                       {q.active}
                     </span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={q.retry > 0 ? "text-[--color-warning]" : "text-[--color-text-secondary]"}>
+                    <span className={q.retry > 0 ? "text-[var(--color-warning)]" : "text-[var(--color-text-secondary)]"}>
                       {q.retry}
                     </span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={q.archived > 0 ? "text-[--color-error]" : "text-[--color-text-secondary]"}>
+                    <span className={q.archived > 0 ? "text-[var(--color-error)]" : "text-[var(--color-text-secondary)]"}>
                       {q.archived}
                     </span>
                   </TableCell>
-                  <TableCell className="text-right text-[--color-text-secondary]">
+                  <TableCell className="text-right text-[var(--color-text-secondary)]">
                     {q.latencyMs}ms
                   </TableCell>
-                  <TableCell className="text-right text-[--color-text-secondary]">
+                  <TableCell className="text-right text-[var(--color-text-secondary)]">
                     {formatBytes(q.memoryUsage)}
                   </TableCell>
                   <TableCell className="text-right">
                     {q.paused ? (
-                      <Badge variant="outline" className="border-[--color-warning] text-[--color-warning]">
+                      <Badge variant="outline" className="border-[var(--color-warning)] text-[var(--color-warning)]">
                         Paused
                       </Badge>
                     ) : (
-                      <Badge variant="outline" className="border-[--color-success] text-[--color-success]">
+                      <Badge variant="outline" className="border-[var(--color-success)] text-[var(--color-success)]">
                         Active
                       </Badge>
                     )}
@@ -198,9 +198,9 @@ function DashboardPage() {
       )}
 
       {queues.length === 0 && (
-        <div className="flex items-center justify-center rounded border border-dashed border-[--color-divider] py-16 text-sm text-[--color-text-secondary]">
+        <div className="flex items-center justify-center rounded border border-dashed border-[var(--color-divider)] py-16 text-sm text-[var(--color-text-secondary)]">
           <div className="text-center">
-            <Server className="mx-auto mb-2 h-8 w-8 text-[--color-text-muted]" />
+            <Server className="mx-auto mb-2 h-8 w-8 text-[var(--color-text-muted)]" />
             <p>No queues found in this environment.</p>
             <p className="mt-1 text-xs">Start an asynq worker to create queues.</p>
           </div>
@@ -208,8 +208,8 @@ function DashboardPage() {
       )}
 
       {(data?.history?.length ?? 0) > 0 && (
-        <div className="rounded border border-[--color-divider] bg-[--color-primary-light] p-4">
-          <h2 className="mb-3 text-sm font-semibold text-[--color-text-primary]">
+        <div className="rounded border border-[var(--color-divider)] bg-[var(--color-primary-light)] p-4">
+          <h2 className="mb-3 text-sm font-semibold text-[var(--color-text-primary)]">
             Processing History (last 14 days)
           </h2>
           <div className="grid grid-cols-7 gap-2 lg:grid-cols-14">
@@ -218,16 +218,16 @@ function DashboardPage() {
               .map((day) => (
                 <div
                   key={day.date}
-                  className="flex flex-col items-center gap-1 rounded-lg border border-[--color-divider] bg-[--color-primary-bg] p-2"
+                  className="flex flex-col items-center gap-1 rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-bg)] p-2"
                 >
-                  <span className="text-[10px] text-[--color-text-secondary]">
+                  <span className="text-xs text-[var(--color-text-secondary)]">
                     {new Date(day.date).toLocaleDateString("en", { month: "short", day: "numeric" })}
                   </span>
-                  <span className="text-xs font-semibold text-[--color-success]">
+                  <span className="text-xs font-semibold text-[var(--color-success)]">
                     {day.processed}
                   </span>
                   {day.failed > 0 && (
-                    <span className="text-[10px] text-[--color-error]">
+                    <span className="text-xs text-center text-[var(--color-error)]">
                       {day.failed} failed
                     </span>
                   )}

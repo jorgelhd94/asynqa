@@ -84,9 +84,9 @@ function TaskRunnerPage() {
   return (
     <div data-full-bleed className="flex h-full flex-col" onKeyDown={handleKeyDown}>
       {/* Top bar - Queue + Task Type + Send */}
-      <div className="flex items-center gap-0 border-b border-[--color-divider] bg-[--color-primary-bg]">
+      <div className="flex items-center gap-0 border-b border-[var(--color-divider)] bg-[var(--color-primary-bg)]">
         {/* Queue selector */}
-        <div className="flex items-center border-r border-[--color-divider]">
+        <div className="flex items-center border-r border-[var(--color-divider)]">
           {queuesLoading ? (
             <Skeleton className="m-2 h-8 w-28 rounded-md" />
           ) : (
@@ -112,7 +112,7 @@ function TaskRunnerPage() {
             value={taskType}
             onChange={(e) => setTaskType(e.target.value)}
             placeholder="Enter task type... e.g. email:send, user:sync"
-            className="h-11 flex-1 border-none bg-transparent px-4 text-sm text-[--color-text-primary] placeholder:text-[--color-text-muted] outline-none"
+            className="h-11 flex-1 border-none bg-transparent px-4 text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] outline-none"
           />
         </div>
 
@@ -127,17 +127,17 @@ function TaskRunnerPage() {
             <Send className="h-3.5 w-3.5" />
             {enqueueMutation.isPending ? "Sending..." : "Send"}
           </Button>
-          <span className="hidden text-[10px] text-[--color-text-muted] lg:block">Ctrl+Enter</span>
+          <span className="hidden text-xs text-[var(--color-text-muted)] lg:block">Ctrl+Enter</span>
         </div>
       </div>
 
       {/* Main content area */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left panel - Editor */}
-        <div className="flex flex-1 flex-col border-r border-[--color-divider]">
+        <div className="flex flex-1 flex-col border-r border-[var(--color-divider)]">
           {/* Tabs */}
           <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-1 flex-col">
-            <div className="border-b border-[--color-divider]">
+            <div className="border-b border-[var(--color-divider)]">
               <TabsList className="h-auto bg-transparent p-0 px-2">
                 <TabsTrigger
                   value="body"
@@ -163,15 +163,15 @@ function TaskRunnerPage() {
 
             <TabsContent value="body" className="mt-0 flex-1 overflow-hidden">
               <div className="flex h-full flex-col">
-                <div className="flex items-center justify-between border-b border-[--color-divider]/50 px-4 py-1.5">
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
+                <div className="flex items-center justify-between border-b border-[var(--color-divider)]/50 px-4 py-1.5">
+                  <span className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-muted)]">
                     JSON Payload
                   </span>
                   <Button
                     variant="ghost"
                     size="xs"
                     onClick={handleReset}
-                    className="h-6 text-[10px] text-[--color-text-secondary] hover:text-[--color-text-primary]"
+                    className="h-6 text-xs text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
                   >
                     <RotateCcw className="h-2.5 w-2.5" />
                     Clear
@@ -179,11 +179,11 @@ function TaskRunnerPage() {
                 </div>
                 <div className="relative flex-1">
                   {/* Line numbers gutter */}
-                  <div className="absolute inset-y-0 left-0 flex w-10 flex-col border-r border-[--color-divider]/50 bg-[--color-primary-contrast]/50 pt-3 text-right">
+                  <div className="absolute inset-y-0 left-0 flex w-10 flex-col border-r border-[var(--color-divider)]/50 bg-[var(--color-primary-contrast)]/50 pt-3 text-right">
                     {payload.split("\n").map((_, i) => (
                       <span
                         key={i}
-                        className="px-2 font-mono text-[10px] leading-[20px] text-[--color-text-muted]"
+                        className="px-2 font-mono text-xs leading-[20px] text-[var(--color-text-muted)]"
                       >
                         {i + 1}
                       </span>
@@ -193,7 +193,7 @@ function TaskRunnerPage() {
                     value={payload}
                     onChange={(e) => setPayload(e.target.value)}
                     spellCheck={false}
-                    className="h-full w-full resize-none border-none bg-transparent p-3 pl-14 font-mono text-xs leading-[20px] text-[--color-text-primary] outline-none"
+                    className="h-full w-full resize-none border-none bg-transparent p-3 pl-14 font-mono text-xs leading-[20px] text-[var(--color-text-primary)] outline-none"
                   />
                 </div>
               </div>
@@ -201,14 +201,14 @@ function TaskRunnerPage() {
 
             <TabsContent value="options" className="mt-0 flex-1 p-4">
               <div className="space-y-5">
-                <p className="text-xs text-[--color-text-secondary]">
+                <p className="text-xs text-[var(--color-text-secondary)]">
                   Configure task processing options. Leave empty for defaults.
                 </p>
 
                 <div className="grid gap-4 sm:grid-cols-3">
                   <div className="space-y-2">
-                    <label className="flex items-center gap-1.5 text-xs font-medium text-[--color-text-secondary]">
-                      <RefreshCw className="h-3 w-3 text-[--color-text-muted]" />
+                    <label className="flex items-center gap-1.5 text-xs font-medium text-[var(--color-text-secondary)]">
+                      <RefreshCw className="h-3 w-3 text-[var(--color-text-muted)]" />
                       Max Retry
                     </label>
                     <input
@@ -217,16 +217,16 @@ function TaskRunnerPage() {
                       value={maxRetry}
                       onChange={(e) => setMaxRetry(e.target.value)}
                       placeholder="Default (25)"
-                      className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-xs text-[--color-text-primary] placeholder:text-[--color-text-muted] outline-none focus:border-[var(--color-accent-val)] transition-colors"
+                      className="h-9 w-full rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-bg)] px-3 text-xs text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] outline-none focus:border-[var(--color-accent-val)] transition-colors"
                     />
-                    <span className="text-[10px] text-[--color-text-muted]">
+                    <span className="text-xs text-[var(--color-text-muted)]">
                       Times to retry on failure
                     </span>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="flex items-center gap-1.5 text-xs font-medium text-[--color-text-secondary]">
-                      <Clock className="h-3 w-3 text-[--color-text-muted]" />
+                    <label className="flex items-center gap-1.5 text-xs font-medium text-[var(--color-text-secondary)]">
+                      <Clock className="h-3 w-3 text-[var(--color-text-muted)]" />
                       Timeout (seconds)
                     </label>
                     <input
@@ -235,16 +235,16 @@ function TaskRunnerPage() {
                       value={timeoutSecs}
                       onChange={(e) => setTimeoutSecs(e.target.value)}
                       placeholder="Default (1800)"
-                      className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-xs text-[--color-text-primary] placeholder:text-[--color-text-muted] outline-none focus:border-[var(--color-accent-val)] transition-colors"
+                      className="h-9 w-full rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-bg)] px-3 text-xs text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] outline-none focus:border-[var(--color-accent-val)] transition-colors"
                     />
-                    <span className="text-[10px] text-[--color-text-muted]">
+                    <span className="text-xs text-[var(--color-text-muted)]">
                       Max processing time
                     </span>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="flex items-center gap-1.5 text-xs font-medium text-[--color-text-secondary]">
-                      <Zap className="h-3 w-3 text-[--color-text-muted]" />
+                    <label className="flex items-center gap-1.5 text-xs font-medium text-[var(--color-text-secondary)]">
+                      <Zap className="h-3 w-3 text-[var(--color-text-muted)]" />
                       Delay (seconds)
                     </label>
                     <input
@@ -253,9 +253,9 @@ function TaskRunnerPage() {
                       value={delaySecs}
                       onChange={(e) => setDelaySecs(e.target.value)}
                       placeholder="0 (immediate)"
-                      className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-xs text-[--color-text-primary] placeholder:text-[--color-text-muted] outline-none focus:border-[var(--color-accent-val)] transition-colors"
+                      className="h-9 w-full rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-bg)] px-3 text-xs text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)] outline-none focus:border-[var(--color-accent-val)] transition-colors"
                     />
-                    <span className="text-[10px] text-[--color-text-muted]">
+                    <span className="text-xs text-[var(--color-text-muted)]">
                       Seconds before processing
                     </span>
                   </div>
@@ -267,15 +267,15 @@ function TaskRunnerPage() {
 
         {/* Right panel - Response */}
         <div className="flex w-full flex-col lg:w-[400px]">
-          <div className="flex items-center gap-2 border-b border-[--color-divider] px-4 py-2">
-            <span className="text-xs font-semibold text-[--color-text-primary]">Response</span>
+          <div className="flex items-center gap-2 border-b border-[var(--color-divider)] px-4 py-2">
+            <span className="text-xs font-semibold text-[var(--color-text-primary)]">Response</span>
             {enqueueMutation.isSuccess && (
-              <Badge variant="outline" className="border-[--color-success] text-[--color-success] text-[10px]">
+              <Badge variant="outline" className="border-[var(--color-success)] text-[var(--color-success)] text-xs">
                 200 OK
               </Badge>
             )}
             {enqueueMutation.isError && (
-              <Badge variant="outline" className="border-[--color-error] text-[--color-error] text-[10px]">
+              <Badge variant="outline" className="border-[var(--color-error)] text-[var(--color-error)] text-xs">
                 Error
               </Badge>
             )}
@@ -284,12 +284,12 @@ function TaskRunnerPage() {
           <div className="flex flex-1 flex-col">
             {enqueueMutation.isIdle && (
               <div className="flex flex-1 flex-col items-center justify-center gap-4 p-8 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[--color-primary-light]">
-                  <Send className="h-7 w-7 text-[--color-text-muted]" />
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[var(--color-primary-light)]">
+                  <Send className="h-7 w-7 text-[var(--color-text-muted)]" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-[--color-text-secondary]">Send Request</p>
-                  <p className="mt-1 text-xs text-[--color-text-muted]">
+                  <p className="text-sm font-medium text-[var(--color-text-secondary)]">Send Request</p>
+                  <p className="mt-1 text-xs text-[var(--color-text-muted)]">
                     Enter a task type and click Send
                   </p>
                 </div>
@@ -305,7 +305,7 @@ function TaskRunnerPage() {
                   <div className="mx-auto flex h-10 w-10 animate-pulse items-center justify-center rounded bg-[var(--color-accent-val)]/10">
                     <Send className="h-5 w-5 text-[var(--color-accent-val)]" />
                   </div>
-                  <p className="text-xs text-[--color-text-secondary]">Enqueuing task...</p>
+                  <p className="text-xs text-[var(--color-text-secondary)]">Enqueuing task...</p>
                 </div>
               </div>
             )}
@@ -313,35 +313,35 @@ function TaskRunnerPage() {
             {enqueueMutation.isSuccess && (
               <div className="flex flex-1 flex-col p-4">
                 <div className="flex items-center gap-2 rounded-lg border border-[var(--color-accent-val)]/20 bg-[var(--color-accent-val)]/5 p-3">
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-[--color-success]" />
-                  <span className="text-xs font-medium text-[--color-success]">Task enqueued successfully</span>
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-[var(--color-success)]" />
+                  <span className="text-xs font-medium text-[var(--color-success)]">Task enqueued successfully</span>
                 </div>
 
                 <div className="mt-4 space-y-1.5">
                   <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
+                    <span className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-muted)]">
                       Task ID
                     </span>
                     <Button
                       variant="ghost"
                       size="xs"
                       onClick={handleCopyTaskId}
-                      className={`h-5 text-[10px] transition-colors ${taskIdCopied ? "text-[var(--color-accent-light)]" : "text-[--color-text-secondary] hover:text-[--color-text-primary]"}`}
+                      className={`h-5 text-xs transition-colors ${taskIdCopied ? "text-[var(--color-accent-light)]" : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"}`}
                     >
                       {taskIdCopied ? <Check className="h-2.5 w-2.5" /> : <Copy className="h-2.5 w-2.5" />}
                       {taskIdCopied ? "Copied!" : "Copy"}
                     </Button>
                   </div>
-                  <pre className="rounded-lg border border-[--color-divider] bg-[--color-primary-contrast] p-3 font-mono text-xs text-[var(--color-accent-val)] select-all">
+                  <pre className="rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-contrast)] p-3 font-mono text-xs text-[var(--color-accent-val)] select-all">
                     {enqueueMutation.data.taskID}
                   </pre>
                 </div>
 
                 <div className="mt-4 space-y-1.5">
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
+                  <span className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-muted)]">
                     Details
                   </span>
-                  <pre className="rounded-lg border border-[--color-divider] bg-[--color-primary-contrast] p-3 font-mono text-[10px] leading-relaxed text-[--color-text-secondary]">
+                  <pre className="rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-contrast)] p-3 font-mono text-xs leading-relaxed text-[var(--color-text-secondary)]">
 {JSON.stringify(
   {
     taskID: enqueueMutation.data.taskID,
@@ -359,18 +359,18 @@ function TaskRunnerPage() {
 
             {enqueueMutation.isError && (
               <div className="flex flex-1 flex-col p-4">
-                <div className="flex items-center gap-2 rounded-lg border border-[--color-error]/20 bg-[--color-error]/5 p-3">
-                  <AlertTriangle className="h-4 w-4 shrink-0 text-[--color-error]" />
-                  <span className="text-xs font-medium text-[--color-error]">
+                <div className="flex items-center gap-2 rounded-lg border border-[var(--color-error)]/20 bg-[var(--color-error)]/5 p-3">
+                  <AlertTriangle className="h-4 w-4 shrink-0 text-[var(--color-error)]" />
+                  <span className="text-xs font-medium text-[var(--color-error)]">
                     Failed to enqueue task
                   </span>
                 </div>
 
                 <div className="mt-4 space-y-1.5">
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
+                  <span className="text-xs font-medium uppercase tracking-wider text-[var(--color-text-muted)]">
                     Error
                   </span>
-                  <pre className="rounded-lg border border-[--color-divider] bg-[--color-primary-contrast] p-3 font-mono text-xs text-[--color-error] whitespace-pre-wrap">
+                  <pre className="rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-contrast)] p-3 font-mono text-xs text-[var(--color-error)] whitespace-pre-wrap">
                     {enqueueMutation.error?.message}
                   </pre>
                 </div>
@@ -385,9 +385,9 @@ function TaskRunnerPage() {
 
 function Shortcut({ label, keys }: { label: string; keys: string }) {
   return (
-    <div className="flex items-center justify-between gap-4 text-[--color-text-muted]">
-      <span className="text-[10px]">{label}</span>
-      <kbd className="rounded border border-[--color-divider] bg-[--color-primary-light] px-1.5 py-0.5 font-mono text-[9px] text-[--color-text-secondary]">
+    <div className="flex items-center justify-between gap-4 text-[var(--color-text-muted)]">
+      <span className="text-xs">{label}</span>
+      <kbd className="rounded border border-[var(--color-divider)] bg-[var(--color-primary-light)] px-1.5 py-0.5 font-mono text-[9px] text-[var(--color-text-secondary)]">
         {keys}
       </kbd>
     </div>
