@@ -63,7 +63,7 @@ function TaskRunnerPage() {
     <div className="space-y-6">
       <PageHeader
         title="Task Runner"
-        description="Enqueue tasks manually \u2014 like Postman for asynq."
+        description="Enqueue tasks manually for testing and debugging."
       />
 
       <div className="grid gap-6 lg:grid-cols-2">
