@@ -187,7 +187,10 @@ function TasksPage() {
                     <div className="flex items-center justify-center py-16 text-sm text-[--color-text-secondary]">
                       <div className="text-center">
                         <ListChecks className="mx-auto mb-2 h-6 w-6 text-[--color-text-muted]" />
-                        <p>{`No ${s.label.toLowerCase()} tasks in "${currentQueue}"`}</p>
+                        <p>{`No ${s.value} tasks in "${currentQueue}"`}</p>
+                        {s.value === "completed" && (
+                          <p className="mt-1 text-[10px] text-[--color-text-muted]">Tasks require the Retention option to appear here</p>
+                        )}
                       </div>
                     </div>
                   ) : (

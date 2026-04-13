@@ -498,8 +498,11 @@ function TaskStateContent({
           <Skeleton className="h-48 rounded-lg" />
         </div>
       ) : tasks.length === 0 ? (
-        <div className="flex items-center justify-center py-16 text-sm text-[--color-text-secondary]">
-          {`No ${state} tasks`}
+        <div className="flex flex-col items-center justify-center gap-1 py-16 text-sm text-[--color-text-secondary]">
+          <p>{`No ${state} tasks`}</p>
+          {state === "completed" && (
+            <p className="text-[10px] text-[--color-text-muted]">Tasks require the Retention option to appear here</p>
+          )}
         </div>
       ) : (
         <>
