@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { PageHeader } from "@/components/environment/page-header";
 import { StatCard } from "@/components/environment/stat-card";
+import { RefreshIndicator } from "@/components/environment/refresh-indicator";
 import {
   useQueues,
   usePauseQueue,
@@ -64,7 +65,7 @@ function QueuesPage() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
   const environmentId = Number(id);
-  const { data, isLoading, isError, error } = useQueues(environmentId);
+  const { data, isLoading, isError, error, dataUpdatedAt, isFetching, refetch } = useQueues(environmentId);
   const pauseMutation = usePauseQueue(environmentId);
   const unpauseMutation = useUnpauseQueue(environmentId);
   const deleteMutation = useDeleteQueue(environmentId);
@@ -147,7 +148,9 @@ function QueuesPage() {
     <div className="p-4 space-y-4">
       <PageHeader
         title="Queues"
-        description="Manage and monitor task queues."
+        actions={
+          <RefreshIndicator intervalMs={5000} dataUpdatedAt={dataUpdatedAt} onRefresh={refetch} isFetching={isFetching} />
+        }
       />
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">

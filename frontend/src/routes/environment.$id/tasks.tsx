@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/environment/page-header";
+import { RefreshIndicator } from "@/components/environment/refresh-indicator";
 import {
   TASK_STATES,
   ROW_ACTIONS,
@@ -131,6 +132,14 @@ function TasksPage() {
         <PageHeader
           title="Tasks"
           description="Browse and manage tasks across queues."
+          actions={
+            <RefreshIndicator
+              intervalMs={5000}
+              dataUpdatedAt={taskList.dataUpdatedAt}
+              onRefresh={taskList.refetch}
+              isFetching={taskList.isFetching}
+            />
+          }
         />
 
         <div className="flex items-center gap-3">

@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { PageHeader } from "@/components/environment/page-header";
 import { StatCard } from "@/components/environment/stat-card";
+import { RefreshIndicator } from "@/components/environment/refresh-indicator";
 import { useDashboard } from "@/hooks/use-dashboard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -36,7 +37,7 @@ function formatBytes(bytes: number): string {
 function DashboardPage() {
   const { id } = Route.useParams();
   const navigate = useNavigate();
-  const { data, isLoading, isError, error } = useDashboard(Number(id));
+  const { data, isLoading, isError, error, dataUpdatedAt, isFetching, refetch } = useDashboard(Number(id));
 
   if (isLoading) {
     return (
@@ -80,7 +81,9 @@ function DashboardPage() {
     <div className="p-4 space-y-4">
       <PageHeader
         title="Dashboard"
-        description="Queue statistics and overview for this environment."
+        actions={
+          <RefreshIndicator intervalMs={5000} dataUpdatedAt={dataUpdatedAt} onRefresh={refetch} isFetching={isFetching} />
+        }
       />
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/environment/page-header";
+import { RefreshIndicator } from "@/components/environment/refresh-indicator";
 import { StatCard } from "@/components/environment/stat-card";
 import { useSchedulerEntries, useEnqueueEvents, useRunSchedulerEntry } from "@/hooks/use-schedulers";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -60,7 +61,7 @@ function tryFormatJSON(str: string): string {
 function SchedulersPage() {
   const { id } = Route.useParams();
   const environmentId = Number(id);
-  const { data, isLoading, isError, error } = useSchedulerEntries(environmentId);
+  const { data, isLoading, isError, error, dataUpdatedAt, isFetching, refetch } = useSchedulerEntries(environmentId);
   const runEntryMutation = useRunSchedulerEntry(environmentId);
   const [selectedEntry, setSelectedEntry] = useState<scheduler.SchedulerEntry | null>(null);
   const [eventsPage, setEventsPage] = useState(1);
@@ -126,7 +127,17 @@ function SchedulersPage() {
   return (
     <div className="p-4 space-y-4">
       <div className="space-y-6">
-        <PageHeader title="Schedulers" />
+        <PageHeader
+          title="Schedulers"
+          actions={
+            <RefreshIndicator
+              intervalMs={5000}
+              dataUpdatedAt={dataUpdatedAt}
+              onRefresh={refetch}
+              isFetching={isFetching}
+            />
+          }
+        />
 
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           <StatCard

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PageHeader } from "@/components/environment/page-header";
+import { RefreshIndicator } from "@/components/environment/refresh-indicator";
 import { StatCard } from "@/components/environment/stat-card";
 import {
   TASK_STATES,
@@ -92,7 +93,7 @@ function QueueDetailPage() {
   const navigate = useNavigate();
   const environmentId = Number(id);
 
-  const { data, isLoading, isError, error } = useQueueDetail(environmentId, queueName);
+  const { data, isLoading, isError, error, dataUpdatedAt, isFetching, refetch } = useQueueDetail(environmentId, queueName);
   const pauseMutation = usePauseQueue(environmentId);
   const unpauseMutation = useUnpauseQueue(environmentId);
   const deleteMutation = useDeleteQueue(environmentId);
@@ -241,6 +242,12 @@ function QueueDetailPage() {
               <Trash2 className="h-4 w-4" />
               Delete
             </Button>
+            <RefreshIndicator
+              intervalMs={5000}
+              dataUpdatedAt={dataUpdatedAt}
+              onRefresh={refetch}
+              isFetching={isFetching}
+            />
           </div>
         }
       />

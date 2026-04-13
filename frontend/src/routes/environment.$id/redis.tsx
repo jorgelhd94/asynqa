@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/environment/page-header";
+import { RefreshIndicator } from "@/components/environment/refresh-indicator";
 import { useRedisInfo } from "@/hooks/use-redis-info";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -28,7 +29,7 @@ export const Route = createFileRoute("/environment/$id/redis")({
 function RedisInfoPage() {
   const { id } = Route.useParams();
   const environmentId = Number(id);
-  const { data, isLoading, isError, error } = useRedisInfo(environmentId);
+  const { data, isLoading, isError, error, dataUpdatedAt, isFetching, refetch } = useRedisInfo(environmentId);
   const [showRaw, setShowRaw] = useState(false);
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
 
@@ -77,7 +78,7 @@ function RedisInfoPage() {
           title="Redis"
           description="Server information and statistics."
           actions={
-            <div className="flex gap-2">
+            <div className="flex items-center gap-2">
               <Button
                 variant={showRaw ? "outline" : "default"}
                 size="sm"
@@ -94,6 +95,12 @@ function RedisInfoPage() {
                 <Code className="h-4 w-4" />
                 Raw
               </Button>
+              <RefreshIndicator
+                intervalMs={10000}
+                dataUpdatedAt={dataUpdatedAt}
+                onRefresh={refetch}
+                isFetching={isFetching}
+              />
             </div>
           }
         />
