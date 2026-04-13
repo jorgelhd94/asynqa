@@ -144,7 +144,7 @@ function SchedulersPage() {
                 {entries.map((e) => (
                   <TableRow
                     key={e.id}
-                    className="border-[--color-divider] hover:bg-[--color-hover] cursor-pointer transition-colors"
+                    className="border-[--color-divider] hover:bg-[#2a2520] cursor-pointer transition-colors"
                     onClick={() => { setSelectedEntry(e); setEventsPage(1); }}
                   >
                     <TableCell className="font-mono text-xs text-[--color-text-secondary]">

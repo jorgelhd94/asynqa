@@ -104,7 +104,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                 {environments.map((env) => (
                   <DropdownMenuItem
                     key={env.ID}
-                    className={`gap-2 ${env.ID === environmentId ? "bg-[--color-primary-light]" : ""}`}
+                    className={`gap-2 hover:!bg-[#2a2520] ${env.ID === environmentId ? "bg-[#2a2520]" : ""}`}
                     onClick={() =>
                       navigate({
                         to: "/environment/$id/dashboard",

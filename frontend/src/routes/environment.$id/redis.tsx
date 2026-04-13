@@ -119,7 +119,7 @@ function RedisInfoPage() {
                 >
                   <button
                     onClick={() => toggleSection(section.name)}
-                    className="flex w-full items-center gap-2 px-4 py-3 text-left hover:bg-[--color-hover] transition-colors cursor-pointer"
+                    className="flex w-full items-center gap-2 px-4 py-3 text-left hover:bg-[#2a2520] transition-colors cursor-pointer"
                   >
                     {isCollapsed ? (
                       <ChevronRight className="h-4 w-4 text-[--color-text-secondary]" />
@@ -146,7 +146,7 @@ function RedisInfoPage() {
                         {section.entries.map((entry) => (
                           <TableRow
                             key={entry.key}
-                            className="border-[--color-divider] hover:bg-[--color-hover] transition-colors"
+                            className="border-[--color-divider] hover:bg-[#2a2520] transition-colors"
                           >
                             <TableCell className="font-mono text-xs text-[--color-text-secondary]">
                               {entry.key}
