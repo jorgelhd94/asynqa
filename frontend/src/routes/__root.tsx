@@ -9,11 +9,11 @@ export const Route = createRootRoute({
         theme="dark"
         position="bottom-right"
         options={{
-          fill: "#1e1b2e",
-          roundness: 16,
+          fill: "#1c1c1e",
+          roundness: 4,
           styles: {
-            title: "!text-[--color-black-50]",
-            description: "!text-[--color-black-300]",
+            title: "!text-[--color-text-primary]",
+            description: "!text-[--color-text-secondary]",
           },
         }}
       />

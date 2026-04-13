@@ -1,18 +1,24 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { PageHeader } from "@/components/environment/page-header";
 import { useEnqueueTask } from "@/hooks/use-task-runner";
 import { useQueues } from "@/hooks/use-queues";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertTriangle,
   CheckCircle2,
-  Play,
+  Clock,
+  Copy,
+  RefreshCw,
   RotateCcw,
+  Send,
+  Settings2,
+  Zap,
 } from "lucide-react";
 import { taskrunner } from "../../../wailsjs/go/models";
+import { sileo } from "sileo";
 
 export const Route = createFileRoute("/environment/$id/task-runner")({
   component: TaskRunnerPage,
@@ -26,15 +32,15 @@ function TaskRunnerPage() {
 
   const queueNames = (queuesData?.queues ?? []).map((q) => q.queue);
 
-  const [queue, setQueue] = useState("");
+  const [queue, setQueue] = useState("default");
   const [taskType, setTaskType] = useState("");
-  const [payload, setPayload] = useState("{}");
+  const [payload, setPayload] = useState("{\n  \n}");
   const [maxRetry, setMaxRetry] = useState("");
   const [timeoutSecs, setTimeoutSecs] = useState("");
   const [delaySecs, setDelaySecs] = useState("");
+  const [activeTab, setActiveTab] = useState("body");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     if (!taskType.trim()) return;
 
     const request = new taskrunner.EnqueueRequest({
@@ -50,195 +56,338 @@ function TaskRunnerPage() {
   };
 
   const handleReset = () => {
-    setQueue("");
+    setQueue("default");
     setTaskType("");
-    setPayload("{}");
+    setPayload("{\n  \n}");
     setMaxRetry("");
     setTimeoutSecs("");
     setDelaySecs("");
     enqueueMutation.reset();
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
+
+  const handleCopyTaskId = () => {
+    if (enqueueMutation.data?.taskID) {
+      navigator.clipboard.writeText(enqueueMutation.data.taskID);
+      sileo.success({ title: "Task ID copied" });
+    }
+  };
+
   return (
-    <div className="space-y-6">
-      <PageHeader
-        title="Task Runner"
-        description="Enqueue tasks manually for testing and debugging."
-      />
-
-      <div className="grid gap-6 lg:grid-cols-2">
-        {/* Request form */}
-        <div className="rounded-xl border border-[--color-black-800] bg-[--color-black-900]/60 backdrop-blur">
-          <div className="flex items-center justify-between border-b border-[--color-black-800] px-4 py-3">
-            <h2 className="text-sm font-semibold text-[--color-black-50]">Request</h2>
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={handleReset}
-              className="text-[--color-black-400] hover:text-[--color-black-50]"
+    <div data-full-bleed className="flex h-full flex-col" onKeyDown={handleKeyDown}>
+      {/* Top bar - Queue + Task Type + Send */}
+      <div className="flex items-center gap-0 border-b border-[--color-divider] bg-[--color-primary-bg]">
+        {/* Queue selector */}
+        <div className="flex items-center border-r border-[--color-divider]">
+          {queuesLoading ? (
+            <Skeleton className="m-2 h-8 w-28 rounded-md" />
+          ) : (
+            <select
+              value={queue}
+              onChange={(e) => setQueue(e.target.value)}
+              className="h-11 border-none bg-transparent px-4 text-xs font-semibold text-[--color-accent-light] outline-none cursor-pointer"
             >
-              <RotateCcw className="h-3 w-3" />
-              Reset
-            </Button>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-4 p-4">
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-[--color-black-300]">Queue</label>
-              {queuesLoading ? (
-                <Skeleton className="h-8 rounded-md" />
-              ) : (
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={queue}
-                    onChange={(e) => setQueue(e.target.value)}
-                    placeholder="default"
-                    className="h-8 flex-1 rounded-md border border-[--color-black-700] bg-[--color-black-900] px-3 text-xs text-[--color-black-50] placeholder:text-[--color-black-500] outline-none focus:border-[--color-electric-rose-400]"
-                    list="queue-list"
-                  />
-                  <datalist id="queue-list">
-                    {queueNames.map((q) => (
-                      <option key={q} value={q} />
-                    ))}
-                  </datalist>
-                </div>
-              )}
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-[--color-black-300]">
-                Task Type <span className="text-[--color-vibrant-coral-400]">*</span>
-              </label>
-              <input
-                type="text"
-                value={taskType}
-                onChange={(e) => setTaskType(e.target.value)}
-                placeholder="e.g. email:send"
-                required
-                className="h-8 w-full rounded-md border border-[--color-black-700] bg-[--color-black-900] px-3 text-xs text-[--color-black-50] placeholder:text-[--color-black-500] outline-none focus:border-[--color-electric-rose-400]"
-              />
-            </div>
-
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium text-[--color-black-300]">Payload (JSON)</label>
-              <textarea
-                value={payload}
-                onChange={(e) => setPayload(e.target.value)}
-                rows={6}
-                className="w-full rounded-md border border-[--color-black-700] bg-[--color-black-900] p-3 font-mono text-xs text-[--color-black-50] placeholder:text-[--color-black-500] outline-none focus:border-[--color-electric-rose-400] resize-y"
-              />
-            </div>
-
-            <div className="grid grid-cols-3 gap-3">
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[--color-black-300]">Max Retry</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={maxRetry}
-                  onChange={(e) => setMaxRetry(e.target.value)}
-                  placeholder="0"
-                  className="h-8 w-full rounded-md border border-[--color-black-700] bg-[--color-black-900] px-3 text-xs text-[--color-black-50] placeholder:text-[--color-black-500] outline-none focus:border-[--color-electric-rose-400]"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[--color-black-300]">Timeout (s)</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={timeoutSecs}
-                  onChange={(e) => setTimeoutSecs(e.target.value)}
-                  placeholder="0"
-                  className="h-8 w-full rounded-md border border-[--color-black-700] bg-[--color-black-900] px-3 text-xs text-[--color-black-50] placeholder:text-[--color-black-500] outline-none focus:border-[--color-electric-rose-400]"
-                />
-              </div>
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-[--color-black-300]">Delay (s)</label>
-                <input
-                  type="number"
-                  min="0"
-                  value={delaySecs}
-                  onChange={(e) => setDelaySecs(e.target.value)}
-                  placeholder="0"
-                  className="h-8 w-full rounded-md border border-[--color-black-700] bg-[--color-black-900] px-3 text-xs text-[--color-black-50] placeholder:text-[--color-black-500] outline-none focus:border-[--color-electric-rose-400]"
-                />
-              </div>
-            </div>
-
-            <Button
-              type="submit"
-              disabled={!taskType.trim() || enqueueMutation.isPending}
-              className="w-full bg-[--color-electric-rose-500] hover:bg-[--color-electric-rose-600] text-white font-semibold"
-            >
-              <Play className="h-4 w-4" />
-              {enqueueMutation.isPending ? "Enqueuing..." : "Enqueue Task"}
-            </Button>
-          </form>
+              <option value="default">default</option>
+              {queueNames
+                .filter((q) => q !== "default")
+                .map((q) => (
+                  <option key={q} value={q}>{q}</option>
+                ))}
+            </select>
+          )}
         </div>
 
-        {/* Response panel */}
-        <div className="rounded-xl border border-[--color-black-800] bg-[--color-black-900]/60 backdrop-blur">
-          <div className="flex items-center gap-2 border-b border-[--color-black-800] px-4 py-3">
-            <h2 className="text-sm font-semibold text-[--color-black-50]">Response</h2>
+        {/* Task type input */}
+        <div className="flex flex-1 items-center">
+          <input
+            type="text"
+            value={taskType}
+            onChange={(e) => setTaskType(e.target.value)}
+            placeholder="Enter task type... e.g. email:send, user:sync"
+            className="h-11 flex-1 border-none bg-transparent px-4 text-sm text-[--color-text-primary] placeholder:text-[--color-text-muted] outline-none"
+          />
+        </div>
+
+        {/* Send button */}
+        <div className="flex items-center gap-2 px-3">
+          <Button
+            onClick={handleSubmit}
+            disabled={!taskType.trim() || enqueueMutation.isPending}
+            className="bg-[--color-accent-val] hover:bg-[--color-accent-dark] text-white font-semibold gap-2 px-5"
+            size="sm"
+          >
+            <Send className="h-3.5 w-3.5" />
+            {enqueueMutation.isPending ? "Sending..." : "Send"}
+          </Button>
+          <span className="hidden text-[10px] text-[--color-text-muted] lg:block">Ctrl+Enter</span>
+        </div>
+      </div>
+
+      {/* Main content area */}
+      <div className="flex flex-1 overflow-hidden">
+        {/* Left panel - Editor */}
+        <div className="flex flex-1 flex-col border-r border-[--color-divider]">
+          {/* Tabs */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-1 flex-col">
+            <div className="border-b border-[--color-divider]">
+              <TabsList className="h-auto bg-transparent p-0 px-2">
+                <TabsTrigger
+                  value="body"
+                  className="gap-1.5 rounded-none border-b-2 border-transparent px-3 py-2 text-xs data-[state=active]:border-[--color-accent-val] data-[state=active]:bg-transparent data-[state=active]:text-[--color-accent]"
+                >
+                  <Zap className="h-3 w-3" />
+                  Body
+                </TabsTrigger>
+                <TabsTrigger
+                  value="options"
+                  className="gap-1.5 rounded-none border-b-2 border-transparent px-3 py-2 text-xs data-[state=active]:border-[--color-accent-val] data-[state=active]:bg-transparent data-[state=active]:text-[--color-accent]"
+                >
+                  <Settings2 className="h-3 w-3" />
+                  Options
+                  {(maxRetry || timeoutSecs || delaySecs) && (
+                    <span className="ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-[--color-accent-val]/20 text-[9px] text-[--color-accent]">
+                      {[maxRetry, timeoutSecs, delaySecs].filter(Boolean).length}
+                    </span>
+                  )}
+                </TabsTrigger>
+              </TabsList>
+            </div>
+
+            <TabsContent value="body" className="mt-0 flex-1 overflow-hidden">
+              <div className="flex h-full flex-col">
+                <div className="flex items-center justify-between border-b border-[--color-divider]/50 px-4 py-1.5">
+                  <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
+                    JSON Payload
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="xs"
+                    onClick={handleReset}
+                    className="h-6 text-[10px] text-[--color-text-secondary] hover:text-[--color-text-primary]"
+                  >
+                    <RotateCcw className="h-2.5 w-2.5" />
+                    Clear
+                  </Button>
+                </div>
+                <div className="relative flex-1">
+                  {/* Line numbers gutter */}
+                  <div className="absolute inset-y-0 left-0 flex w-10 flex-col border-r border-[--color-divider]/50 bg-[--color-primary-contrast]/50 pt-3 text-right">
+                    {payload.split("\n").map((_, i) => (
+                      <span
+                        key={i}
+                        className="px-2 font-mono text-[10px] leading-[20px] text-[--color-text-muted]"
+                      >
+                        {i + 1}
+                      </span>
+                    ))}
+                  </div>
+                  <textarea
+                    value={payload}
+                    onChange={(e) => setPayload(e.target.value)}
+                    spellCheck={false}
+                    className="h-full w-full resize-none border-none bg-transparent p-3 pl-14 font-mono text-xs leading-[20px] text-[--color-text-primary] outline-none"
+                  />
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="options" className="mt-0 flex-1 p-4">
+              <div className="space-y-5">
+                <p className="text-xs text-[--color-text-secondary]">
+                  Configure task processing options. Leave empty for defaults.
+                </p>
+
+                <div className="grid gap-4 sm:grid-cols-3">
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-1.5 text-xs font-medium text-[--color-text-secondary]">
+                      <RefreshCw className="h-3 w-3 text-[--color-text-muted]" />
+                      Max Retry
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={maxRetry}
+                      onChange={(e) => setMaxRetry(e.target.value)}
+                      placeholder="Default (25)"
+                      className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-xs text-[--color-text-primary] placeholder:text-[--color-text-muted] outline-none focus:border-[--color-accent-val] transition-colors"
+                    />
+                    <span className="text-[10px] text-[--color-text-muted]">
+                      Times to retry on failure
+                    </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-1.5 text-xs font-medium text-[--color-text-secondary]">
+                      <Clock className="h-3 w-3 text-[--color-text-muted]" />
+                      Timeout (seconds)
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={timeoutSecs}
+                      onChange={(e) => setTimeoutSecs(e.target.value)}
+                      placeholder="Default (1800)"
+                      className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-xs text-[--color-text-primary] placeholder:text-[--color-text-muted] outline-none focus:border-[--color-accent-val] transition-colors"
+                    />
+                    <span className="text-[10px] text-[--color-text-muted]">
+                      Max processing time
+                    </span>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="flex items-center gap-1.5 text-xs font-medium text-[--color-text-secondary]">
+                      <Zap className="h-3 w-3 text-[--color-text-muted]" />
+                      Delay (seconds)
+                    </label>
+                    <input
+                      type="number"
+                      min="0"
+                      value={delaySecs}
+                      onChange={(e) => setDelaySecs(e.target.value)}
+                      placeholder="0 (immediate)"
+                      className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-xs text-[--color-text-primary] placeholder:text-[--color-text-muted] outline-none focus:border-[--color-accent-val] transition-colors"
+                    />
+                    <span className="text-[10px] text-[--color-text-muted]">
+                      Seconds before processing
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+
+        {/* Right panel - Response */}
+        <div className="flex w-full flex-col lg:w-[400px]">
+          <div className="flex items-center gap-2 border-b border-[--color-divider] px-4 py-2">
+            <span className="text-xs font-semibold text-[--color-text-primary]">Response</span>
             {enqueueMutation.isSuccess && (
-              <Badge variant="outline" className="border-emerald-500 text-emerald-400 text-[10px]">
-                Success
+              <Badge variant="outline" className="border-[--color-accent-val] text-[--color-accent-light] text-[10px]">
+                200 OK
               </Badge>
             )}
             {enqueueMutation.isError && (
-              <Badge variant="outline" className="border-[--color-vibrant-coral-500] text-[--color-vibrant-coral-400] text-[10px]">
+              <Badge variant="outline" className="border-[--color-error] text-[--color-error] text-[10px]">
                 Error
               </Badge>
             )}
           </div>
 
-          <div className="p-4">
+          <div className="flex flex-1 flex-col">
             {enqueueMutation.isIdle && (
-              <div className="flex flex-col items-center justify-center py-12 text-center text-[--color-black-400]">
-                <Play className="mb-3 h-8 w-8 text-[--color-black-600]" />
-                <p className="text-sm">Send a request to see the response</p>
-                <p className="mt-1 text-xs">Fill in the form and click Enqueue Task</p>
+              <div className="flex flex-1 flex-col items-center justify-center gap-4 p-8 text-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[--color-primary-light]">
+                  <Send className="h-7 w-7 text-[--color-text-muted]" />
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-[--color-text-secondary]">Send Request</p>
+                  <p className="mt-1 text-xs text-[--color-text-muted]">
+                    Enter a task type and click Send
+                  </p>
+                </div>
+                <div className="space-y-1.5 pt-2">
+                  <Shortcut label="Send Request" keys="Ctrl + Enter" />
+                </div>
               </div>
             )}
 
             {enqueueMutation.isPending && (
-              <div className="flex items-center justify-center py-12">
-                <Skeleton className="h-16 w-full rounded-lg" />
+              <div className="flex flex-1 items-center justify-center p-8">
+                <div className="space-y-3 text-center">
+                  <div className="mx-auto flex h-10 w-10 animate-pulse items-center justify-center rounded bg-[--color-accent-val]/10">
+                    <Send className="h-5 w-5 text-[--color-accent]" />
+                  </div>
+                  <p className="text-xs text-[--color-text-secondary]">Enqueuing task...</p>
+                </div>
               </div>
             )}
 
             {enqueueMutation.isSuccess && (
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 rounded-lg border border-emerald-500/20 bg-emerald-500/5 p-3">
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" />
-                  <span className="text-sm text-emerald-400">Task enqueued successfully</span>
+              <div className="flex flex-1 flex-col p-4">
+                <div className="flex items-center gap-2 rounded-lg border border-[--color-accent-val]/20 bg-[--color-accent-val]/5 p-3">
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-[--color-accent-light]" />
+                  <span className="text-xs font-medium text-[--color-accent-light]">Task enqueued successfully</span>
                 </div>
-                <div className="space-y-2">
-                  <span className="text-xs font-semibold uppercase text-[--color-black-400]">
-                    Task ID
-                  </span>
-                  <pre className="rounded-lg border border-[--color-black-800] bg-[--color-black-900] p-3 font-mono text-xs text-[--color-electric-rose-300]">
+
+                <div className="mt-4 space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
+                      Task ID
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="xs"
+                      onClick={handleCopyTaskId}
+                      className="h-5 text-[10px] text-[--color-text-secondary] hover:text-[--color-text-primary]"
+                    >
+                      <Copy className="h-2.5 w-2.5" />
+                      Copy
+                    </Button>
+                  </div>
+                  <pre className="rounded-lg border border-[--color-divider] bg-[--color-primary-contrast] p-3 font-mono text-xs text-[--color-accent] select-all">
                     {enqueueMutation.data.taskID}
+                  </pre>
+                </div>
+
+                <div className="mt-4 space-y-1.5">
+                  <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
+                    Details
+                  </span>
+                  <pre className="rounded-lg border border-[--color-divider] bg-[--color-primary-contrast] p-3 font-mono text-[10px] leading-relaxed text-[--color-text-secondary]">
+{JSON.stringify(
+  {
+    taskID: enqueueMutation.data.taskID,
+    queue: queue.trim() || "default",
+    type: taskType.trim(),
+    status: "enqueued",
+  },
+  null,
+  2
+)}
                   </pre>
                 </div>
               </div>
             )}
 
             {enqueueMutation.isError && (
-              <div className="space-y-4">
-                <div className="flex items-center gap-2 rounded-lg border border-[--color-vibrant-coral-500]/20 bg-[--color-vibrant-coral-500]/5 p-3">
-                  <AlertTriangle className="h-4 w-4 shrink-0 text-[--color-vibrant-coral-400]" />
-                  <span className="text-sm text-[--color-vibrant-coral-400]">Failed to enqueue task</span>
+              <div className="flex flex-1 flex-col p-4">
+                <div className="flex items-center gap-2 rounded-lg border border-[--color-error]/20 bg-[--color-error]/5 p-3">
+                  <AlertTriangle className="h-4 w-4 shrink-0 text-[--color-error]" />
+                  <span className="text-xs font-medium text-[--color-error]">
+                    Failed to enqueue task
+                  </span>
                 </div>
-                <pre className="rounded-lg border border-[--color-black-800] bg-[--color-black-900] p-3 text-xs text-[--color-vibrant-coral-400]">
-                  {enqueueMutation.error?.message}
-                </pre>
+
+                <div className="mt-4 space-y-1.5">
+                  <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
+                    Error
+                  </span>
+                  <pre className="rounded-lg border border-[--color-divider] bg-[--color-primary-contrast] p-3 font-mono text-xs text-[--color-error] whitespace-pre-wrap">
+                    {enqueueMutation.error?.message}
+                  </pre>
+                </div>
               </div>
             )}
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+function Shortcut({ label, keys }: { label: string; keys: string }) {
+  return (
+    <div className="flex items-center justify-between gap-4 text-[--color-text-muted]">
+      <span className="text-[10px]">{label}</span>
+      <kbd className="rounded border border-[--color-divider] bg-[--color-primary-light] px-1.5 py-0.5 font-mono text-[9px] text-[--color-text-secondary]">
+        {keys}
+      </kbd>
     </div>
   );
 }

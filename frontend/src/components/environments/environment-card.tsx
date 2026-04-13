@@ -22,7 +22,7 @@ export function EnvironmentCard({
       role="button"
       tabIndex={connecting ? -1 : 0}
       aria-disabled={connecting}
-      className={`group relative overflow-hidden rounded-2xl border border-[--color-black-800] bg-[--color-black-900]/80 p-4 shadow-[0_12px_50px_-26px_rgba(0,0,0,0.65)] backdrop-blur transition ${connecting ? "pointer-events-none opacity-70" : "cursor-pointer hover:-translate-y-0.5 hover:border-[--color-electric-rose-400]/50 hover:bg-[--color-black-800]/70"} focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-electric-rose-400]`}
+      className={`group relative overflow-hidden border border-[--color-divider] bg-[--color-primary-light] p-4 transition-all ${connecting ? "pointer-events-none opacity-70" : "cursor-pointer hover:border-[--color-accent-val] hover:bg-[--color-accent-glow]"} focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-accent-val]`}
       onClick={() => !connecting && onSelect(env)}
       onKeyDown={(e) => {
         if (!connecting && (e.key === "Enter" || e.key === " ")) {
@@ -31,30 +31,33 @@ export function EnvironmentCard({
         }
       }}
     >
+      {/* Left accent bar */}
+      <div className="absolute left-0 top-0 h-full w-0.5 bg-[--color-divider] transition-colors group-hover:bg-[--color-accent-val]" />
+
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[--color-black-800] transition group-hover:bg-[--color-electric-rose-500]/15">
+          <div className="flex h-9 w-9 items-center justify-center bg-[--color-primary-dark] transition-colors group-hover:bg-[--color-accent-subtle]">
             {connecting ? (
-              <Loader2 className="h-5 w-5 animate-spin text-[--color-electric-rose-300]" />
+              <Loader2 className="h-5 w-5 animate-spin text-[--color-accent]" />
             ) : (
-              <Database className="h-5 w-5 text-[--color-electric-rose-300]" />
+              <Database className="h-5 w-5 text-[--color-text-muted] transition-colors group-hover:text-[--color-accent]" />
             )}
           </div>
           <div>
-            <div className="text-base font-semibold leading-tight text-[--color-black-50]">
+            <div className="text-base font-semibold leading-tight text-[--color-text-primary]">
               {env.Name}
             </div>
-            <div className="text-xs text-[--color-black-300]">
+            <div className="text-xs text-[--color-text-muted] transition-colors group-hover:text-[--color-text-secondary]">
               {connecting ? "Connecting..." : env.Host}
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 opacity-0 transition-opacity group-hover:opacity-100">
           <Button
             variant="ghost"
             size="icon-sm"
             aria-label={`Edit ${env.Name}`}
-            className="cursor-pointer text-[--color-black-400] hover:bg-[--color-black-700] hover:text-[--color-electric-rose-300] focus-visible:ring-[--color-electric-rose-400]"
+            className="text-[--color-text-muted] hover:bg-[--color-primary-dark] hover:text-[--color-accent] focus-visible:ring-[--color-accent-val]"
             onClick={(e) => {
               e.stopPropagation();
               onEdit(env);
@@ -66,7 +69,7 @@ export function EnvironmentCard({
             variant="ghost"
             size="icon-sm"
             aria-label={`Delete ${env.Name}`}
-            className="cursor-pointer text-[--color-black-400] hover:bg-[--color-vibrant-coral-500]/15 hover:text-[--color-vibrant-coral-400] focus-visible:ring-[--color-vibrant-coral-400]"
+            className="text-[--color-text-muted] hover:bg-[--color-error]/10 hover:text-[--color-error] focus-visible:ring-[--color-error]"
             onClick={(e) => {
               e.stopPropagation();
               onDelete(env);

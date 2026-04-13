@@ -40,23 +40,23 @@ function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="p-4 space-y-4">
         <PageHeader title="Dashboard" />
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
-            <Skeleton key={i} className="h-24 rounded-xl" />
+            <Skeleton key={i} className="h-24 rounded" />
           ))}
         </div>
-        <Skeleton className="h-64 rounded-xl" />
+        <Skeleton className="h-64 rounded" />
       </div>
     );
   }
 
   if (isError) {
     return (
-      <div className="space-y-6">
+      <div className="p-4 space-y-4">
         <PageHeader title="Dashboard" />
-        <div className="flex items-center gap-3 rounded-xl border border-[--color-vibrant-coral-500]/30 bg-[--color-vibrant-coral-500]/10 p-4 text-sm text-[--color-vibrant-coral-400]">
+        <div className="flex items-center gap-3 rounded border border-[--color-error]/30 bg-[--color-error]/10 p-4 text-sm text-[--color-error]">
           <AlertTriangle className="h-4 w-4 shrink-0" />
           <span>
             Failed to load dashboard data.{" "}
@@ -77,7 +77,7 @@ function DashboardPage() {
   const totalProcessed = queues.reduce((sum, q) => sum + q.processedTotal, 0);
 
   return (
-    <div className="space-y-6">
+    <div className="p-4 space-y-4">
       <PageHeader
         title="Dashboard"
         description="Queue statistics and overview for this environment."
@@ -94,51 +94,51 @@ function DashboardPage() {
           value={data?.totalTasks ?? 0}
           subtitle={`${data?.totalPending ?? 0} pending`}
           icon={Clock}
-          iconColor="text-[--color-dark-orange-400]"
+          iconColor="text-[--color-warning]"
         />
         <StatCard
           title="Processed"
           value={totalProcessed.toLocaleString()}
           subtitle={`${data?.totalActive ?? 0} active now`}
           icon={Zap}
-          iconColor="text-emerald-400"
+          iconColor="text-[--color-accent-light]"
         />
         <StatCard
           title="Failed"
           value={(data?.totalFailed ?? 0).toLocaleString()}
           subtitle={`${data?.serverCount ?? 0} worker(s)`}
           icon={AlertTriangle}
-          iconColor="text-[--color-vibrant-coral-400]"
+          iconColor="text-[--color-error]"
         />
       </div>
 
       {queues.length > 0 && (
-        <div className="rounded-xl border border-[--color-black-800] bg-[--color-black-900]/60 backdrop-blur">
-          <div className="flex items-center gap-2 border-b border-[--color-black-800] px-4 py-3">
-            <Activity className="h-4 w-4 text-[--color-electric-rose-300]" />
-            <h2 className="text-sm font-semibold text-[--color-black-50]">
+        <div className="rounded border border-[--color-divider] bg-[--color-primary-light]">
+          <div className="flex items-center gap-2 border-b border-[--color-divider] px-4 py-3">
+            <Activity className="h-4 w-4 text-[--color-accent]" />
+            <h2 className="text-sm font-semibold text-[--color-text-primary]">
               Queue Overview
             </h2>
           </div>
           <Table>
             <TableHeader>
-              <TableRow className="border-[--color-black-800] hover:bg-transparent">
-                <TableHead className="text-[--color-black-400]">Queue</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Size</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Pending</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Active</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Retry</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Archived</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Latency</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Memory</TableHead>
-                <TableHead className="text-right text-[--color-black-400]">Status</TableHead>
+              <TableRow className="border-[--color-divider] hover:bg-transparent">
+                <TableHead className="text-[--color-text-secondary]">Queue</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Size</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Pending</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Active</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Retry</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Archived</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Latency</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Memory</TableHead>
+                <TableHead className="text-right text-[--color-text-secondary]">Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {queues.map((q) => (
                 <TableRow
                   key={q.queue}
-                  className="border-[--color-black-800] hover:bg-[--color-black-800]/50 cursor-pointer"
+                  className="border-[--color-divider] hover:bg-[--color-hover] cursor-pointer transition-colors"
                   onClick={() =>
                     navigate({
                       to: "/environment/$id/queues/$queueName",
@@ -146,43 +146,43 @@ function DashboardPage() {
                     })
                   }
                 >
-                  <TableCell className="font-medium text-[--color-black-50]">
+                  <TableCell className="font-medium text-[--color-text-primary]">
                     {q.queue}
                   </TableCell>
-                  <TableCell className="text-right text-[--color-black-200]">
+                  <TableCell className="text-right text-[--color-text-secondary]">
                     {q.size}
                   </TableCell>
-                  <TableCell className="text-right text-[--color-black-200]">
+                  <TableCell className="text-right text-[--color-text-secondary]">
                     {q.pending}
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={q.active > 0 ? "text-emerald-400" : "text-[--color-black-200]"}>
+                    <span className={q.active > 0 ? "text-[--color-accent-light]" : "text-[--color-text-secondary]"}>
                       {q.active}
                     </span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={q.retry > 0 ? "text-[--color-dark-orange-400]" : "text-[--color-black-200]"}>
+                    <span className={q.retry > 0 ? "text-[--color-warning]" : "text-[--color-text-secondary]"}>
                       {q.retry}
                     </span>
                   </TableCell>
                   <TableCell className="text-right">
-                    <span className={q.archived > 0 ? "text-[--color-vibrant-coral-400]" : "text-[--color-black-200]"}>
+                    <span className={q.archived > 0 ? "text-[--color-error]" : "text-[--color-text-secondary]"}>
                       {q.archived}
                     </span>
                   </TableCell>
-                  <TableCell className="text-right text-[--color-black-200]">
+                  <TableCell className="text-right text-[--color-text-secondary]">
                     {q.latencyMs}ms
                   </TableCell>
-                  <TableCell className="text-right text-[--color-black-200]">
+                  <TableCell className="text-right text-[--color-text-secondary]">
                     {formatBytes(q.memoryUsage)}
                   </TableCell>
                   <TableCell className="text-right">
                     {q.paused ? (
-                      <Badge variant="outline" className="border-[--color-dark-orange-400] text-[--color-dark-orange-400]">
+                      <Badge variant="outline" className="border-[--color-warning] text-[--color-warning]">
                         Paused
                       </Badge>
                     ) : (
-                      <Badge variant="outline" className="border-emerald-500 text-emerald-400">
+                      <Badge variant="outline" className="border-[--color-accent-val] text-[--color-accent-light]">
                         Active
                       </Badge>
                     )}
@@ -195,9 +195,9 @@ function DashboardPage() {
       )}
 
       {queues.length === 0 && (
-        <div className="flex items-center justify-center rounded-xl border border-dashed border-[--color-black-700] py-16 text-sm text-[--color-black-400]">
+        <div className="flex items-center justify-center rounded border border-dashed border-[--color-divider] py-16 text-sm text-[--color-text-secondary]">
           <div className="text-center">
-            <Server className="mx-auto mb-2 h-8 w-8 text-[--color-black-600]" />
+            <Server className="mx-auto mb-2 h-8 w-8 text-[--color-text-muted]" />
             <p>No queues found in this environment.</p>
             <p className="mt-1 text-xs">Start an asynq worker to create queues.</p>
           </div>
@@ -205,8 +205,8 @@ function DashboardPage() {
       )}
 
       {(data?.history?.length ?? 0) > 0 && (
-        <div className="rounded-xl border border-[--color-black-800] bg-[--color-black-900]/60 p-4 backdrop-blur">
-          <h2 className="mb-3 text-sm font-semibold text-[--color-black-50]">
+        <div className="rounded border border-[--color-divider] bg-[--color-primary-light] p-4">
+          <h2 className="mb-3 text-sm font-semibold text-[--color-text-primary]">
             Processing History (last 14 days)
           </h2>
           <div className="grid grid-cols-7 gap-2 lg:grid-cols-14">
@@ -215,16 +215,16 @@ function DashboardPage() {
               .map((day) => (
                 <div
                   key={day.date}
-                  className="flex flex-col items-center gap-1 rounded-lg border border-[--color-black-800] bg-[--color-black-900]/40 p-2"
+                  className="flex flex-col items-center gap-1 rounded-lg border border-[--color-divider] bg-[--color-primary-bg] p-2"
                 >
-                  <span className="text-[10px] text-[--color-black-400]">
+                  <span className="text-[10px] text-[--color-text-secondary]">
                     {new Date(day.date).toLocaleDateString("en", { month: "short", day: "numeric" })}
                   </span>
-                  <span className="text-xs font-semibold text-emerald-400">
+                  <span className="text-xs font-semibold text-[--color-accent-light]">
                     {day.processed}
                   </span>
                   {day.failed > 0 && (
-                    <span className="text-[10px] text-[--color-vibrant-coral-400]">
+                    <span className="text-[10px] text-[--color-error]">
                       {day.failed} failed
                     </span>
                   )}
