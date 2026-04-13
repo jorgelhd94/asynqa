@@ -60,7 +60,8 @@ func main() {
 	workerService := worker.NewWorkerService(environmentStore)
 	schedulerService := scheduler.NewSchedulerService(environmentStore)
 	redisService := redispkg.NewRedisService(environmentStore)
-	taskRunnerService := taskrunner.NewTaskRunnerService(environmentStore)
+	requestStore := taskrunner.NewTaskRunnerRequestStore(db)
+	taskRunnerService := taskrunner.NewTaskRunnerService(environmentStore, requestStore)
 
 	err = wails.Run(&options.App{
 		Title:            appName,

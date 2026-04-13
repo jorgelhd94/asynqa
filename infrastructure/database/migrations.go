@@ -6,5 +6,5 @@ import (
 )
 
 func Automigrate(db *gorm.DB) error {
-	return db.AutoMigrate(&domain.Environment{})
+	return db.AutoMigrate(&domain.Environment{}, &domain.TaskRunnerRequest{})
 }

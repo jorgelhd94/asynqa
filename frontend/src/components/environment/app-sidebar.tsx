@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -20,9 +21,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Collapsible } from "radix-ui";
 import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import {
   CalendarClock,
+  ChevronRight,
   ChevronsUpDown,
   Database,
   Home,
@@ -30,11 +33,12 @@ import {
   LayoutDashboard,
   ListChecks,
   PanelLeft,
-  Send,
+  Plus,
   HardHat,
 } from "lucide-react";
 import { useEnvironment } from "@/hooks/use-environment";
 import { useEnvironments } from "@/hooks/use-environments";
+import { SidebarSavedRequests } from "./sidebar-saved-requests";
 
 const navItems = [
   { label: "Dashboard", icon: LayoutDashboard, to: "/environment/$id/dashboard" as const },
@@ -56,9 +60,15 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
   const navigate = useNavigate();
   const id = String(environmentId);
 
+  const [monitoringOpen, setMonitoringOpen] = useState(true);
+
   const isActive = (to: string) => {
     const resolved = to.replace("$id", id);
     return location.pathname.startsWith(resolved);
+  };
+
+  const isNewRequestActive = () => {
+    return location.pathname === `/environment/${id}/task-runner`;
   };
 
   return (
@@ -135,52 +145,69 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
         </SidebarMenu>
       </SidebarHeader>
 
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel className="text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
-            Monitoring
-          </SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {navItems.map((item) => (
-                <SidebarMenuItem key={item.to}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={isActive(item.to)}
-                    tooltip={item.label}
-                  >
-                    <Link to={item.to} params={{ id }}>
-                      <item.icon />
-                      <span>{item.label}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+      <SidebarContent className="flex flex-col">
+        {/* Collapsible Monitoring section */}
+        <Collapsible.Root open={monitoringOpen} onOpenChange={setMonitoringOpen}>
+          <SidebarGroup>
+            <Collapsible.Trigger asChild>
+              <SidebarGroupLabel className="text-xs uppercase tracking-wider text-[var(--color-text-muted)] cursor-pointer hover:text-[var(--color-text-secondary)]">
+                <span>Monitoring</span>
+                <ChevronRight
+                  className={`ml-auto h-3 w-3 transition-transform duration-200 ${monitoringOpen ? "rotate-90" : ""}`}
+                />
+              </SidebarGroupLabel>
+            </Collapsible.Trigger>
+            <Collapsible.Content>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {navItems.map((item) => (
+                    <SidebarMenuItem key={item.to}>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={isActive(item.to)}
+                        tooltip={item.label}
+                      >
+                        <Link to={item.to} params={{ id }}>
+                          <item.icon />
+                          <span>{item.label}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </Collapsible.Content>
+          </SidebarGroup>
+        </Collapsible.Root>
 
         <SidebarSeparator className="bg-[var(--color-divider)]" />
 
-        <SidebarGroup>
+        {/* Task Runner section - takes remaining space */}
+        <SidebarGroup className="flex min-h-0 flex-1 flex-col">
           <SidebarGroupLabel className="text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
             Task Runner
           </SidebarGroupLabel>
-          <SidebarGroupContent>
+          <SidebarGroupContent className="flex min-h-0 flex-1 flex-col">
+            {/* New Request button */}
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={isActive("/environment/$id/task-runner")}
-                  tooltip="Task Runner"
+                  isActive={isNewRequestActive()}
+                  tooltip="New Request"
                 >
                   <Link to="/environment/$id/task-runner" params={{ id }}>
-                    <Send />
+                    <Plus />
                     <span>New Request</span>
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
+
+            {/* Saved requests list - scrollable */}
+            <div className="mt-1 flex-1 overflow-y-auto">
+              <SidebarSavedRequests environmentId={environmentId} />
+            </div>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
