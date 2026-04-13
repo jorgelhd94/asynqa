@@ -79,7 +79,7 @@ function RedisInfoPage() {
           actions={
             <div className="flex gap-2">
               <Button
-                variant={showRaw ? "default" : "outline"}
+                variant={showRaw ? "outline" : "default"}
                 size="sm"
                 onClick={() => setShowRaw(false)}
               >
@@ -87,7 +87,7 @@ function RedisInfoPage() {
                 Structured
               </Button>
               <Button
-                variant={showRaw ? "outline" : "default"}
+                variant={showRaw ? "default" : "outline"}
                 size="sm"
                 onClick={() => setShowRaw(true)}
               >
