@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/environment/page-header";
 import { StatCard } from "@/components/environment/stat-card";
-import { useSchedulerEntries, useEnqueueEvents } from "@/hooks/use-schedulers";
+import { useSchedulerEntries, useEnqueueEvents, useRunSchedulerEntry } from "@/hooks/use-schedulers";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -27,7 +27,9 @@ import {
   CalendarClock,
   ChevronLeft,
   ChevronRight,
+  Play,
 } from "lucide-react";
+import { sileo } from "sileo";
 import type { scheduler } from "../../../wailsjs/go/models";
 
 export const Route = createFileRoute("/environment/$id/schedulers")({
@@ -59,6 +61,7 @@ function SchedulersPage() {
   const { id } = Route.useParams();
   const environmentId = Number(id);
   const { data, isLoading, isError, error } = useSchedulerEntries(environmentId);
+  const runEntryMutation = useRunSchedulerEntry(environmentId);
   const [selectedEntry, setSelectedEntry] = useState<scheduler.SchedulerEntry | null>(null);
   const [eventsPage, setEventsPage] = useState(1);
 
@@ -69,6 +72,21 @@ function SchedulersPage() {
     PAGE_SIZE,
     !!selectedEntry
   );
+
+  const handleRunNow = (entry: scheduler.SchedulerEntry, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    runEntryMutation.mutate(entry.id, {
+      onSuccess: (result) => {
+        sileo.success({
+          title: `Task "${entry.taskType}" enqueued`,
+          description: `Queue: ${result.queue} \u00b7 ID: ${result.taskID}`,
+        });
+      },
+      onError: (err) => {
+        sileo.error({ title: `Failed to enqueue: ${err.message}` });
+      },
+    });
+  };
 
   if (isLoading) {
     return (
@@ -108,10 +126,7 @@ function SchedulersPage() {
   return (
     <div className="p-4 space-y-4">
       <div className="space-y-6">
-        <PageHeader
-          title="Schedulers"
-          description="Periodic task entries and execution history."
-        />
+        <PageHeader title="Schedulers" />
 
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           <StatCard
@@ -138,31 +153,44 @@ function SchedulersPage() {
                   <TableHead className="text-[--color-text-secondary]">Task Type</TableHead>
                   <TableHead className="text-[--color-text-secondary]">Next Enqueue</TableHead>
                   <TableHead className="text-[--color-text-secondary]">Prev Enqueue</TableHead>
+                  <TableHead className="w-20" />
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {entries.map((e) => (
+                {entries.map((entry) => (
                   <TableRow
-                    key={e.id}
+                    key={entry.id}
                     className="border-[--color-divider] hover:bg-[#2a2520] cursor-pointer transition-colors"
-                    onClick={() => { setSelectedEntry(e); setEventsPage(1); }}
+                    onClick={() => { setSelectedEntry(entry); setEventsPage(1); }}
                   >
                     <TableCell className="font-mono text-xs text-[--color-text-secondary]">
-                      {e.id.slice(0, 8)}
+                      {entry.id.slice(0, 8)}
                     </TableCell>
                     <TableCell>
                       <Badge variant="secondary" className="font-mono text-[10px]">
-                        {e.spec}
+                        {entry.spec}
                       </Badge>
                     </TableCell>
                     <TableCell className="font-medium text-[--color-text-primary]">
-                      {e.taskType}
+                      {entry.taskType}
                     </TableCell>
                     <TableCell className="text-xs text-[--color-text-secondary]">
-                      {formatDate(e.nextEnqueueAt)}
+                      {formatDate(entry.nextEnqueueAt)}
                     </TableCell>
                     <TableCell className="text-xs text-[--color-text-secondary]">
-                      {formatDate(e.prevEnqueueAt)}
+                      {formatDate(entry.prevEnqueueAt)}
+                    </TableCell>
+                    <TableCell onClick={(e) => e.stopPropagation()}>
+                      <Button
+                        variant="outline"
+                        size="xs"
+                        disabled={runEntryMutation.isPending}
+                        onClick={(e) => handleRunNow(entry, e)}
+                        className="gap-1"
+                      >
+                        <Play className="h-3 w-3" />
+                        Run Now
+                      </Button>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -194,6 +222,19 @@ function SchedulersPage() {
                   <DetailRow label="Prev Enqueue" value={formatDate(selectedEntry.prevEnqueueAt)} />
                 </div>
 
+                <Separator className="bg-[--color-divider]" />
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={runEntryMutation.isPending}
+                  onClick={() => handleRunNow(selectedEntry)}
+                  className="w-full gap-2"
+                >
+                  <Play className="h-4 w-4" />
+                  {runEntryMutation.isPending ? "Enqueuing..." : "Run Now"}
+                </Button>
+
                 {selectedEntry.taskPayload && (
                   <>
                     <Separator className="bg-[--color-divider]" />
@@ -201,7 +242,7 @@ function SchedulersPage() {
                       <span className="text-xs font-semibold uppercase text-[--color-text-secondary]">
                         Payload
                       </span>
-                      <pre className="max-h-48 overflow-auto rounded-lg border border-[--color-divider] bg-[--color-primary-bg] p-3 text-xs text-[--color-text-secondary]">
+                      <pre className="max-h-48 overflow-auto rounded-lg border border-[--color-divider] bg-[--color-primary-bg] p-3 text-xs text-[--color-text-secondary] whitespace-pre-wrap break-words">
                         {tryFormatJSON(selectedEntry.taskPayload)}
                       </pre>
                     </div>
@@ -290,21 +331,17 @@ function DetailRow({
   label,
   value,
   mono,
-  children,
 }: {
   label: string;
   value?: string;
   mono?: boolean;
-  children?: React.ReactNode;
 }) {
   return (
     <div className="flex items-center justify-between gap-4">
       <span className="shrink-0 text-xs text-[--color-text-secondary]">{label}</span>
-      {children ?? (
-        <span className={`truncate text-right text-xs text-[--color-text-secondary] ${mono ? "font-mono" : ""}`}>
-          {value || "\u2014"}
-        </span>
-      )}
+      <span className={`truncate text-right text-xs text-[--color-text-secondary] ${mono ? "font-mono" : ""}`}>
+        {value || "\u2014"}
+      </span>
     </div>
   );
 }

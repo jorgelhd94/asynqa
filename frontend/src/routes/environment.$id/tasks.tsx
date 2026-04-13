@@ -187,7 +187,7 @@ function TasksPage() {
                     <div className="flex items-center justify-center py-16 text-sm text-[--color-text-secondary]">
                       <div className="text-center">
                         <ListChecks className="mx-auto mb-2 h-6 w-6 text-[--color-text-muted]" />
-                        <p>No {s.label.toLowerCase()} tasks in &ldquo;{currentQueue}&rdquo;</p>
+                        <p>{`No ${s.label.toLowerCase()} tasks in "${currentQueue}"`}</p>
                       </div>
                     </div>
                   ) : (

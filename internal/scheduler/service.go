@@ -72,6 +72,46 @@ func (s *SchedulerService) GetSchedulerEntries(environmentID uint) (SchedulersDa
 	return data, nil
 }
 
+func (s *SchedulerService) RunSchedulerEntry(environmentID uint, entryID string) (RunResult, error) {
+	env, err := s.environmentStore.FindByID(environmentID)
+	if err != nil {
+		return RunResult{}, fmt.Errorf("environment not found: %w", err)
+	}
+
+	inspector := asynq.NewInspector(shared.NewRedisOpts(env))
+	defer inspector.Close()
+
+	entries, err := inspector.SchedulerEntries()
+	if err != nil {
+		return RunResult{}, fmt.Errorf("failed to list scheduler entries: %w", err)
+	}
+
+	var found *asynq.SchedulerEntry
+	for _, e := range entries {
+		if e.ID == entryID {
+			found = e
+			break
+		}
+	}
+	if found == nil {
+		return RunResult{}, fmt.Errorf("scheduler entry %q not found", entryID)
+	}
+
+	if found.Task == nil {
+		return RunResult{}, fmt.Errorf("scheduler entry %q has no task", entryID)
+	}
+
+	client := asynq.NewClient(shared.NewRedisOpts(env))
+	defer client.Close()
+
+	info, err := client.Enqueue(found.Task, found.Opts...)
+	if err != nil {
+		return RunResult{}, fmt.Errorf("failed to enqueue task: %w", err)
+	}
+
+	return RunResult{TaskID: info.ID, Queue: info.Queue}, nil
+}
+
 func (s *SchedulerService) GetEnqueueEvents(environmentID uint, entryID string, page, pageSize int) (PaginatedEvents, error) {
 	inspector, err := s.newInspector(environmentID)
 	if err != nil {

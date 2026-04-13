@@ -9,3 +9,7 @@ export function GetEnqueueEvents(arg1, arg2, arg3, arg4) {
 export function GetSchedulerEntries(arg1) {
   return window['go']['scheduler']['SchedulerService']['GetSchedulerEntries'](arg1);
 }
+
+export function RunSchedulerEntry(arg1, arg2) {
+  return window['go']['scheduler']['SchedulerService']['RunSchedulerEntry'](arg1, arg2);
+}
