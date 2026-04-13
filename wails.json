@@ -1,12 +1,19 @@
 {
-"name": "asynqa",
+  "name": "asynqa",
   "outputfilename": "asynqa",
   "frontend:install": "npm install",
   "frontend:build": "npm run build",
   "frontend:dev:watcher": "npm run dev",
   "frontend:dev:serverUrl": "auto",
   "author": {
-    "name": "Jorge Luis Hernandez Duenas",
+    "name": "Jorge Luis Hernández Dueñas",
     "email": "jorgelhd94@gmail.com"
+  },
+  "info": {
+    "companyName": "AsynQA",
+    "productName": "AsynQA",
+    "productVersion": "0.0.1",
+    "copyright": "Copyright © 2026 Jorge Luis Hernández Dueñas",
+    "comments": "Desktop tool for managing asynq task queues"
   }
 }
