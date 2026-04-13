@@ -82,7 +82,7 @@ export function EnvironmentDialog({
   const isPending = createMutation.isPending || updateMutation.isPending;
 
   const inputClass =
-    "border-[--color-divider] bg-[--color-primary-dark] text-[--color-text-primary] placeholder:text-[--color-text-muted] focus:border-[--color-accent-val] focus:ring-[--color-accent-val]";
+    "border-[--color-divider] bg-[--color-primary-dark] text-[--color-text-primary] placeholder:text-[--color-text-muted] focus:border-[var(--color-accent-val)] focus:ring-[var(--color-accent-val)]";
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -217,7 +217,7 @@ export function EnvironmentDialog({
             Cancel
           </Button>
           <Button
-            className="bg-[--color-accent-val] text-white hover:bg-[--color-accent-dark]"
+            className="bg-[var(--color-accent-val)] text-white hover:bg-[var(--color-accent-dark)]"
             onClick={handleSubmit}
             disabled={isPending || !form.Name || !form.Host}
           >

@@ -10,7 +10,7 @@ export const AddEnvironmentButton = forwardRef<
     <Button
       ref={ref}
       variant="ghost"
-      className={`mt-2 w-full justify-center gap-2 border border-dashed border-[--color-divider] bg-[--color-primary-light] px-4 py-4 text-sm font-semibold text-[--color-text-secondary] transition hover:border-[--color-accent-val] hover:text-[--color-text-primary] hover:bg-[--color-accent-val]/10 ${className}`}
+      className={`mt-2 w-full justify-center gap-2 border border-dashed border-[--color-divider] bg-[--color-primary-light] px-4 py-4 text-sm font-semibold text-[--color-text-secondary] transition hover:border-[var(--color-accent-val)] hover:text-[--color-text-primary] hover:bg-[var(--color-accent-val)]/10 ${className}`}
       {...props}
     >
       <Plus className="h-4 w-4" />

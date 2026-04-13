@@ -118,7 +118,7 @@ function DashboardPage() {
       {queues.length > 0 && (
         <div className="rounded border border-[--color-divider] bg-[--color-primary-light]">
           <div className="flex items-center gap-2 border-b border-[--color-divider] px-4 py-3">
-            <Activity className="h-4 w-4 text-[--color-accent]" />
+            <Activity className="h-4 w-4 text-[var(--color-accent-val)]" />
             <h2 className="text-sm font-semibold text-[--color-text-primary]">
               Queue Overview
             </h2>
@@ -141,7 +141,7 @@ function DashboardPage() {
               {queues.map((q) => (
                 <TableRow
                   key={q.queue}
-                  className="border-[--color-divider] hover:bg-[#2a2520] cursor-pointer transition-colors"
+                  className="border-[--color-divider] hover:bg-[var(--color-row-hover)] cursor-pointer transition-colors"
                   onClick={() =>
                     navigate({
                       to: "/environment/$id/queues/$queueName",

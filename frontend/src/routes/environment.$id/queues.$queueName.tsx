@@ -315,7 +315,7 @@ function QueueDetailPage() {
       {/* Task browser */}
       <div className="rounded border border-[--color-divider] bg-[--color-primary-light]">
         <div className="flex items-center gap-2 border-b border-[--color-divider] px-4 py-3">
-          <Activity className="h-4 w-4 text-[--color-accent]" />
+          <Activity className="h-4 w-4 text-[var(--color-accent-val)]" />
           <h2 className="text-sm font-semibold text-[--color-text-primary]">Tasks</h2>
         </div>
 
@@ -542,7 +542,7 @@ function TaskStateContent({
               {sortTasksByDate(tasks, state).map((t) => (
                 <TableRow
                   key={t.id}
-                  className="border-[--color-divider] hover:bg-[#2a2520] cursor-pointer transition-colors"
+                  className="border-[--color-divider] hover:bg-[var(--color-row-hover)] cursor-pointer transition-colors"
                   onClick={() => onTaskSelect(t)}
                 >
                   <TableCell className="font-mono text-xs text-[--color-text-secondary]">

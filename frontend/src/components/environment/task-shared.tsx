@@ -21,7 +21,7 @@ export const TASK_STATES: { value: TaskState; label: string; color: string; acti
   { value: "scheduled", label: "Scheduled", color: "text-[--color-info]", activeColor: "border-[--color-info] text-[--color-info]" },
   { value: "retry", label: "Retry", color: "text-[--color-warning]", activeColor: "border-[--color-warning] text-[--color-warning]" },
   { value: "archived", label: "Archived", color: "text-[--color-error]", activeColor: "border-[--color-error] text-[--color-error]" },
-  { value: "completed", label: "Completed (retention)", color: "text-[--color-accent-val]", activeColor: "border-[--color-accent-val] text-[--color-accent-val]" },
+  { value: "completed", label: "Completed (retention)", color: "text-[var(--color-accent-val)]", activeColor: "border-[var(--color-accent-val)] text-[var(--color-accent-val)]" },
 ];
 
 export const TAB_COLORS: Record<TaskState, string> = {

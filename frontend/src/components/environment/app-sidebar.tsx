@@ -72,8 +72,8 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                   size="lg"
                   className="data-[state=open]:bg-[--color-primary-light]"
                 >
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-[--color-accent]/10">
-                    <Database className="h-3.5 w-3.5 text-[--color-accent]" />
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-[var(--color-accent-val)]/10">
+                    <Database className="h-3.5 w-3.5 text-[var(--color-accent-val)]" />
                   </div>
                   <div className="grid flex-1 text-left text-xs leading-tight">
                     {isLoading ? (
@@ -104,7 +104,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                 {environments.map((env) => (
                   <DropdownMenuItem
                     key={env.ID}
-                    className={`gap-2 hover:!bg-[#2a2520] ${env.ID === environmentId ? "bg-[#2a2520]" : ""}`}
+                    className={`gap-2 hover:!bg-[var(--color-row-hover)] ${env.ID === environmentId ? "bg-[var(--color-row-hover)]" : ""}`}
                     onClick={() =>
                       navigate({
                         to: "/environment/$id/dashboard",
@@ -112,7 +112,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                       })
                     }
                   >
-                    <Database className="h-3.5 w-3.5 text-[--color-accent]" />
+                    <Database className="h-3.5 w-3.5 text-[var(--color-accent-val)]" />
                     <div className="grid text-xs leading-tight">
                       <span className="font-medium text-[--color-text-primary]">{env.Name}</span>
                       <span className="text-[10px] text-[--color-text-muted]">

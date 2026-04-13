@@ -13,7 +13,7 @@ export function StatCard({
   value,
   subtitle,
   icon: Icon,
-  iconColor = "text-[--color-accent]",
+  iconColor = "text-[var(--color-accent-val)]",
 }: StatCardProps) {
   return (
     <div className="group border border-[--color-divider] bg-[--color-primary-light] p-3 transition-colors hover:bg-[--color-hover]">
@@ -21,7 +21,7 @@ export function StatCard({
         <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
           {title}
         </span>
-        <div className="flex h-6 w-6 items-center justify-center rounded bg-[--color-accent-glow]">
+        <div className="flex h-6 w-6 items-center justify-center rounded bg-[var(--color-accent-glow)]">
           <Icon className={`h-3.5 w-3.5 ${iconColor}`} />
         </div>
       </div>

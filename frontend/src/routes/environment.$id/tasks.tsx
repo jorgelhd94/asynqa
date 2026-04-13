@@ -150,7 +150,7 @@ function TasksPage() {
             <select
               value={currentQueue}
               onChange={(e) => handleQueueChange(e.target.value)}
-              className="h-8 rounded-md border border-[--color-divider] bg-[--color-primary-bg] px-3 text-xs text-[--color-text-primary] outline-none focus:border-[--color-accent-val] cursor-pointer"
+              className="h-8 rounded-md border border-[--color-divider] bg-[--color-primary-bg] px-3 text-xs text-[--color-text-primary] outline-none focus:border-[var(--color-accent-val)] cursor-pointer"
             >
               {queueNames.map((q) => (
                 <option key={q} value={q}>{q}</option>
@@ -239,7 +239,7 @@ function TasksPage() {
                           {sortTasksByDate(tasks, activeTab).map((t) => (
                             <TableRow
                               key={t.id}
-                              className="border-[--color-divider] hover:bg-[#2a2520] cursor-pointer transition-colors"
+                              className="border-[--color-divider] hover:bg-[var(--color-row-hover)] cursor-pointer transition-colors"
                               onClick={() => setSelectedTask(t)}
                             >
                               <TableCell className="font-mono text-xs text-[--color-text-secondary]">
