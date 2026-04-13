@@ -9,7 +9,7 @@ export function EnvironmentsHeader({ total }: EnvironmentsHeaderProps) {
         Saved environments
       </div>
       <div className="flex items-center gap-1 border border-[--color-divider] bg-[--color-primary-light] px-2 py-1 text-[11px] font-medium text-[--color-text-secondary]">
-        <span className="bg-[--color-accent-val]/15 px-2 py-0.5 text-[--color-accent]">
+        <span className="bg-[var(--color-accent-val)]/15 px-2 py-0.5">
           {total}
         </span>
         <span className="text-[--color-text-muted]">Total</span>

@@ -27,7 +27,7 @@ export function CodeBlock({
         </span>
         <button
           onClick={() => copy(content)}
-          className={`flex items-center gap-1 text-[10px] transition-colors ${copied ? "text-[--color-accent-light]" : "text-[--color-text-muted] hover:text-[--color-text-primary]"}`}
+          className={`flex items-center gap-1 text-[10px] transition-colors ${copied ? "text-[var(--color-accent-light)]" : "text-[--color-text-muted] hover:text-[--color-text-primary]"}`}
         >
           {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
           {copied ? "Copied!" : "Copy"}
@@ -83,7 +83,7 @@ function tokenize(json: string): Token[] {
 
     if (match[1] !== undefined) {
       // Key (string followed by colon)
-      tokens.push({ text: match[1], className: "text-[#d4a843]" }); // gold - keys
+      tokens.push({ text: match[1], className: "text-[var(--color-accent-val)]" }); // gold - keys
       // Capture the colon and whitespace after key
       const rest = match[0].slice(match[1].length);
       if (rest) tokens.push({ text: rest, className: "text-[--color-text-muted]" });

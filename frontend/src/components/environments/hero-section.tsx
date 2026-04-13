@@ -1,14 +1,18 @@
-import { CloudCog } from "lucide-react";
+import Logo from '/appicon.svg';
+
+function AppIcon({ className }: { className?: string }) {
+  return (
+    <img src={Logo} alt="AsynQA" className={className} />
+  );
+}
 
 export function HeroSection() {
   return (
     <header className="flex flex-col items-center gap-4 text-center">
-      <div className="flex h-16 w-16 items-center justify-center rounded border border-[--color-divider] bg-[--color-primary-light]">
-        <CloudCog className="h-8 w-8 text-[--color-accent]" />
-      </div>
+      <AppIcon className="h-16 w-16" />
       <div>
-        <div className="text-3xl font-semibold tracking-tight text-[--color-text-primary]">AsynQA</div>
-        <div className="mt-1 text-sm uppercase tracking-[0.12em] text-[--color-accent]">
+        <div className="text-3xl font-semibold tracking-tight text-[--color-text-primary]">Asyn<span className="text-[var(--color-accent-val)]">QA</span></div>
+        <div className="mt-1 text-sm uppercase tracking-[0.12em]">
           Golang Asynq Tool
         </div>
       </div>

@@ -144,14 +144,14 @@ function SchedulersPage() {
             title="Scheduler Entries"
             value={entries.length}
             icon={CalendarClock}
-            iconColor="text-[--color-accent]"
+            iconColor="text-[var(--color-accent-val)]"
           />
         </div>
 
         {entries.length > 0 ? (
           <div className="rounded border border-[--color-divider] bg-[--color-primary-light]">
             <div className="flex items-center gap-2 border-b border-[--color-divider] px-4 py-3">
-              <Activity className="h-4 w-4 text-[--color-accent]" />
+              <Activity className="h-4 w-4 text-[var(--color-accent-val)]" />
               <h2 className="text-sm font-semibold text-[--color-text-primary]">
                 Scheduler Entries
               </h2>
@@ -171,7 +171,7 @@ function SchedulersPage() {
                 {entries.map((entry) => (
                   <TableRow
                     key={entry.id}
-                    className="border-[--color-divider] hover:bg-[#2a2520] cursor-pointer transition-colors"
+                    className="border-[--color-divider] hover:bg-[var(--color-row-hover)] cursor-pointer transition-colors"
                     onClick={() => { setSelectedEntry(entry); setEventsPage(1); }}
                   >
                     <TableCell className="font-mono text-xs text-[--color-text-secondary]">

@@ -108,7 +108,7 @@ function RedisInfoPage() {
         {showRaw ? (
           <div className="rounded border border-[--color-divider] bg-[--color-primary-light]">
             <div className="flex items-center gap-2 border-b border-[--color-divider] px-4 py-3">
-              <Code className="h-4 w-4 text-[--color-accent]" />
+              <Code className="h-4 w-4 text-[var(--color-accent-val)]" />
               <h2 className="text-sm font-semibold text-[--color-text-primary]">Raw Output</h2>
             </div>
             <pre className="max-h-[70vh] overflow-auto p-4 font-mono text-xs text-[--color-text-secondary] leading-relaxed">
@@ -126,12 +126,12 @@ function RedisInfoPage() {
                 >
                   <button
                     onClick={() => toggleSection(section.name)}
-                    className="flex w-full items-center gap-2 px-4 py-3 text-left hover:bg-[#2a2520] transition-colors cursor-pointer"
+                    className="flex w-full items-center gap-2 px-4 py-3 text-left hover:bg-[var(--color-row-hover)] transition-colors cursor-pointer"
                   >
                     {isCollapsed ? (
                       <ChevronRight className="h-4 w-4 text-[--color-text-secondary]" />
                     ) : (
-                      <ChevronDown className="h-4 w-4 text-[--color-accent]" />
+                      <ChevronDown className="h-4 w-4 text-[var(--color-accent-val)]" />
                     )}
                     <h2 className="text-sm font-semibold text-[--color-text-primary]">
                       {section.name}
@@ -153,7 +153,7 @@ function RedisInfoPage() {
                         {section.entries.map((entry) => (
                           <TableRow
                             key={entry.key}
-                            className="border-[--color-divider] hover:bg-[#2a2520] transition-colors"
+                            className="border-[--color-divider] hover:bg-[var(--color-row-hover)] transition-colors"
                           >
                             <TableCell className="font-mono text-xs text-[--color-text-secondary]">
                               {entry.key}

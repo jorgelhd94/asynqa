@@ -18,8 +18,8 @@ export function StatusBar({ environmentId }: StatusBarProps) {
     <div className="flex h-7 shrink-0 items-center justify-between border-t border-[--color-divider] bg-[--color-primary-bg] px-3 text-[10px]">
       <div className="flex items-center gap-3">
         <div className="flex items-center gap-1.5">
-          <Circle className="h-2 w-2 fill-[--color-accent-val] text-[--color-accent-val]" />
-          <span className="font-semibold text-[--color-accent-light]">
+          <Circle className="h-2 w-2 fill-[var(--color-accent-val)] text-[var(--color-accent-val)]" />
+          <span className="font-semibold text-[var(--color-accent-light)]">
             {environment?.Name ?? "..."}
           </span>
         </div>
@@ -37,7 +37,7 @@ export function StatusBar({ environmentId }: StatusBarProps) {
           <span>Tasks: <span className="text-[--color-text-secondary]">{totalTasks}</span></span>
         </div>
         <div className="flex items-center gap-1 text-[--color-text-muted]">
-          <HardHat className="h-2.5 w-2.5 text-[--color-accent-val]" />
+          <HardHat className="h-2.5 w-2.5 text-[var(--color-accent-val)]" />
           <span>Workers: <span className="text-[--color-text-secondary]">{serverCount}</span></span>
         </div>
       </div>

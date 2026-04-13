@@ -22,7 +22,7 @@ export function EnvironmentCard({
       role="button"
       tabIndex={connecting ? -1 : 0}
       aria-disabled={connecting}
-      className={`group relative overflow-hidden border border-[--color-divider] bg-[--color-primary-light] p-4 transition-all ${connecting ? "pointer-events-none opacity-70" : "cursor-pointer hover:border-[#d4a843] hover:bg-[#2a2520]"} focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[--color-accent-val]`}
+      className={`group relative overflow-hidden border border-[--color-divider] bg-[--color-primary-light] p-4 transition-all ${connecting ? "pointer-events-none opacity-70" : "cursor-pointer hover:border-[var(--color-accent-val)] hover:bg-[var(--color-row-hover)]"} focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--color-accent-val)]`}
       onClick={() => !connecting && onSelect(env)}
       onKeyDown={(e) => {
         if (!connecting && (e.key === "Enter" || e.key === " ")) {
@@ -32,15 +32,15 @@ export function EnvironmentCard({
       }}
     >
       {/* Left accent bar */}
-      <div className="absolute left-0 top-0 h-full w-0.5 bg-[--color-divider] transition-colors group-hover:bg-[--color-accent-val]" />
+      <div className="absolute left-0 top-0 h-full w-0.5 bg-[--color-divider] transition-colors group-hover:bg-[var(--color-accent-val)]" />
 
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center bg-[--color-primary-dark] transition-colors group-hover:bg-[--color-accent-subtle]">
+          <div className="flex h-9 w-9 items-center justify-center bg-[--color-primary-dark] transition-colors group-hover:bg-[var(--color-accent-subtle)]">
             {connecting ? (
-              <Loader2 className="h-5 w-5 animate-spin text-[--color-accent]" />
+              <Loader2 className="h-5 w-5 animate-spin text-[var(--color-accent-val)]" />
             ) : (
-              <Database className="h-5 w-5 text-[--color-text-muted] transition-colors group-hover:text-[--color-accent]" />
+              <Database className="h-5 w-5 text-[--color-text-muted] transition-colors group-hover:text-[var(--color-accent-val)]" />
             )}
           </div>
           <div>
@@ -57,7 +57,7 @@ export function EnvironmentCard({
             variant="ghost"
             size="icon-sm"
             aria-label={`Edit ${env.Name}`}
-            className="text-[--color-text-muted] hover:bg-[--color-primary-dark] hover:text-[--color-accent] focus-visible:ring-[--color-accent-val]"
+            className="text-[--color-text-muted] hover:bg-[--color-primary-dark] hover:text-[var(--color-accent-val)] focus-visible:ring-[var(--color-accent-val)]"
             onClick={(e) => {
               e.stopPropagation();
               onEdit(env);
