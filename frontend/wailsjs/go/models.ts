@@ -516,6 +516,20 @@ export namespace scheduler {
 		    return a;
 		}
 	}
+	export class RunResult {
+	    taskID: string;
+	    queue: string;
+	
+	    static createFrom(source: any = {}) {
+	        return new RunResult(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.taskID = source["taskID"];
+	        this.queue = source["queue"];
+	    }
+	}
 	export class SchedulerEntry {
 	    id: string;
 	    spec: string;

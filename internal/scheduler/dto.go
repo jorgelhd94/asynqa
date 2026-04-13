@@ -19,6 +19,11 @@ type SchedulersData struct {
 	Entries []SchedulerEntry `json:"entries"`
 }
 
+type RunResult struct {
+	TaskID string `json:"taskID"`
+	Queue  string `json:"queue"`
+}
+
 type PaginatedEvents struct {
 	Events     []EnqueueEvent `json:"events"`
 	TotalCount int            `json:"totalCount"`

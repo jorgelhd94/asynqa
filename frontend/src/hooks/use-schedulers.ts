@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as SchedulerService from "../../wailsjs/go/scheduler/SchedulerService";
 
 export function useSchedulerEntries(environmentId: number) {
@@ -22,5 +22,18 @@ export function useEnqueueEvents(
       SchedulerService.GetEnqueueEvents(environmentId, entryId, page, pageSize),
     refetchInterval: 5000,
     enabled,
+  });
+}
+
+export function useRunSchedulerEntry(environmentId: number) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (entryId: string) =>
+      SchedulerService.RunSchedulerEntry(environmentId, entryId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["queues", environmentId] });
+      queryClient.invalidateQueries({ queryKey: ["dashboard", environmentId] });
+      queryClient.invalidateQueries({ queryKey: ["queue-tasks", environmentId] });
+    },
   });
 }

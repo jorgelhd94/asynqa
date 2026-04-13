@@ -499,7 +499,7 @@ function TaskStateContent({
         </div>
       ) : tasks.length === 0 ? (
         <div className="flex items-center justify-center py-16 text-sm text-[--color-text-secondary]">
-          No {state} tasks
+          {`No ${state} tasks`}
         </div>
       ) : (
         <>

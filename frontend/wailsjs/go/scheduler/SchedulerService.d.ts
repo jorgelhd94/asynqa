@@ -5,3 +5,5 @@ import {scheduler} from '../models';
 export function GetEnqueueEvents(arg1:number,arg2:string,arg3:number,arg4:number):Promise<scheduler.PaginatedEvents>;
 
 export function GetSchedulerEntries(arg1:number):Promise<scheduler.SchedulersData>;
+
+export function RunSchedulerEntry(arg1:number,arg2:string):Promise<scheduler.RunResult>;
