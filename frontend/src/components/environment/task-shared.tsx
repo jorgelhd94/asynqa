@@ -1,12 +1,10 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useClipboard } from "@/hooks/use-clipboard";
+import { CodeBlock } from "@/components/environment/code-block";
 import type { TaskState } from "@/hooks/use-queue-detail";
 import {
   Archive,
-  Check,
-  Copy,
   Play,
   Trash2,
   XCircle,
@@ -176,8 +174,6 @@ export function TaskDetailContent({
 }) {
   const state = task.state as TaskState;
   const actions = ROW_ACTIONS[state] ?? [];
-  const { copy: copyError, copied: errorCopied } = useClipboard();
-
   return (
     <div className="space-y-5 pt-4">
       <div className="space-y-3">
@@ -192,48 +188,26 @@ export function TaskDetailContent({
 
       <Separator className="bg-[--color-divider]" />
 
-      <div className="space-y-2">
-        <span className="text-xs font-semibold uppercase text-[--color-text-secondary]">Payload</span>
-        <pre className="max-h-48 overflow-auto rounded-lg border border-[--color-divider] bg-[--color-primary-bg] p-3 text-xs text-[--color-text-secondary] whitespace-pre-wrap break-words">
-          {task.payload ? tryFormatJSON(task.payload) : "\u2014"}
-        </pre>
-      </div>
+      {task.payload && (
+        <CodeBlock content={task.payload} label="Payload" />
+      )}
 
       {state === "completed" && task.result && (
         <>
           <Separator className="bg-[--color-divider]" />
-          <div className="space-y-2">
-            <span className="text-xs font-semibold uppercase text-[--color-text-secondary]">Result</span>
-            <pre className="max-h-48 overflow-auto rounded-lg border border-[--color-divider] bg-[--color-primary-bg] p-3 text-xs text-[--color-success] whitespace-pre-wrap break-words">
-              {tryFormatJSON(task.result)}
-            </pre>
-          </div>
+          <CodeBlock content={task.result} label="Result" variant="success" />
         </>
       )}
 
       {task.lastErr && (
         <>
           <Separator className="bg-[--color-divider]" />
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase text-[--color-text-secondary]">Last Error</span>
-              <button
-                onClick={() => copyError(task.lastErr)}
-                className={`flex items-center gap-1 text-[10px] transition-colors ${errorCopied ? "text-[--color-accent-light]" : "text-[--color-text-muted] hover:text-[--color-text-primary]"}`}
-              >
-                {errorCopied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                {errorCopied ? "Copied!" : "Copy"}
-              </button>
-            </div>
-            <pre className="max-h-40 overflow-y-auto rounded-lg border border-[--color-error]/20 bg-[--color-error]/5 p-3 text-xs text-[--color-error] whitespace-pre-wrap break-words">
-              {task.lastErr}
-            </pre>
-            {task.lastFailedAt && (
-              <span className="text-[10px] text-[--color-text-secondary]">
-                Failed at: {formatDate(task.lastFailedAt)}
-              </span>
-            )}
-          </div>
+          <CodeBlock content={task.lastErr} label="Last Error" variant="error" maxHeight="max-h-40" />
+          {task.lastFailedAt && (
+            <span className="text-[10px] text-[--color-text-secondary]">
+              Failed at: {formatDate(task.lastFailedAt)}
+            </span>
+          )}
         </>
       )}
 
