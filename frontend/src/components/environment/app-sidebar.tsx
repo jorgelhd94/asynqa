@@ -67,10 +67,6 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
     return location.pathname.startsWith(resolved);
   };
 
-  const isNewRequestActive = () => {
-    return location.pathname === `/environment/${id}/task-runner`;
-  };
-
   return (
     <Sidebar collapsible="icon" className="border-r border-[var(--color-divider)]">
       <SidebarHeader>
@@ -184,28 +180,22 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
 
         {/* Task Runner section - takes remaining space */}
         <SidebarGroup className="flex min-h-0 flex-1 flex-col">
-          <SidebarGroupLabel className="text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
-            Task Runner
-          </SidebarGroupLabel>
+          <div className="flex items-center justify-between px-2 py-1.5">
+            <span className="text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
+              Task Runner
+            </span>
+            <Link
+              to="/environment/$id/task-runner"
+              params={{ id }}
+              className="flex h-5 w-5 items-center justify-center rounded text-[var(--color-text-muted)] hover:bg-[var(--color-row-hover)] hover:text-[var(--color-text-secondary)]"
+              title="New Request"
+            >
+              <Plus className="h-3.5 w-3.5" />
+            </Link>
+          </div>
           <SidebarGroupContent className="flex min-h-0 flex-1 flex-col">
-            {/* New Request button */}
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton
-                  asChild
-                  isActive={isNewRequestActive()}
-                  tooltip="New Request"
-                >
-                  <Link to="/environment/$id/task-runner" params={{ id }}>
-                    <Plus />
-                    <span>New Request</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            </SidebarMenu>
-
             {/* Saved requests list - scrollable */}
-            <div className="mt-1 flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto">
               <SidebarSavedRequests environmentId={environmentId} />
             </div>
           </SidebarGroupContent>
