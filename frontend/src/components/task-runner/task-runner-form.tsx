@@ -4,10 +4,12 @@ import { useQueues } from "@/hooks/use-queues";
 import { useClipboard } from "@/hooks/use-clipboard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
+import { JsonEditor } from "@/components/task-runner/json-editor";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   AlertTriangle,
+  Braces,
   Check,
   CheckCircle2,
   Clock,
@@ -243,34 +245,34 @@ export function TaskRunnerForm({
                   <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
                     JSON Payload
                   </span>
-                  <Button
-                    variant="ghost"
-                    size="xs"
-                    onClick={handleReset}
-                    className="h-6 text-[10px] text-[--color-text-secondary] hover:text-[--color-text-primary]"
-                  >
-                    <RotateCcw className="h-2.5 w-2.5" />
-                    {initialValues ? "Reset" : "Clear"}
-                  </Button>
-                </div>
-                <div className="relative flex-1">
-                  <div className="absolute inset-y-0 left-0 flex w-10 flex-col border-r border-[--color-divider]/50 bg-[--color-primary-contrast]/50 pt-3 text-right">
-                    {payload.split("\n").map((_, i) => (
-                      <span
-                        key={i}
-                        className="px-2 font-mono text-[10px] leading-[20px] text-[--color-text-muted]"
-                      >
-                        {i + 1}
-                      </span>
-                    ))}
+                  <div className="flex items-center gap-1">
+                    <Button
+                      variant="ghost"
+                      size="xs"
+                      onClick={() => {
+                        try {
+                          setPayload(JSON.stringify(JSON.parse(payload), null, 2));
+                        } catch {
+                          // invalid JSON — do nothing
+                        }
+                      }}
+                      className="h-6 text-[10px] text-[--color-text-secondary] hover:text-[--color-text-primary]"
+                    >
+                      <Braces className="h-2.5 w-2.5" />
+                      Prettify
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="xs"
+                      onClick={handleReset}
+                      className="h-6 text-[10px] text-[--color-text-secondary] hover:text-[--color-text-primary]"
+                    >
+                      <RotateCcw className="h-2.5 w-2.5" />
+                      {initialValues ? "Reset" : "Clear"}
+                    </Button>
                   </div>
-                  <textarea
-                    value={payload}
-                    onChange={(e) => setPayload(e.target.value)}
-                    spellCheck={false}
-                    className="h-full w-full resize-none border-none bg-transparent p-3 pl-14 font-mono text-xs leading-[20px] text-[--color-text-primary] outline-none"
-                  />
                 </div>
+                <JsonEditor value={payload} onChange={setPayload} />
               </div>
             </TabsContent>
 
