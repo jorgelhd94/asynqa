@@ -7,7 +7,9 @@ import {
   ROW_ACTIONS,
   DATE_COLUMN_LABEL,
   TaskDetailContent,
+  SortableColumnHeader,
   type RowAction,
+  type SortDirection,
   formatDate,
   getDateFieldForState,
   sortTasksByDate,
@@ -89,6 +91,7 @@ function TasksPage() {
   const [selectedQueue, setSelectedQueue] = useState<string>("");
   const [activeTab, setActiveTab] = useState<TaskState>("pending");
   const [page, setPage] = useState(1);
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [selectedTask, setSelectedTask] = useState<queue.TaskInfo | null>(null);
 
   const currentQueue = selectedQueue || queueNames[0] || "";
@@ -107,6 +110,7 @@ function TasksPage() {
   const handleTabChange = (tab: string) => {
     setActiveTab(tab as TaskState);
     setPage(1);
+    setSortDirection("desc");
   };
 
   const handleQueueChange = (q: string) => {
@@ -221,7 +225,13 @@ function TasksPage() {
                             <TableHead className="text-[var(--color-text-secondary)]">Type</TableHead>
                             <TableHead className="text-[var(--color-text-secondary)]">Payload</TableHead>
                             {DATE_COLUMN_LABEL[activeTab] && (
-                              <TableHead className="text-[var(--color-text-secondary)]">{DATE_COLUMN_LABEL[activeTab]}</TableHead>
+                              <TableHead>
+                                <SortableColumnHeader
+                                  label={DATE_COLUMN_LABEL[activeTab]!}
+                                  direction={sortDirection}
+                                  onToggle={() => setSortDirection((d) => d === "desc" ? "asc" : "desc")}
+                                />
+                              </TableHead>
                             )}
                             {activeTab === "retry" && (
                               <TableHead className="text-[var(--color-text-secondary)]">Retries</TableHead>
@@ -236,7 +246,7 @@ function TasksPage() {
                           </TableRow>
                         </TableHeader>
                         <TableBody>
-                          {sortTasksByDate(tasks, activeTab).map((t) => (
+                          {sortTasksByDate(tasks, activeTab, sortDirection).map((t) => (
                             <TableRow
                               key={t.id}
                               className="border-[var(--color-divider)] hover:bg-[var(--color-row-hover)] cursor-pointer transition-colors"

@@ -5,6 +5,8 @@ import { CodeBlock } from "@/components/environment/code-block";
 import type { TaskState } from "@/hooks/use-queue-detail";
 import {
   Archive,
+  ArrowDown,
+  ArrowUp,
   Play,
   Trash2,
   XCircle,
@@ -43,13 +45,17 @@ export function getDateFieldForState(task: { lastFailedAt: string; nextProcessAt
   }
 }
 
+export type SortDirection = "asc" | "desc";
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function sortTasksByDate(tasks: any[], state: TaskState): any[] {
+export function sortTasksByDate(tasks: any[], state: TaskState, direction: SortDirection = "desc"): any[] {
   return [...tasks].sort((a, b) => {
     const dateA = getDateFieldForState(a, state);
     const dateB = getDateFieldForState(b, state);
     if (!dateA || !dateB) return 0;
-    return dateB.localeCompare(dateA);
+    return direction === "desc"
+      ? dateB.localeCompare(dateA)
+      : dateA.localeCompare(dateB);
   });
 }
 
@@ -125,6 +131,31 @@ export function getStateCount(info: queue.QueueInfo | undefined, state: TaskStat
 // ---------------------------------------------------------------------------
 // Components
 // ---------------------------------------------------------------------------
+
+export function SortableColumnHeader({
+  label,
+  direction,
+  onToggle,
+}: {
+  label: string;
+  direction: SortDirection;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className="inline-flex items-center gap-1 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors"
+    >
+      {label}
+      {direction === "desc" ? (
+        <ArrowDown className="h-3 w-3" />
+      ) : (
+        <ArrowUp className="h-3 w-3" />
+      )}
+    </button>
+  );
+}
 
 export function StateBadge({ state }: { state: TaskState }) {
   const styles: Record<TaskState, string> = {
