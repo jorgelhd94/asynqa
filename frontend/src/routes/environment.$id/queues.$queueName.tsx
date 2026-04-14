@@ -295,17 +295,15 @@ function QueueDetailPage() {
               .map((day) => (
                 <div
                   key={day.date}
-                  className="flex flex-col items-center gap-1 rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-bg)] p-2"
+                  className="flex flex-col items-center gap-1 rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-bg)] p-2 text-center"
                 >
                   <span className="text-xs text-[var(--color-text-secondary)]">
                     {new Date(day.date).toLocaleDateString("en", { month: "short", day: "numeric" })}
                   </span>
                   <span className="text-xs font-semibold text-[var(--color-success)]">{day.processed}</span>
-                  {day.failed > 0 && (
-                    <span className="text-xs text-[var(--color-error)]">
-                      {day.failed} failed
-                    </span>
-                  )}
+                  <span className="text-xs text-[var(--color-error)]">
+                    {day.failed > 0 ? `${day.failed} failed` : "\u00A0"}
+                  </span>
                 </div>
               ))}
           </div>
@@ -527,13 +525,13 @@ function TaskStateContent({
                   <TableHead className="text-[var(--color-text-secondary)]">{DATE_COLUMN_LABEL[state]}</TableHead>
                 )}
                 {state === "retry" && (
-                  <TableHead className="text-[var(--color-text-secondary)]">Retries</TableHead>
+                  <TableHead className="text-right text-[var(--color-text-secondary)]">Retries</TableHead>
                 )}
                 {(state === "retry" || state === "archived") && (
                   <TableHead className="text-[var(--color-text-secondary)]">Last Error</TableHead>
                 )}
                 {state === "active" && (
-                  <TableHead className="text-[var(--color-text-secondary)]">Status</TableHead>
+                  <TableHead className="text-center text-[var(--color-text-secondary)]">Status</TableHead>
                 )}
                 <TableHead className="w-10" />
               </TableRow>
@@ -560,7 +558,7 @@ function TaskStateContent({
                     </TableCell>
                   )}
                   {state === "retry" && (
-                    <TableCell className="text-xs">
+                    <TableCell className="text-right text-xs">
                       <span className="text-[var(--color-warning)]">
                         {t.retried}/{t.maxRetry}
                       </span>
@@ -572,7 +570,7 @@ function TaskStateContent({
                     </TableCell>
                   )}
                   {state === "active" && (
-                    <TableCell>
+                    <TableCell className="text-center">
                       {t.isOrphaned ? (
                         <Badge variant="outline" className="border-[var(--color-error)] text-[var(--color-error)] text-xs">
                           Orphaned
