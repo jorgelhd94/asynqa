@@ -8,12 +8,14 @@ import {
   ROW_ACTIONS,
   DATE_COLUMN_LABEL,
   TaskDetailContent,
+  SortableColumnHeader,
   formatBytes,
   formatDate,
   getDateFieldForState,
   sortTasksByDate,
   getStateCount,
   type RowAction,
+  type SortDirection,
 } from "@/components/environment/task-shared";
 import {
   useQueueDetail,
@@ -100,6 +102,7 @@ function QueueDetailPage() {
 
   const [activeTab, setActiveTab] = useState<TaskState>("pending");
   const [page, setPage] = useState(1);
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [selectedTask, setSelectedTask] = useState<queue.TaskInfo | null>(null);
   const [deleteQueueOpen, setDeleteQueueOpen] = useState(false);
   const [bulkAction, setBulkAction] = useState<{
@@ -126,6 +129,7 @@ function QueueDetailPage() {
   const handleTabChange = (tab: string) => {
     setActiveTab(tab as TaskState);
     setPage(1);
+    setSortDirection("desc");
   };
 
   const handleTogglePause = () => {
@@ -353,6 +357,8 @@ function QueueDetailPage() {
                 page={page}
                 totalPages={totalPages}
                 isLoading={taskList.isLoading}
+                sortDirection={sortDirection}
+                onToggleSort={() => setSortDirection((d) => d === "desc" ? "asc" : "desc")}
                 onPageChange={setPage}
                 onTaskAction={handleTaskAction}
                 onTaskSelect={setSelectedTask}
@@ -455,6 +461,8 @@ function TaskStateContent({
   page,
   totalPages,
   isLoading,
+  sortDirection,
+  onToggleSort,
   onPageChange,
   onTaskAction,
   onTaskSelect,
@@ -466,6 +474,8 @@ function TaskStateContent({
   page: number;
   totalPages: number;
   isLoading: boolean;
+  sortDirection: SortDirection;
+  onToggleSort: () => void;
   onPageChange: (p: number) => void;
   onTaskAction: (action: RowAction, taskID: string) => void;
   onTaskSelect: (task: queue.TaskInfo) => void;
@@ -522,7 +532,13 @@ function TaskStateContent({
                 <TableHead className="text-[var(--color-text-secondary)]">Type</TableHead>
                 <TableHead className="text-[var(--color-text-secondary)]">Payload</TableHead>
                 {DATE_COLUMN_LABEL[state] && (
-                  <TableHead className="text-[var(--color-text-secondary)]">{DATE_COLUMN_LABEL[state]}</TableHead>
+                  <TableHead>
+                    <SortableColumnHeader
+                      label={DATE_COLUMN_LABEL[state]!}
+                      direction={sortDirection}
+                      onToggle={onToggleSort}
+                    />
+                  </TableHead>
                 )}
                 {state === "retry" && (
                   <TableHead className="text-right text-[var(--color-text-secondary)]">Retries</TableHead>
@@ -537,7 +553,7 @@ function TaskStateContent({
               </TableRow>
             </TableHeader>
             <TableBody>
-              {sortTasksByDate(tasks, state).map((t) => (
+              {sortTasksByDate(tasks, state, sortDirection).map((t) => (
                 <TableRow
                   key={t.id}
                   className="border-[var(--color-divider)] hover:bg-[var(--color-row-hover)] cursor-pointer transition-colors"
