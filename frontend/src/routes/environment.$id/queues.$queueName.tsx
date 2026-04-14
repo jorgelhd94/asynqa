@@ -165,7 +165,10 @@ function QueueDetailPage() {
     const mutations = { run: runTask, delete: deleteTask, archive: archiveTask, cancel: cancelTask };
     const labels = { run: "queued", delete: "deleted", archive: "archived", cancel: "cancel signal sent" };
     mutations[action].mutate(taskID, {
-      onSuccess: () => sileo.success({ title: `Task ${labels[action]}` }),
+      onSuccess: () => {
+        sileo.success({ title: `Task ${labels[action]}` });
+        setSelectedTask(null);
+      },
       onError: (err) => sileo.error({ title: `Failed: ${err.message}` }),
     });
   };

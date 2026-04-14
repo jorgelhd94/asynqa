@@ -61,6 +61,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
   const id = String(environmentId);
 
   const [monitoringOpen, setMonitoringOpen] = useState(true);
+  const [newRequestDialogOpen, setNewRequestDialogOpen] = useState(false);
 
   const isActive = (to: string) => {
     const resolved = to.replace("$id", id);
@@ -184,19 +185,22 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
             <span className="text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
               Task Runner
             </span>
-            <Link
-              to="/environment/$id/task-runner"
-              params={{ id }}
+            <button
+              onClick={() => setNewRequestDialogOpen(true)}
               className="flex h-5 w-5 items-center justify-center rounded text-[var(--color-text-muted)] hover:bg-[var(--color-row-hover)] hover:text-[var(--color-text-secondary)]"
               title="New Request"
             >
               <Plus className="h-3.5 w-3.5" />
-            </Link>
+            </button>
           </div>
           <SidebarGroupContent className="flex min-h-0 flex-1 flex-col">
             {/* Saved requests list - scrollable */}
             <div className="flex-1 overflow-y-auto">
-              <SidebarSavedRequests environmentId={environmentId} />
+              <SidebarSavedRequests
+                environmentId={environmentId}
+                newDialogOpen={newRequestDialogOpen}
+                onNewDialogClose={() => setNewRequestDialogOpen(false)}
+              />
             </div>
           </SidebarGroupContent>
         </SidebarGroup>
