@@ -159,19 +159,27 @@
     font-family: 'JetBrains Mono', ui-monospace, monospace;
     font-size: 0.75rem;
     line-height: 20px;
-    min-height: 100%;
-    overflow: visible !important;
   }
   .json-editor textarea,
   .json-editor pre {
     outline: none !important;
-    min-height: 100% !important;
     word-break: break-all !important;
     overflow-wrap: break-word !important;
     white-space: pre-wrap !important;
+    padding-left: 3.5rem !important;
   }
-  .json-editor textarea {
-    overflow-y: auto !important;
+  .editor-line {
+    position: relative;
+  }
+  .line-number {
+    position: absolute;
+    left: -3rem;
+    width: 2.5rem;
+    text-align: right;
+    font-size: 10px;
+    color: var(--color-text-muted);
+    user-select: none;
+    pointer-events: none;
   }
   .token.property { color: var(--color-accent-light); }
   .token.string { color: var(--color-success); }
