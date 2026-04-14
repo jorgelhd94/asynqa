@@ -239,8 +239,8 @@ export function TaskRunnerForm({
               </TabsList>
             </div>
 
-            <TabsContent value="body" className="mt-0 flex-1 overflow-hidden">
-              <div className="flex h-full flex-col">
+            <TabsContent value="body" className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden">
+              <div className="flex min-h-0 flex-1 flex-col">
                 <div className="relative z-10 flex items-center justify-between border-b border-[--color-divider]/50 px-4 py-1.5">
                   <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
                     JSON Payload
