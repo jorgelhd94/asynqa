@@ -18,6 +18,7 @@ import { Route as EnvironmentIdTaskRunnerRouteImport } from './routes/environmen
 import { Route as EnvironmentIdSchedulersRouteImport } from './routes/environment.$id/schedulers'
 import { Route as EnvironmentIdRedisRouteImport } from './routes/environment.$id/redis'
 import { Route as EnvironmentIdDashboardRouteImport } from './routes/environment.$id/dashboard'
+import { Route as EnvironmentIdTaskRunnerIndexRouteImport } from './routes/environment.$id/task-runner.index'
 import { Route as EnvironmentIdQueuesIndexRouteImport } from './routes/environment.$id/queues.index'
 import { Route as EnvironmentIdTaskRunnerRequestIdRouteImport } from './routes/environment.$id/task-runner.$requestId'
 import { Route as EnvironmentIdQueuesQueueNameRouteImport } from './routes/environment.$id/queues.$queueName'
@@ -67,6 +68,12 @@ const EnvironmentIdDashboardRoute = EnvironmentIdDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => EnvironmentIdRoute,
 } as any)
+const EnvironmentIdTaskRunnerIndexRoute =
+  EnvironmentIdTaskRunnerIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => EnvironmentIdTaskRunnerRoute,
+  } as any)
 const EnvironmentIdQueuesIndexRoute =
   EnvironmentIdQueuesIndexRouteImport.update({
     id: '/queues/',
@@ -99,19 +106,20 @@ export interface FileRoutesByFullPath {
   '/environment/$id/queues/$queueName': typeof EnvironmentIdQueuesQueueNameRoute
   '/environment/$id/task-runner/$requestId': typeof EnvironmentIdTaskRunnerRequestIdRoute
   '/environment/$id/queues/': typeof EnvironmentIdQueuesIndexRoute
+  '/environment/$id/task-runner/': typeof EnvironmentIdTaskRunnerIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/environment/$id/dashboard': typeof EnvironmentIdDashboardRoute
   '/environment/$id/redis': typeof EnvironmentIdRedisRoute
   '/environment/$id/schedulers': typeof EnvironmentIdSchedulersRoute
-  '/environment/$id/task-runner': typeof EnvironmentIdTaskRunnerRouteWithChildren
   '/environment/$id/tasks': typeof EnvironmentIdTasksRoute
   '/environment/$id/workers': typeof EnvironmentIdWorkersRoute
   '/environment/$id': typeof EnvironmentIdIndexRoute
   '/environment/$id/queues/$queueName': typeof EnvironmentIdQueuesQueueNameRoute
   '/environment/$id/task-runner/$requestId': typeof EnvironmentIdTaskRunnerRequestIdRoute
   '/environment/$id/queues': typeof EnvironmentIdQueuesIndexRoute
+  '/environment/$id/task-runner': typeof EnvironmentIdTaskRunnerIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -127,6 +135,7 @@ export interface FileRoutesById {
   '/environment/$id/queues/$queueName': typeof EnvironmentIdQueuesQueueNameRoute
   '/environment/$id/task-runner/$requestId': typeof EnvironmentIdTaskRunnerRequestIdRoute
   '/environment/$id/queues/': typeof EnvironmentIdQueuesIndexRoute
+  '/environment/$id/task-runner/': typeof EnvironmentIdTaskRunnerIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -143,19 +152,20 @@ export interface FileRouteTypes {
     | '/environment/$id/queues/$queueName'
     | '/environment/$id/task-runner/$requestId'
     | '/environment/$id/queues/'
+    | '/environment/$id/task-runner/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/environment/$id/dashboard'
     | '/environment/$id/redis'
     | '/environment/$id/schedulers'
-    | '/environment/$id/task-runner'
     | '/environment/$id/tasks'
     | '/environment/$id/workers'
     | '/environment/$id'
     | '/environment/$id/queues/$queueName'
     | '/environment/$id/task-runner/$requestId'
     | '/environment/$id/queues'
+    | '/environment/$id/task-runner'
   id:
     | '__root__'
     | '/'
@@ -170,6 +180,7 @@ export interface FileRouteTypes {
     | '/environment/$id/queues/$queueName'
     | '/environment/$id/task-runner/$requestId'
     | '/environment/$id/queues/'
+    | '/environment/$id/task-runner/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -242,6 +253,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EnvironmentIdDashboardRouteImport
       parentRoute: typeof EnvironmentIdRoute
     }
+    '/environment/$id/task-runner/': {
+      id: '/environment/$id/task-runner/'
+      path: '/'
+      fullPath: '/environment/$id/task-runner/'
+      preLoaderRoute: typeof EnvironmentIdTaskRunnerIndexRouteImport
+      parentRoute: typeof EnvironmentIdTaskRunnerRoute
+    }
     '/environment/$id/queues/': {
       id: '/environment/$id/queues/'
       path: '/queues'
@@ -268,12 +286,14 @@ declare module '@tanstack/react-router' {
 
 interface EnvironmentIdTaskRunnerRouteChildren {
   EnvironmentIdTaskRunnerRequestIdRoute: typeof EnvironmentIdTaskRunnerRequestIdRoute
+  EnvironmentIdTaskRunnerIndexRoute: typeof EnvironmentIdTaskRunnerIndexRoute
 }
 
 const EnvironmentIdTaskRunnerRouteChildren: EnvironmentIdTaskRunnerRouteChildren =
   {
     EnvironmentIdTaskRunnerRequestIdRoute:
       EnvironmentIdTaskRunnerRequestIdRoute,
+    EnvironmentIdTaskRunnerIndexRoute: EnvironmentIdTaskRunnerIndexRoute,
   }
 
 const EnvironmentIdTaskRunnerRouteWithChildren =

@@ -18,6 +18,18 @@ declare module '@tanstack/react-router' {
 
 document.documentElement.classList.add("dark");
 
+// In Wails, modifier+click and middle-click on links open unwanted new windows.
+// Intercept these and prevent default browser behavior.
+document.addEventListener("auxclick", (e) => {
+  if ((e.target as HTMLElement).closest("a")) e.preventDefault();
+}, true);
+
+document.addEventListener("click", (e) => {
+  if ((e.ctrlKey || e.shiftKey || e.metaKey) && (e.target as HTMLElement).closest("a")) {
+    e.preventDefault();
+  }
+}, true);
+
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
