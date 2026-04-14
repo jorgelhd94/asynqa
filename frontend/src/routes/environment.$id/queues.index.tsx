@@ -202,7 +202,7 @@ function QueuesPage() {
                 <TableHead className="text-right text-[var(--color-text-secondary)]">Failed</TableHead>
                 <TableHead className="text-right text-[var(--color-text-secondary)]">Latency</TableHead>
                 <TableHead className="text-right text-[var(--color-text-secondary)]">Memory</TableHead>
-                <TableHead className="text-right text-[var(--color-text-secondary)]">Status</TableHead>
+                <TableHead className="text-center text-[var(--color-text-secondary)]">Status</TableHead>
                 <TableHead className="w-10" />
               </TableRow>
             </TableHeader>
@@ -259,7 +259,7 @@ function QueuesPage() {
                   <TableCell className="text-right text-[var(--color-text-secondary)]">
                     {formatBytes(q.memoryUsage)}
                   </TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="text-center">
                     {q.paused ? (
                       <Badge variant="outline" className="border-[var(--color-warning)] text-[var(--color-warning)]">
                         Paused
