@@ -11,13 +11,13 @@ function EnvironmentLayout() {
   const { id } = Route.useParams();
 
   return (
-    <SidebarProvider className="!min-h-screen">
+    <SidebarProvider className="min-h-screen!">
       <AppSidebar environmentId={Number(id)} />
       <SidebarInset className="flex flex-col">
+        <StatusBar environmentId={Number(id)} />
         <main className="flex flex-1 flex-col overflow-auto [&:has(>[data-full-bleed])]:overflow-hidden">
           <Outlet />
         </main>
-        <StatusBar environmentId={Number(id)} />
       </SidebarInset>
     </SidebarProvider>
   );

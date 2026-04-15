@@ -1,9 +1,29 @@
-.task
+# Build output
 bin
-frontend/dist
-frontend/node_modules
-build/linux/appimage/build
-build/windows/nsis/MicrosoftEdgeWebview2Setup.exe
-*.db
+build/bin
 *.exe
 *.syso
+
+# Frontend
+frontend/dist
+frontend/node_modules
+
+# Database
+*.db
+
+# Environment / secrets
+.env
+.env.*
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Wails / platform builds
+.task
+build/linux/appimage/build
+build/windows/nsis/MicrosoftEdgeWebview2Setup.exe
