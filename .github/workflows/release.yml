@@ -45,14 +45,17 @@ jobs:
             platform: windows/amd64
             output: asynqa.exe
             asset: asynqa_windows_amd64.zip
+            nsis: true
           - os: ubuntu-latest
             platform: linux/amd64
             output: asynqa
             asset: asynqa_linux_amd64.tar.gz
+            nsis: false
           - os: macos-latest
             platform: darwin/universal
             output: asynqa
             asset: asynqa_darwin_universal.tar.gz
+            nsis: false
 
     runs-on: ${{ matrix.os }}
 
@@ -80,19 +83,43 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev
 
+      - name: Install NSIS
+        if: matrix.nsis
+        run: choco install nsis -y
+        shell: pwsh
+
       - name: Build
         run: wails build -platform ${{ matrix.platform }} -ldflags "-X main.version=${{ needs.version.outputs.tag }}"
 
-      - name: Package (Windows)
+      - name: Build NSIS installer
+        if: matrix.nsis
+        run: wails build -platform ${{ matrix.platform }} -nsis -ldflags "-X main.version=${{ needs.version.outputs.tag }}"
+
+      - name: Package (Windows portable)
         if: runner.os == 'Windows'
         run: Compress-Archive -Path build/bin/${{ matrix.output }} -DestinationPath ${{ matrix.asset }}
         shell: pwsh
+
+      - name: Upload portable artifact
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset }}
+          path: ${{ matrix.asset }}
+
+      - name: Upload NSIS installer
+        if: matrix.nsis
+        uses: actions/upload-artifact@v4
+        with:
+          name: asynqa_windows_amd64_installer.exe
+          path: build/bin/*-amd64-installer.exe
 
       - name: Package (Linux/macOS)
         if: runner.os != 'Windows'
         run: tar -czf ${{ matrix.asset }} -C build/bin ${{ matrix.output }}
 
       - name: Upload artifact
+        if: runner.os != 'Windows'
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.asset }}
