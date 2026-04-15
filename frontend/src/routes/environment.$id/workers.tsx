@@ -71,7 +71,7 @@ function WorkersPage() {
       <div className="p-4 space-y-4">
         <div className="space-y-6">
           <PageHeader title="Workers" />
-          <div className="flex items-center gap-3 rounded border border-[var(--color-error)]/30 bg-[var(--color-error)]/10 p-4 text-sm text-[var(--color-error)]">
+          <div className="flex items-center gap-3 rounded border border-(--color-error)/30 bg-(--color-error)/10 p-4 text-sm text-(--color-error)">
             <AlertTriangle className="h-4 w-4 shrink-0" />
             <span>
               Failed to load worker data.{" "}
@@ -116,41 +116,41 @@ function WorkersPage() {
             value={data?.totalWorkers ?? 0}
             subtitle="processing tasks"
             icon={HardHat}
-            iconColor="text-[var(--color-success)]"
+            iconColor="text-(--color-success)"
           />
         </div>
 
         {servers.length > 0 ? (
-          <div className="rounded border border-[var(--color-divider)] bg-[var(--color-primary-light)]">
-            <div className="flex items-center gap-2 border-b border-[var(--color-divider)] px-4 py-3">
-              <Activity className="h-4 w-4 text-[var(--color-accent-val)]" />
-              <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">
+          <div className="rounded border border-(--color-divider) bg-(--color-primary-light)">
+            <div className="flex items-center gap-2 border-b border-(--color-divider) px-4 py-3">
+              <Activity className="h-4 w-4 text-(--color-accent-val)" />
+              <h2 className="text-sm font-semibold text-(--color-text-primary)">
                 Server Instances
               </h2>
             </div>
             <Table>
               <TableHeader>
-                <TableRow className="border-[var(--color-divider)] hover:bg-transparent">
-                  <TableHead className="text-[var(--color-text-secondary)]">Host</TableHead>
-                  <TableHead className="text-[var(--color-text-secondary)]">PID</TableHead>
-                  <TableHead className="text-[var(--color-text-secondary)]">Queues</TableHead>
-                  <TableHead className="text-right text-[var(--color-text-secondary)]">Concurrency</TableHead>
-                  <TableHead className="text-right text-[var(--color-text-secondary)]">Active</TableHead>
-                  <TableHead className="text-[var(--color-text-secondary)]">Started</TableHead>
-                  <TableHead className="text-right text-[var(--color-text-secondary)]">Status</TableHead>
+                <TableRow className="border-(--color-divider) hover:bg-transparent">
+                  <TableHead className="text-(--color-text-secondary)">Host</TableHead>
+                  <TableHead className="text-(--color-text-secondary)">PID</TableHead>
+                  <TableHead className="text-(--color-text-secondary)">Queues</TableHead>
+                  <TableHead className="text-right text-(--color-text-secondary)">Concurrency</TableHead>
+                  <TableHead className="text-right text-(--color-text-secondary)">Active</TableHead>
+                  <TableHead className="text-(--color-text-secondary)">Started</TableHead>
+                  <TableHead className="text-right text-(--color-text-secondary)">Status</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {servers.map((srv) => (
                   <TableRow
                     key={srv.id}
-                    className="border-[var(--color-divider)] hover:bg-[var(--color-row-hover)] cursor-pointer transition-colors"
+                    className="border-(--color-divider) hover:bg-(--color-row-hover) cursor-pointer transition-colors"
                     onClick={() => setSelectedServer(srv)}
                   >
-                    <TableCell className="font-medium text-[var(--color-text-primary)]">
+                    <TableCell className="font-medium text-(--color-text-primary)">
                       {srv.host}
                     </TableCell>
-                    <TableCell className="font-mono text-xs text-[var(--color-text-secondary)]">
+                    <TableCell className="font-mono text-xs text-(--color-text-secondary)">
                       {srv.pid}
                     </TableCell>
                     <TableCell>
@@ -162,15 +162,15 @@ function WorkersPage() {
                         ))}
                       </div>
                     </TableCell>
-                    <TableCell className="text-right text-[var(--color-text-secondary)]">
+                    <TableCell className="text-right text-(--color-text-secondary)">
                       {srv.concurrency}
                     </TableCell>
                     <TableCell className="text-right">
-                      <span className={(srv.activeWorkers?.length ?? 0) > 0 ? "text-[var(--color-success)]" : "text-[var(--color-text-secondary)]"}>
+                      <span className={(srv.activeWorkers?.length ?? 0) > 0 ? "text-(--color-success)" : "text-(--color-text-secondary)"}>
                         {srv.activeWorkers?.length ?? 0}
                       </span>
                     </TableCell>
-                    <TableCell className="text-xs text-[var(--color-text-secondary)]">
+                    <TableCell className="text-xs text-(--color-text-secondary)">
                       {formatDate(srv.started)}
                     </TableCell>
                     <TableCell className="text-right">
@@ -178,8 +178,8 @@ function WorkersPage() {
                         variant="outline"
                         className={
                           srv.status === "active"
-                            ? "border-[var(--color-success)] text-[var(--color-success)]"
-                            : "border-[var(--color-warning)] text-[var(--color-warning)]"
+                            ? "border-(--color-success) text-(--color-success)"
+                            : "border-(--color-warning) text-(--color-warning)"
                         }
                       >
                         {srv.status}
@@ -191,9 +191,9 @@ function WorkersPage() {
             </Table>
           </div>
         ) : (
-          <div className="flex items-center justify-center rounded border border-dashed border-[var(--color-divider)] py-16 text-sm text-[var(--color-text-secondary)]">
+          <div className="flex items-center justify-center rounded border border-dashed border-(--color-divider) py-16 text-sm text-(--color-text-secondary)">
             <div className="text-center">
-              <Server className="mx-auto mb-2 h-8 w-8 text-[var(--color-text-muted)]" />
+              <Server className="mx-auto mb-2 h-8 w-8 text-(--color-text-muted)" />
               <p>No worker servers connected.</p>
               <p className="mt-1 text-xs">Start an asynq worker to see servers here.</p>
             </div>
@@ -217,8 +217,8 @@ function WorkersPage() {
                       variant="outline"
                       className={
                         selectedServer.status === "active"
-                          ? "border-[var(--color-success)] text-[var(--color-success)]"
-                          : "border-[var(--color-warning)] text-[var(--color-warning)]"
+                          ? "border-(--color-success) text-(--color-success)"
+                          : "border-(--color-warning) text-(--color-warning)"
                       }
                     >
                       {selectedServer.status}
@@ -228,10 +228,10 @@ function WorkersPage() {
                   <DetailRow label="Strict Priority" value={selectedServer.strictPriority ? "Yes" : "No"} />
                 </div>
 
-                <Separator className="bg-[var(--color-divider)]" />
+                <Separator className="bg-(--color-divider)" />
 
                 <div className="space-y-2">
-                  <span className="text-xs font-semibold uppercase text-[var(--color-text-secondary)]">
+                  <span className="text-xs font-semibold uppercase text-(--color-text-secondary)">
                     Queues
                   </span>
                   <div className="flex flex-wrap gap-1.5">
@@ -241,10 +241,10 @@ function WorkersPage() {
                   </div>
                 </div>
 
-                <Separator className="bg-[var(--color-divider)]" />
+                <Separator className="bg-(--color-divider)" />
 
                 <div className="space-y-2">
-                  <span className="text-xs font-semibold uppercase text-[var(--color-text-secondary)]">
+                  <span className="text-xs font-semibold uppercase text-(--color-text-secondary)">
                     Active Workers ({selectedServer.activeWorkers?.length ?? 0})
                   </span>
                   {(selectedServer.activeWorkers?.length ?? 0) > 0 ? (
@@ -252,23 +252,23 @@ function WorkersPage() {
                       {selectedServer.activeWorkers.map((w) => (
                         <div
                           key={w.taskID}
-                          className="rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-bg)] p-3 space-y-1.5"
+                          className="rounded-lg border border-(--color-divider) bg-(--color-primary-bg) p-3 space-y-1.5"
                         >
                           <div className="flex items-center justify-between">
-                            <span className="text-xs font-medium text-[var(--color-text-primary)]">{w.type}</span>
+                            <span className="text-xs font-medium text-(--color-text-primary)">{w.type}</span>
                             <Badge variant="secondary" className="text-xs">{w.queue}</Badge>
                           </div>
-                          <div className="font-mono text-xs text-[var(--color-text-secondary)] truncate">
+                          <div className="font-mono text-xs text-(--color-text-secondary) truncate">
                             {w.taskID}
                           </div>
-                          <div className="text-xs text-[var(--color-text-secondary)]">
+                          <div className="text-xs text-(--color-text-secondary)">
                             Started: {formatDate(w.started)}
                           </div>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <p className="text-xs text-[var(--color-text-secondary)]">No active workers</p>
+                    <p className="text-xs text-(--color-text-secondary)">No active workers</p>
                   )}
                 </div>
               </div>
@@ -293,9 +293,9 @@ function DetailRow({
 }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <span className="shrink-0 text-xs text-[var(--color-text-secondary)]">{label}</span>
+      <span className="shrink-0 text-xs text-(--color-text-secondary)">{label}</span>
       {children ?? (
-        <span className={`truncate text-right text-xs text-[var(--color-text-secondary)] ${mono ? "font-mono" : ""}`}>
+        <span className={`truncate text-right text-xs text-(--color-text-secondary) ${mono ? "font-mono" : ""}`}>
           {value || "\u2014"}
         </span>
       )}

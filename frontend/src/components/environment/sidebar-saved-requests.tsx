@@ -188,7 +188,7 @@ export function SidebarSavedRequests({ environmentId, newDialogOpen, onNewDialog
                     if (e.key === "Enter") handleConfirmRename();
                     if (e.key === "Escape") setRenamingId(null);
                   }}
-                  className="h-7 w-full rounded border border-[var(--color-accent-val)] bg-[--color-primary-bg] px-2 text-xs text-[--color-text-primary] outline-none"
+                  className="h-7 w-full rounded border border-(--color-accent-val) bg-[--color-primary-bg] px-2 text-xs text-[--color-text-primary] outline-none"
                 />
               </div>
             ) : (
@@ -267,7 +267,7 @@ export function SidebarSavedRequests({ environmentId, newDialogOpen, onNewDialog
             onKeyDown={(e) => {
               if (e.key === "Enter" && newName.trim()) handleConfirmNew();
             }}
-            className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-sm text-[--color-text-primary] outline-none focus:border-[var(--color-accent-val)] transition-colors"
+            className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-sm text-[--color-text-primary] outline-none focus:border-(--color-accent-val) transition-colors"
           />
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -296,7 +296,7 @@ export function SidebarSavedRequests({ environmentId, newDialogOpen, onNewDialog
             onKeyDown={(e) => {
               if (e.key === "Enter" && cloneValue.trim()) handleConfirmClone();
             }}
-            className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-sm text-[--color-text-primary] outline-none focus:border-[var(--color-accent-val)] transition-colors"
+            className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-sm text-[--color-text-primary] outline-none focus:border-(--color-accent-val) transition-colors"
           />
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>

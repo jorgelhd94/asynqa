@@ -22,23 +22,23 @@ export function CodeBlock({
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <span className="text-xs font-semibold uppercase text-[var(--color-text-secondary)]">
+        <span className="text-xs font-semibold uppercase text-(--color-text-secondary)">
           {label}
         </span>
         <button
           onClick={() => copy(content)}
-          className={`flex items-center gap-1 text-xs transition-colors ${copied ? "text-[var(--color-accent-light)]" : "text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)]"}`}
+          className={`flex items-center gap-1 text-xs transition-colors ${copied ? "text-(--color-accent-light)" : "text-(--color-text-muted) hover:text-(--color-text-primary)"}`}
         >
           {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
           {copied ? "Copied!" : "Copy"}
         </button>
       </div>
       <pre
-        className={`${maxHeight} overflow-auto rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-bg)] p-3 text-xs whitespace-pre-wrap break-words ${
+        className={`${maxHeight} overflow-auto rounded-lg border border-(--color-divider) bg-(--color-primary-bg) p-3 text-xs whitespace-pre-wrap break-words ${
           variant === "success"
-            ? "text-[var(--color-success)]"
+            ? "text-(--color-success)"
             : variant === "error"
-              ? "text-[var(--color-error)]"
+              ? "text-(--color-error)"
               : ""
         }`}
       >
@@ -83,10 +83,10 @@ function tokenize(json: string): Token[] {
 
     if (match[1] !== undefined) {
       // Key (string followed by colon)
-      tokens.push({ text: match[1], className: "text-[var(--color-accent-val)]" }); // gold - keys
+      tokens.push({ text: match[1], className: "text-(--color-accent-val)" }); // gold - keys
       // Capture the colon and whitespace after key
       const rest = match[0].slice(match[1].length);
-      if (rest) tokens.push({ text: rest, className: "text-[var(--color-text-muted)]" });
+      if (rest) tokens.push({ text: rest, className: "text-(--color-text-muted)" });
     } else if (match[2] !== undefined) {
       // String value
       tokens.push({ text: match[2], className: "text-[#10b981]" }); // green - strings
@@ -101,10 +101,10 @@ function tokenize(json: string): Token[] {
       tokens.push({ text: match[5], className: "text-[#c4b5fd]" }); // purple - numbers
     } else if (match[6] !== undefined) {
       // Braces/brackets
-      tokens.push({ text: match[6], className: "text-[var(--color-text-muted)]" });
+      tokens.push({ text: match[6], className: "text-(--color-text-muted)" });
     } else if (match[7] !== undefined) {
       // Comma/colon
-      tokens.push({ text: match[7], className: "text-[var(--color-text-muted)]" });
+      tokens.push({ text: match[7], className: "text-(--color-text-muted)" });
     } else if (match[8] !== undefined) {
       // Whitespace
       tokens.push({ text: match[8], className: "" });

@@ -170,28 +170,28 @@ function TasksPage() {
         />
 
         <div className="flex items-center gap-3">
-          <label className="text-xs text-[var(--color-text-secondary)]">Queue:</label>
+          <label className="text-xs text-(--color-text-secondary)">Queue:</label>
           {queuesLoading ? (
             <Skeleton className="h-8 w-48 rounded-md" />
           ) : queueNames.length > 0 ? (
             <select
               value={currentQueue}
               onChange={(e) => handleQueueChange(e.target.value)}
-              className="h-8 rounded-md border border-[var(--color-divider)] bg-[var(--color-primary-bg)] px-3 text-xs text-[var(--color-text-primary)] outline-none focus:border-[var(--color-accent-val)] cursor-pointer"
+              className="h-8 rounded-md border border-(--color-divider) bg-(--color-primary-bg) px-3 text-xs text-(--color-text-primary) outline-none focus:border-(--color-accent-val) cursor-pointer"
             >
               {queueNames.map((q) => (
                 <option key={q} value={q}>{q}</option>
               ))}
             </select>
           ) : (
-            <span className="text-xs text-[var(--color-text-secondary)]">No queues available</span>
+            <span className="text-xs text-(--color-text-secondary)">No queues available</span>
           )}
         </div>
 
         {currentQueue && (
-          <div className="rounded border border-[var(--color-divider)] bg-[var(--color-primary-light)]">
+          <div className="rounded border border-(--color-divider) bg-(--color-primary-light)">
             <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-              <div className="border-b border-[var(--color-divider)] px-4">
+              <div className="border-b border-(--color-divider) px-4">
                 <TabsList className="h-auto bg-transparent p-0">
                   {TASK_STATES.map((s) => {
                     const count = getStateCount(queueInfo, s.value);
@@ -224,29 +224,29 @@ function TasksPage() {
                       <Skeleton className="h-48 rounded-lg" />
                     </div>
                   ) : tasks.length === 0 ? (
-                    <div className="flex items-center justify-center py-16 text-sm text-[var(--color-text-secondary)]">
+                    <div className="flex items-center justify-center py-16 text-sm text-(--color-text-secondary)">
                       <div className="text-center">
-                        <ListChecks className="mx-auto mb-2 h-6 w-6 text-[var(--color-text-muted)]" />
+                        <ListChecks className="mx-auto mb-2 h-6 w-6 text-(--color-text-muted)" />
                         <p>{`No ${s.value} tasks in "${currentQueue}"`}</p>
                         {s.value === "completed" && (
-                          <p className="mt-1 text-xs text-[var(--color-text-muted)]">Tasks require the Retention option to appear here</p>
+                          <p className="mt-1 text-xs text-(--color-text-muted)">Tasks require the Retention option to appear here</p>
                         )}
                       </div>
                     </div>
                   ) : (
                     <>
-                      <div className="flex items-center gap-2 border-b border-[var(--color-divider)] px-4 py-2">
-                        <span className="text-xs text-[var(--color-text-secondary)]">
+                      <div className="flex items-center gap-2 border-b border-(--color-divider) px-4 py-2">
+                        <span className="text-xs text-(--color-text-secondary)">
                           {totalCount} task(s)
                         </span>
                       </div>
 
                       <Table>
                         <TableHeader>
-                          <TableRow className="border-[var(--color-divider)] hover:bg-transparent">
-                            <TableHead className="text-[var(--color-text-secondary)]">ID</TableHead>
-                            <TableHead className="text-[var(--color-text-secondary)]">Type</TableHead>
-                            <TableHead className="text-[var(--color-text-secondary)]">Payload</TableHead>
+                          <TableRow className="border-(--color-divider) hover:bg-transparent">
+                            <TableHead className="text-(--color-text-secondary)">ID</TableHead>
+                            <TableHead className="text-(--color-text-secondary)">Type</TableHead>
+                            <TableHead className="text-(--color-text-secondary)">Payload</TableHead>
                             {DATE_COLUMN_LABEL[activeTab] && (
                               <TableHead>
                                 <SortableColumnHeader
@@ -257,13 +257,13 @@ function TasksPage() {
                               </TableHead>
                             )}
                             {activeTab === "retry" && (
-                              <TableHead className="text-[var(--color-text-secondary)]">Retries</TableHead>
+                              <TableHead className="text-(--color-text-secondary)">Retries</TableHead>
                             )}
                             {(activeTab === "retry" || activeTab === "archived") && (
-                              <TableHead className="text-[var(--color-text-secondary)]">Last Error</TableHead>
+                              <TableHead className="text-(--color-text-secondary)">Last Error</TableHead>
                             )}
                             {activeTab === "active" && (
-                              <TableHead className="text-[var(--color-text-secondary)]">Status</TableHead>
+                              <TableHead className="text-(--color-text-secondary)">Status</TableHead>
                             )}
                             <TableHead className="w-10" />
                           </TableRow>
@@ -272,50 +272,50 @@ function TasksPage() {
                           {sortTasksByDate(tasks, activeTab, sortDirection).map((t) => (
                             <TableRow
                               key={t.id}
-                              className="border-[var(--color-divider)] hover:bg-[var(--color-row-hover)] cursor-pointer transition-colors"
+                              className="border-(--color-divider) hover:bg-(--color-row-hover) cursor-pointer transition-colors"
                               onClick={() => setSelectedTask(t)}
                             >
-                              <TableCell className="font-mono text-xs text-[var(--color-text-secondary)]">
+                              <TableCell className="font-mono text-xs text-(--color-text-secondary)">
                                 {t.id.slice(0, 8)}
                               </TableCell>
-                              <TableCell className="font-medium text-[var(--color-text-primary)]">
+                              <TableCell className="font-medium text-(--color-text-primary)">
                                 {t.type}
                               </TableCell>
-                              <TableCell className="max-w-48 truncate text-xs text-[var(--color-text-secondary)]">
+                              <TableCell className="max-w-48 truncate text-xs text-(--color-text-secondary)">
                                 {t.payload?.slice(0, 60)}
                               </TableCell>
                               {DATE_COLUMN_LABEL[activeTab] && (
-                                <TableCell className="text-xs text-[var(--color-text-secondary)]">
+                                <TableCell className="text-xs text-(--color-text-secondary)">
                                   {formatDate(getDateFieldForState(t, activeTab))}
                                 </TableCell>
                               )}
                               {activeTab === "retry" && (
                                 <TableCell className="text-xs">
-                                  <span className="text-[var(--color-warning)]">
+                                  <span className="text-(--color-warning)">
                                     {t.retried}/{t.maxRetry}
                                   </span>
                                 </TableCell>
                               )}
                               {(activeTab === "retry" || activeTab === "archived") && (
-                                <TableCell className="max-w-32 truncate text-xs text-[var(--color-error)]">
+                                <TableCell className="max-w-32 truncate text-xs text-(--color-error)">
                                   {t.lastErr}
                                 </TableCell>
                               )}
                               {activeTab === "active" && (
                                 <TableCell>
                                   {t.isOrphaned ? (
-                                    <Badge variant="outline" className="border-[var(--color-error)] text-[var(--color-error)] text-xs">
+                                    <Badge variant="outline" className="border-(--color-error) text-(--color-error) text-xs">
                                       Orphaned
                                     </Badge>
                                   ) : (
-                                    <Badge variant="outline" className="border-[var(--color-success)] text-[var(--color-success)] text-xs">
+                                    <Badge variant="outline" className="border-(--color-success) text-(--color-success) text-xs">
                                       Running
                                     </Badge>
                                   )}
                                 </TableCell>
                               )}
                               {activeTab === "completed" && (
-                                <TableCell className="text-xs text-[var(--color-text-secondary)]">
+                                <TableCell className="text-xs text-(--color-text-secondary)">
                                   {formatDate(t.completedAt)}
                                 </TableCell>
                               )}
@@ -323,7 +323,7 @@ function TasksPage() {
                                 {rowActions.length > 0 && (
                                   <DropdownMenu>
                                     <DropdownMenuTrigger asChild>
-                                      <Button variant="ghost" size="icon-xs" className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">
+                                      <Button variant="ghost" size="icon-xs" className="text-(--color-text-secondary) hover:text-(--color-text-primary)">
                                         <MoreHorizontal className="h-4 w-4" />
                                       </Button>
                                     </DropdownMenuTrigger>
@@ -352,8 +352,8 @@ function TasksPage() {
                       </Table>
 
                       {totalPages > 1 && (
-                        <div className="flex items-center justify-between border-t border-[var(--color-divider)] px-4 py-3">
-                          <span className="text-xs text-[var(--color-text-secondary)]">
+                        <div className="flex items-center justify-between border-t border-(--color-divider) px-4 py-3">
+                          <span className="text-xs text-(--color-text-secondary)">
                             Page {page} of {totalPages}
                           </span>
                           <div className="flex gap-1.5">
