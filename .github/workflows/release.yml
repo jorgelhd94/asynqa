@@ -55,7 +55,7 @@ jobs:
             build-tags: webkit2_41
           - os: macos-latest
             platform: darwin/universal
-            output: asynqa
+            output: asynqa.app
             asset: asynqa_darwin_universal.tar.gz
             nsis: false
             build-tags: ""
