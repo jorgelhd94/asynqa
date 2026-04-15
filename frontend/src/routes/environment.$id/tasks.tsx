@@ -50,6 +50,16 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import {
   Archive,
   ChevronLeft,
   ChevronRight,
@@ -118,7 +128,9 @@ function TasksPage() {
     setPage(1);
   };
 
-  const handleTaskAction = (action: RowAction, taskID: string) => {
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
+
+  const executeTaskAction = (action: RowAction, taskID: string) => {
     const mutations = { run: runTask, delete: deleteTask, archive: archiveTask, cancel: cancelTask };
     const labels = { run: "queued", delete: "deleted", archive: "archived", cancel: "cancel signal sent" };
     mutations[action].mutate(taskID, {
@@ -128,6 +140,14 @@ function TasksPage() {
       },
       onError: (err) => sileo.error({ title: `Failed: ${err.message}` }),
     });
+  };
+
+  const handleTaskAction = (action: RowAction, taskID: string) => {
+    if (action === "delete") {
+      setPendingDeleteId(taskID);
+    } else {
+      executeTaskAction(action, taskID);
+    }
   };
 
   const rowActions = ROW_ACTIONS[activeTab];
@@ -374,6 +394,29 @@ function TasksPage() {
             )}
           </SheetContent>
         </Sheet>
+
+        <AlertDialog open={!!pendingDeleteId} onOpenChange={(open) => !open && setPendingDeleteId(null)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete Task</AlertDialogTitle>
+              <AlertDialogDescription>
+                Are you sure you want to delete this task? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={() => {
+                  if (pendingDeleteId) executeTaskAction("delete", pendingDeleteId);
+                  setPendingDeleteId(null);
+                }}
+                className="bg-[--color-error] hover:bg-[--color-error]/90"
+              >
+                Delete
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </div>
   );

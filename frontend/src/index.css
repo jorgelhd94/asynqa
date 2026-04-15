@@ -153,42 +153,6 @@
   [data-color="archived"][data-state="active"] { border-color: #f43f5e !important; color: #f43f5e !important; }
   [data-color="completed"][data-state="active"] { border-color: #d4a843 !important; color: #d4a843 !important; }
 
-  /* JSON editor (react-simple-code-editor + prismjs) */
-  .json-editor {
-    caret-color: var(--color-text-primary);
-    font-family: 'JetBrains Mono', ui-monospace, monospace;
-    font-size: 0.75rem;
-    line-height: 20px;
-  }
-  .json-editor textarea,
-  .json-editor pre {
-    outline: none !important;
-    word-break: break-all !important;
-    overflow-wrap: break-word !important;
-    white-space: pre-wrap !important;
-    padding-left: 3.5rem !important;
-  }
-  .editor-line {
-    position: relative;
-  }
-  .line-number {
-    position: absolute;
-    left: -3rem;
-    width: 2.5rem;
-    text-align: right;
-    font-size: 10px;
-    color: var(--color-text-muted);
-    user-select: none;
-    pointer-events: none;
-  }
-  .token.property { color: var(--color-accent-light); }
-  .token.string { color: var(--color-success); }
-  .token.number { color: #d19a66; }
-  .token.boolean,
-  .token.null { color: #c678dd; }
-  .token.punctuation { color: var(--color-text-muted); }
-  .token.operator { color: var(--color-text-muted); }
-
   /* Hoppscotch-style scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
