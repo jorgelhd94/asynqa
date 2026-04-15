@@ -181,17 +181,17 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
 
         {/* Task Runner section - takes remaining space */}
         <SidebarGroup className="flex min-h-0 flex-1 flex-col">
-          <div className="flex items-center justify-between px-2 py-1.5">
-            <span className="text-xs uppercase tracking-wider text-[var(--color-text-muted)]">
+          <div className="flex items-center justify-between px-2 py-1.5 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
+            <span className="text-xs uppercase tracking-wider text-[var(--color-text-muted)] group-data-[collapsible=icon]:hidden">
               Task Runner
             </span>
-            <button
+            <SidebarMenuButton
+              tooltip="New Request"
               onClick={() => setNewRequestDialogOpen(true)}
-              className="flex h-5 w-5 items-center justify-center rounded text-[var(--color-text-muted)] hover:bg-[var(--color-row-hover)] hover:text-[var(--color-text-secondary)]"
-              title="New Request"
+              className="h-5 w-5 p-0! flex items-center justify-center rounded text-[var(--color-text-muted)] hover:bg-[var(--color-row-hover)] hover:text-[var(--color-text-secondary)] group-data-[collapsible=icon]:h-8 group-data-[collapsible=icon]:w-8"
             >
               <Plus className="h-3.5 w-3.5" />
-            </button>
+            </SidebarMenuButton>
           </div>
           <SidebarGroupContent className="flex min-h-0 flex-1 flex-col">
             {/* Saved requests list - scrollable */}

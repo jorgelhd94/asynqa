@@ -8,6 +8,11 @@ import { JsonEditor } from "@/components/task-runner/json-editor";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
+  ResizablePanelGroup,
+  ResizablePanel,
+  ResizableHandle,
+} from "@/components/ui/resizable";
+import {
   AlertTriangle,
   Braces,
   Check,
@@ -144,14 +149,14 @@ export function TaskRunnerForm({
       {/* Top bar - Queue + Task Type + Send */}
       <div className="flex items-center gap-0 border-b border-[--color-divider] bg-[--color-primary-bg]">
         {/* Queue selector */}
-        <div className="flex items-center border-r border-[--color-divider]">
+        <div className="flex items-center border-r border-[--color-divider] pr-2">
           {queuesLoading ? (
             <Skeleton className="m-2 h-8 w-28 rounded-md" />
           ) : (
             <select
               value={queue}
               onChange={(e) => setQueue(e.target.value)}
-              className="h-11 border-none bg-transparent px-4 text-xs font-semibold text-[var(--color-accent-light)] outline-none cursor-pointer"
+              className="h-11 border-none bg-transparent px-4 text-xs font-semibold text-(--color-accent-light) outline-none cursor-pointer"
             >
               <option value="default">default</option>
               {queueNames
@@ -191,7 +196,7 @@ export function TaskRunnerForm({
           <Button
             onClick={handleSubmit}
             disabled={!taskType.trim() || enqueueMutation.isPending}
-            className="bg-[var(--color-accent-val)] hover:bg-[var(--color-accent-dark)] text-white font-semibold gap-2 px-5"
+            className="bg-(--color-accent-val) hover:bg-(--color-accent-dark) text-white font-semibold gap-2 px-5"
             size="sm"
           >
             <Send className="h-3.5 w-3.5" />
@@ -203,35 +208,35 @@ export function TaskRunnerForm({
 
       {/* Unsaved changes indicator */}
       {hasUnsavedChanges && (
-        <div className="flex items-center gap-2 border-b border-[var(--color-accent-val)]/20 bg-[var(--color-accent-val)]/5 px-4 py-1.5">
-          <span className="text-[10px] text-[var(--color-accent-val)]">
+        <div className="flex items-center gap-2 border-b border-(--color-accent-val)/20 bg-(--color-accent-val)/5 px-4 py-1.5">
+          <span className="text-[10px] text-(--color-accent-val)">
             Unsaved changes{savedRequestName ? ` in "${savedRequestName}"` : ""} — Ctrl+S to save
           </span>
         </div>
       )}
 
       {/* Main content area */}
-      <div className="flex flex-1 overflow-hidden">
+      <ResizablePanelGroup orientation="horizontal" className="flex-1 overflow-hidden">
         {/* Left panel - Editor */}
-        <div className="flex flex-1 flex-col border-r border-[--color-divider]">
+        <ResizablePanel defaultSize={60} minSize={30} className="flex flex-col">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-1 flex-col">
             <div className="border-b border-[--color-divider]">
               <TabsList className="h-auto bg-transparent p-0 px-2">
                 <TabsTrigger
                   value="body"
-                  className="gap-1.5 rounded-none border-b-2 border-transparent px-3 py-2 text-xs data-[state=active]:border-[var(--color-accent-val)] data-[state=active]:bg-transparent data-[state=active]:text-[var(--color-accent-val)]"
+                  className="gap-1.5 rounded-none border-b-2 border-transparent px-3 py-2 text-xs data-[state=active]:border-(--color-accent-val) data-[state=active]:bg-transparent data-[state=active]:text-(--color-accent-val)"
                 >
                   <Zap className="h-3 w-3" />
                   Body
                 </TabsTrigger>
                 <TabsTrigger
                   value="options"
-                  className="gap-1.5 rounded-none border-b-2 border-transparent px-3 py-2 text-xs data-[state=active]:border-[var(--color-accent-val)] data-[state=active]:bg-transparent data-[state=active]:text-[var(--color-accent-val)]"
+                  className="gap-1.5 rounded-none border-b-2 border-transparent px-3 py-2 text-xs data-[state=active]:border-(--color-accent-val) data-[state=active]:bg-transparent data-[state=active]:text-(--color-accent-val)"
                 >
                   <Settings2 className="h-3 w-3" />
                   Options
                   {(maxRetry || timeoutSecs || delaySecs) && (
-                    <span className="ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--color-accent-val)]/20 text-[9px] text-[var(--color-accent-val)]">
+                    <span className="ml-1 flex h-4 w-4 items-center justify-center rounded-full bg-(--color-accent-val)/20 text-[9px] text-(--color-accent-val)">
                       {[maxRetry, timeoutSecs, delaySecs].filter(Boolean).length}
                     </span>
                   )}
@@ -239,8 +244,8 @@ export function TaskRunnerForm({
               </TabsList>
             </div>
 
-            <TabsContent value="body" className="mt-0 flex min-h-0 flex-1 flex-col overflow-hidden">
-              <div className="flex min-h-0 flex-1 flex-col">
+            <TabsContent value="body" className="relative mt-0 flex-1 overflow-hidden">
+              <div className="absolute inset-0 flex flex-col">
                 <div className="relative z-10 flex items-center justify-between border-b border-[--color-divider]/50 px-4 py-1.5">
                   <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
                     JSON Payload
@@ -294,7 +299,7 @@ export function TaskRunnerForm({
                       value={maxRetry}
                       onChange={(e) => setMaxRetry(e.target.value)}
                       placeholder="Default (25)"
-                      className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-xs text-[--color-text-primary] placeholder:text-[--color-text-muted] outline-none focus:border-[var(--color-accent-val)] transition-colors"
+                      className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-xs text-[--color-text-primary] placeholder:text-[--color-text-muted] outline-none focus:border-(--color-accent-val) transition-colors"
                     />
                     <span className="text-[10px] text-[--color-text-muted]">
                       Times to retry on failure
@@ -312,7 +317,7 @@ export function TaskRunnerForm({
                       value={timeoutSecs}
                       onChange={(e) => setTimeoutSecs(e.target.value)}
                       placeholder="Default (1800)"
-                      className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-xs text-[--color-text-primary] placeholder:text-[--color-text-muted] outline-none focus:border-[var(--color-accent-val)] transition-colors"
+                      className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-xs text-[--color-text-primary] placeholder:text-[--color-text-muted] outline-none focus:border-(--color-accent-val) transition-colors"
                     />
                     <span className="text-[10px] text-[--color-text-muted]">
                       Max processing time
@@ -330,7 +335,7 @@ export function TaskRunnerForm({
                       value={delaySecs}
                       onChange={(e) => setDelaySecs(e.target.value)}
                       placeholder="0 (immediate)"
-                      className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-xs text-[--color-text-primary] placeholder:text-[--color-text-muted] outline-none focus:border-[var(--color-accent-val)] transition-colors"
+                      className="h-9 w-full rounded-lg border border-[--color-divider] bg-[--color-primary-bg] px-3 text-xs text-[--color-text-primary] placeholder:text-[--color-text-muted] outline-none focus:border-(--color-accent-val) transition-colors"
                     />
                     <span className="text-[10px] text-[--color-text-muted]">
                       Seconds before processing
@@ -340,11 +345,13 @@ export function TaskRunnerForm({
               </div>
             </TabsContent>
           </Tabs>
-        </div>
+        </ResizablePanel>
+
+        <ResizableHandle className="w-px! bg-[--color-divider-dark]! hover:bg-[--color-accent-val]! hover:w-1! transition-all cursor-col-resize after:hidden!" />
 
         {/* Right panel - Response */}
-        <div className="flex w-full flex-col lg:w-[400px]">
-          <div className="flex items-center gap-2 border-b border-[--color-divider] px-4 py-2">
+        <ResizablePanel defaultSize={40} minSize={20} className="flex flex-col">
+          <div className="flex h-[37px] shrink-0 items-center gap-2 border-b border-[--color-divider] px-4">
             <span className="text-xs font-semibold text-[--color-text-primary]">Response</span>
             {enqueueMutation.isSuccess && (
               <Badge variant="outline" className="border-[--color-success] text-[--color-success] text-[10px]">
@@ -380,8 +387,8 @@ export function TaskRunnerForm({
             {enqueueMutation.isPending && (
               <div className="flex flex-1 items-center justify-center p-8">
                 <div className="space-y-3 text-center">
-                  <div className="mx-auto flex h-10 w-10 animate-pulse items-center justify-center rounded bg-[var(--color-accent-val)]/10">
-                    <Send className="h-5 w-5 text-[var(--color-accent-val)]" />
+                  <div className="mx-auto flex h-10 w-10 animate-pulse items-center justify-center rounded bg-(--color-accent-val)/10">
+                    <Send className="h-5 w-5 text-(--color-accent-val)" />
                   </div>
                   <p className="text-xs text-[--color-text-secondary]">Enqueuing task...</p>
                 </div>
@@ -390,7 +397,7 @@ export function TaskRunnerForm({
 
             {enqueueMutation.isSuccess && (
               <div className="flex flex-1 flex-col p-4">
-                <div className="flex items-center gap-2 rounded-lg border border-[var(--color-accent-val)]/20 bg-[var(--color-accent-val)]/5 p-3">
+                <div className="flex items-center gap-2 rounded-lg border border-(--color-accent-val)/20 bg-(--color-accent-val)/5 p-3">
                   <CheckCircle2 className="h-4 w-4 shrink-0 text-[--color-success]" />
                   <span className="text-xs font-medium text-[--color-success]">Task enqueued successfully</span>
                 </div>
@@ -404,13 +411,13 @@ export function TaskRunnerForm({
                       variant="ghost"
                       size="xs"
                       onClick={handleCopyTaskId}
-                      className={`h-5 text-[10px] transition-colors ${taskIdCopied ? "text-[var(--color-accent-light)]" : "text-[--color-text-secondary] hover:text-[--color-text-primary]"}`}
+                      className={`h-5 text-[10px] transition-colors ${taskIdCopied ? "text-(--color-accent-light)" : "text-[--color-text-secondary] hover:text-[--color-text-primary]"}`}
                     >
                       {taskIdCopied ? <Check className="h-2.5 w-2.5" /> : <Copy className="h-2.5 w-2.5" />}
                       {taskIdCopied ? "Copied!" : "Copy"}
                     </Button>
                   </div>
-                  <pre className="rounded-lg border border-[--color-divider] bg-[--color-primary-contrast] p-3 font-mono text-xs text-[var(--color-accent-val)] select-all">
+                  <pre className="rounded-lg border border-[--color-divider] bg-[--color-primary-contrast] p-3 font-mono text-xs text-(--color-accent-val) select-all">
                     {enqueueMutation.data.taskID}
                   </pre>
                 </div>
@@ -455,8 +462,8 @@ export function TaskRunnerForm({
               </div>
             )}
           </div>
-        </div>
-      </div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
     </div>
   );
 }

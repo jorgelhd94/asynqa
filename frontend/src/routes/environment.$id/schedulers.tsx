@@ -26,10 +26,13 @@ import {
   Activity,
   AlertTriangle,
   CalendarClock,
+  Check,
   ChevronLeft,
   ChevronRight,
+  Copy,
   Play,
 } from "lucide-react";
+import { useClipboard } from "@/hooks/use-clipboard";
 import { sileo } from "sileo";
 import type { scheduler } from "../../../wailsjs/go/models";
 
@@ -65,6 +68,7 @@ function SchedulersPage() {
   const runEntryMutation = useRunSchedulerEntry(environmentId);
   const [selectedEntry, setSelectedEntry] = useState<scheduler.SchedulerEntry | null>(null);
   const [eventsPage, setEventsPage] = useState(1);
+  const { copy: copyPayload, copied: payloadCopied } = useClipboard();
 
   const events = useEnqueueEvents(
     environmentId,
@@ -250,9 +254,18 @@ function SchedulersPage() {
                   <>
                     <Separator className="bg-[var(--color-divider)]" />
                     <div className="space-y-2">
-                      <span className="text-xs font-semibold uppercase text-[var(--color-text-secondary)]">
-                        Payload
-                      </span>
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-semibold uppercase text-[var(--color-text-secondary)]">
+                          Payload
+                        </span>
+                        <button
+                          onClick={() => copyPayload(tryFormatJSON(selectedEntry.taskPayload))}
+                          className="flex items-center gap-1 text-[10px] text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors"
+                        >
+                          {payloadCopied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                          {payloadCopied ? "Copied!" : "Copy"}
+                        </button>
+                      </div>
                       <pre className="max-h-48 overflow-auto rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-bg)] p-3 text-xs text-[var(--color-text-secondary)] whitespace-pre-wrap break-words">
                         {tryFormatJSON(selectedEntry.taskPayload)}
                       </pre>
