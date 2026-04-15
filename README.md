@@ -1,37 +1,89 @@
 # AsynQA
 
-A cross-platform desktop application for developers who use the [asynq](https://github.com/hibiken/asynq) library in Go. Built with [Wails v2](https://wails.io/) (Go backend + embedded web frontend).
+A cross-platform desktop application for managing, monitoring, and inspecting [asynq](https://github.com/hibiken/asynq) task queues backed by Redis. Built with [Wails v2](https://wails.io/) for Go developers.
+
+> **Note:** AsynQA is designed specifically for Go/asynq workflows — it is not a general-purpose Redis client.
+
+## Features
+
+- **Dashboard** — real-time overview of queues, tasks, and workers
+- **Queue Management** — browse queues, pause/unpause, view task breakdowns by state
+- **Task Inspector** — view task details, payloads, retry info; run, archive, or delete tasks
+- **Task Runner** — compose and enqueue tasks with a built-in JSON editor (syntax highlighting, prettify)
+- **Saved Requests** — save, clone, and organize task runner requests
+- **Workers & Schedulers** — monitor active workers and scheduler entries
+- **Redis Info** — raw Redis server information
+- **Auto-Update** — checks GitHub Releases for new versions
+
+## Requirements
+
+- [Go](https://go.dev/) 1.25+
+- [Node.js](https://nodejs.org/) 22+
+- [Wails CLI](https://wails.io/docs/gettingstarted/installation) v2
+- A running Redis instance (for connecting to asynq queues)
+
+### Platform-specific
+
+- **Windows**: No additional dependencies
+- **Linux**: `libgtk-3-dev`, `libwebkit2gtk-4.0-dev`
+- **macOS**: Xcode Command Line Tools
 
 ## Getting Started
 
-1. Navigate to your project directory in the terminal.
+```bash
+# Clone the repository
+git clone https://github.com/jorgelhd94-tpp/asynqa.git
+cd asynqa
 
-2. To run your application in development mode:
+# Run in development mode (hot-reload)
+wails dev
 
-   ```
-   wails dev
-   ```
+# Build for production
+wails build
+```
 
-   This will start your application and enable hot-reloading for both frontend and backend changes.
+The production binary will be in `build/bin/`.
 
-3. To build your application for production:
+## Tech Stack
 
-   ```
-   wails build
-   ```
-
-   This will create a production-ready executable in the `build/bin` directory.
+| Layer | Technology |
+|-------|-----------|
+| Backend | Go 1.25, Wails v2, GORM + SQLite |
+| Frontend | React 19, TypeScript, Vite 7, TanStack Router & Query |
+| Styling | Tailwind CSS v4, shadcn/ui |
+| Editor | CodeMirror 6 (JSON syntax highlighting) |
 
 ## Project Structure
 
-- `frontend/` — React frontend (TypeScript, Vite, TanStack Router)
-- `main.go` — Wails app entry point and service binding
-- `internal/` — Domain models and business logic services
-- `infrastructure/` — Database setup and migrations
-- `wails.json` — Wails project configuration
+```
+asynqa/
+  main.go                  # Wails app entry point
+  internal/                # Backend services and domain models
+    dashboard/             # Dashboard aggregation
+    environment/           # Redis environment management
+    queue/                 # Queue operations (via asynq inspector)
+    taskrunner/            # Task runner (enqueue + saved requests)
+    updater/               # Auto-update via GitHub Releases
+    worker/                # Worker monitoring
+    scheduler/             # Scheduler entries and events
+    redis/                 # Raw Redis info
+    domain/                # GORM models
+    shared/                # Shared utilities
+  infrastructure/
+    database/              # SQLite setup and migrations
+  frontend/
+    src/
+      routes/              # TanStack Router file-based routes
+      components/          # React components (ui/, environment/, task-runner/)
+      hooks/               # TanStack Query hooks
+    wailsjs/               # Auto-generated Wails bindings (do not edit)
+  .github/workflows/       # CI/CD (cross-platform release builds)
+```
 
-## Resources
+## Contributing
 
-- [Wails Documentation](https://wails.io/docs/introduction)
-- [Wails Discord](https://discord.gg/JDdSxwjhGf)
-- [Wails GitHub Discussions](https://github.com/wailsapp/wails/discussions)
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines.
+
+## License
+
+[MIT](LICENSE)

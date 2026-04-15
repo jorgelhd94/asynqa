@@ -21,6 +21,9 @@ import {
   Server,
   Zap,
 } from "lucide-react";
+import { QueueSizeChart } from "@/components/dashboard/queue-size-chart";
+import { HistoryChart } from "@/components/dashboard/history-chart";
+import { TaskDistributionChart } from "@/components/dashboard/task-distribution-chart";
 
 export const Route = createFileRoute("/environment/$id/dashboard")({
   component: DashboardPage,
@@ -32,6 +35,20 @@ function formatBytes(bytes: number): string {
   const sizes = ["B", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
+}
+
+function ChartCard({ title, icon: Icon, children }: { title: string; icon: React.ComponentType<{ className?: string }>; children: React.ReactNode }) {
+  return (
+    <div className="rounded border border-(--color-divider) bg-(--color-primary-light)">
+      <div className="flex items-center gap-2 border-b border-(--color-divider) px-4 py-3">
+        <Icon className="h-4 w-4 text-(--color-accent-val)" />
+        <h2 className="text-sm font-semibold text-(--color-text-primary)">{title}</h2>
+      </div>
+      <div className="p-4">
+        {children}
+      </div>
+    </div>
+  );
 }
 
 function DashboardPage() {
@@ -47,6 +64,10 @@ function DashboardPage() {
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton key={i} className="h-24 rounded" />
           ))}
+        </div>
+        <div className="grid gap-4 lg:grid-cols-2">
+          <Skeleton className="h-[340px] rounded" />
+          <Skeleton className="h-[340px] rounded" />
         </div>
         <Skeleton className="h-64 rounded" />
       </div>
@@ -86,6 +107,7 @@ function DashboardPage() {
         }
       />
 
+      {/* Stat cards */}
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <StatCard
           title="Queues"
@@ -115,10 +137,30 @@ function DashboardPage() {
         />
       </div>
 
+      {/* Charts row */}
+      {queues.length > 0 && (
+        <div className="grid gap-4 lg:grid-cols-2">
+          <ChartCard title="Queue Size" icon={Layers}>
+            <QueueSizeChart queues={queues} />
+          </ChartCard>
+          <ChartCard title="Task Distribution" icon={Activity}>
+            <TaskDistributionChart queues={queues} />
+          </ChartCard>
+        </div>
+      )}
+
+      {/* History chart */}
+      {(data?.history?.length ?? 0) > 0 && (
+        <ChartCard title="Tasks Processed (last 14 days)" icon={Zap}>
+          <HistoryChart history={data!.history} />
+        </ChartCard>
+      )}
+
+      {/* Queue overview table */}
       {queues.length > 0 && (
         <div className="rounded border border-(--color-divider) bg-(--color-primary-light)">
           <div className="flex items-center gap-2 border-b border-(--color-divider) px-4 py-3">
-            <Activity className="h-4 w-4 text-(--color-accent-val)" />
+            <Server className="h-4 w-4 text-(--color-accent-val)" />
             <h2 className="text-sm font-semibold text-(--color-text-primary)">
               Queue Overview
             </h2>
@@ -203,36 +245,6 @@ function DashboardPage() {
             <Server className="mx-auto mb-2 h-8 w-8 text-(--color-text-muted)" />
             <p>No queues found in this environment.</p>
             <p className="mt-1 text-xs">Start an asynq worker to create queues.</p>
-          </div>
-        </div>
-      )}
-
-      {(data?.history?.length ?? 0) > 0 && (
-        <div className="rounded border border-(--color-divider) bg-(--color-primary-light) p-4">
-          <h2 className="mb-3 text-sm font-semibold text-(--color-text-primary)">
-            Processing History (last 14 days)
-          </h2>
-          <div className="grid grid-cols-7 gap-2 lg:grid-cols-14">
-            {data!.history
-              .sort((a, b) => a.date.localeCompare(b.date))
-              .map((day) => (
-                <div
-                  key={day.date}
-                  className="flex flex-col items-center gap-1 rounded-lg border border-(--color-divider) bg-(--color-primary-bg) p-2"
-                >
-                  <span className="text-xs text-(--color-text-secondary)">
-                    {new Date(day.date).toLocaleDateString("en", { month: "short", day: "numeric" })}
-                  </span>
-                  <span className="text-xs font-semibold text-(--color-success)">
-                    {day.processed}
-                  </span>
-                  {day.failed > 0 && (
-                    <span className="text-xs text-center text-(--color-error)">
-                      {day.failed} failed
-                    </span>
-                  )}
-                </div>
-              ))}
           </div>
         </div>
       )}

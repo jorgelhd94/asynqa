@@ -15,6 +15,7 @@ import (
 	redispkg "github.com/jorgelhd94-tpp/asynqa/internal/redis"
 	"github.com/jorgelhd94-tpp/asynqa/internal/scheduler"
 	"github.com/jorgelhd94-tpp/asynqa/internal/taskrunner"
+	"github.com/jorgelhd94-tpp/asynqa/internal/updater"
 	"github.com/jorgelhd94-tpp/asynqa/internal/worker"
 
 	"github.com/wailsapp/wails/v2"
@@ -27,6 +28,8 @@ import (
 var assets embed.FS
 
 const appName = "AsynQA"
+
+var version = "dev"
 
 func initLogger() {
 	opts := &slog.HandlerOptions{
@@ -62,6 +65,7 @@ func main() {
 	redisService := redispkg.NewRedisService(environmentStore)
 	requestStore := taskrunner.NewTaskRunnerRequestStore(db)
 	taskRunnerService := taskrunner.NewTaskRunnerService(environmentStore, requestStore)
+	updaterService := updater.NewUpdaterService(version)
 
 	err = wails.Run(&options.App{
 		Title:            appName,
@@ -92,6 +96,7 @@ func main() {
 			schedulerService,
 			redisService,
 			taskRunnerService,
+			updaterService,
 		},
 	})
 

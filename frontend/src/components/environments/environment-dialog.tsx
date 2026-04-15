@@ -180,7 +180,7 @@ export function EnvironmentDialog({
           </div>
         </div>
 
-        <DialogFooter className="mt-2 !flex-row items-center !justify-between">
+        <DialogFooter className="mt-2 flex-row! items-center justify-between!">
           <Button
             variant="outline"
             className="border-(--color-warning) text-(--color-text-primary) hover:bg-(--color-warning)/10"
