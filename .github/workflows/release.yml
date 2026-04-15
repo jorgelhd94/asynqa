@@ -46,16 +46,19 @@ jobs:
             output: asynqa.exe
             asset: asynqa_windows_amd64.zip
             nsis: true
+            build-tags: ""
           - os: ubuntu-latest
             platform: linux/amd64
             output: asynqa
             asset: asynqa_linux_amd64.tar.gz
             nsis: false
+            build-tags: webkit2_41
           - os: macos-latest
             platform: darwin/universal
             output: asynqa
             asset: asynqa_darwin_universal.tar.gz
             nsis: false
+            build-tags: ""
 
     runs-on: ${{ matrix.os }}
 
@@ -89,7 +92,7 @@ jobs:
         shell: pwsh
 
       - name: Build
-        run: wails build -platform ${{ matrix.platform }} -ldflags "-X main.version=${{ needs.version.outputs.tag }}"
+        run: wails build -platform ${{ matrix.platform }} ${{ matrix.build-tags && format('-tags {0}', matrix.build-tags) }} -ldflags "-X main.version=${{ needs.version.outputs.tag }}"
 
       - name: Build NSIS installer
         if: matrix.nsis
