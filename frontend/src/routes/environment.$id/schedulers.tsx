@@ -26,13 +26,11 @@ import {
   Activity,
   AlertTriangle,
   CalendarClock,
-  Check,
   ChevronLeft,
   ChevronRight,
-  Copy,
   Play,
 } from "lucide-react";
-import { useClipboard } from "@/hooks/use-clipboard";
+import { CodeBlock } from "@/components/environment/code-block";
 import { sileo } from "sileo";
 import type { scheduler } from "../../../wailsjs/go/models";
 
@@ -53,14 +51,6 @@ function formatDate(dateStr: string): string {
   });
 }
 
-function tryFormatJSON(str: string): string {
-  try {
-    return JSON.stringify(JSON.parse(str), null, 2);
-  } catch {
-    return str;
-  }
-}
-
 function SchedulersPage() {
   const { id } = Route.useParams();
   const environmentId = Number(id);
@@ -68,7 +58,6 @@ function SchedulersPage() {
   const runEntryMutation = useRunSchedulerEntry(environmentId);
   const [selectedEntry, setSelectedEntry] = useState<scheduler.SchedulerEntry | null>(null);
   const [eventsPage, setEventsPage] = useState(1);
-  const { copy: copyPayload, copied: payloadCopied } = useClipboard();
 
   const events = useEnqueueEvents(
     environmentId,
@@ -110,7 +99,7 @@ function SchedulersPage() {
       <div className="p-4 space-y-4">
         <div className="space-y-6">
           <PageHeader title="Schedulers" />
-          <div className="flex items-center gap-3 rounded border border-[var(--color-error)]/30 bg-[var(--color-error)]/10 p-4 text-sm text-[var(--color-error)]">
+          <div className="flex items-center gap-3 rounded border border-(--color-error)/30 bg-(--color-error)/10 p-4 text-sm text-(--color-error)">
             <AlertTriangle className="h-4 w-4 shrink-0" />
             <span>
               Failed to load scheduler data.{" "}
@@ -148,26 +137,26 @@ function SchedulersPage() {
             title="Scheduler Entries"
             value={entries.length}
             icon={CalendarClock}
-            iconColor="text-[var(--color-accent-val)]"
+            iconColor="text-(--color-accent-val)"
           />
         </div>
 
         {entries.length > 0 ? (
-          <div className="rounded border border-[var(--color-divider)] bg-[var(--color-primary-light)]">
-            <div className="flex items-center gap-2 border-b border-[var(--color-divider)] px-4 py-3">
-              <Activity className="h-4 w-4 text-[var(--color-accent-val)]" />
-              <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">
+          <div className="rounded border border-(--color-divider) bg-(--color-primary-light)">
+            <div className="flex items-center gap-2 border-b border-(--color-divider) px-4 py-3">
+              <Activity className="h-4 w-4 text-(--color-accent-val)" />
+              <h2 className="text-sm font-semibold text-(--color-text-primary)">
                 Scheduler Entries
               </h2>
             </div>
             <Table>
               <TableHeader>
-                <TableRow className="border-[var(--color-divider)] hover:bg-transparent">
-                  <TableHead className="text-[var(--color-text-secondary)]">ID</TableHead>
-                  <TableHead className="text-[var(--color-text-secondary)]">Schedule</TableHead>
-                  <TableHead className="text-[var(--color-text-secondary)]">Task Type</TableHead>
-                  <TableHead className="text-[var(--color-text-secondary)]">Next Enqueue</TableHead>
-                  <TableHead className="text-[var(--color-text-secondary)]">Prev Enqueue</TableHead>
+                <TableRow className="border-(--color-divider) hover:bg-transparent">
+                  <TableHead className="text-(--color-text-secondary)">ID</TableHead>
+                  <TableHead className="text-(--color-text-secondary)">Schedule</TableHead>
+                  <TableHead className="text-(--color-text-secondary)">Task Type</TableHead>
+                  <TableHead className="text-(--color-text-secondary)">Next Enqueue</TableHead>
+                  <TableHead className="text-(--color-text-secondary)">Prev Enqueue</TableHead>
                   <TableHead className="w-20" />
                 </TableRow>
               </TableHeader>
@@ -175,10 +164,10 @@ function SchedulersPage() {
                 {entries.map((entry) => (
                   <TableRow
                     key={entry.id}
-                    className="border-[var(--color-divider)] hover:bg-[var(--color-row-hover)] cursor-pointer transition-colors"
+                    className="border-(--color-divider) hover:bg-(--color-row-hover) cursor-pointer transition-colors"
                     onClick={() => { setSelectedEntry(entry); setEventsPage(1); }}
                   >
-                    <TableCell className="font-mono text-xs text-[var(--color-text-secondary)]">
+                    <TableCell className="font-mono text-xs text-(--color-text-secondary)">
                       {entry.id.slice(0, 8)}
                     </TableCell>
                     <TableCell>
@@ -186,13 +175,13 @@ function SchedulersPage() {
                         {entry.spec}
                       </Badge>
                     </TableCell>
-                    <TableCell className="font-medium text-[var(--color-text-primary)]">
+                    <TableCell className="font-medium text-(--color-text-primary)">
                       {entry.taskType}
                     </TableCell>
-                    <TableCell className="text-xs text-[var(--color-text-secondary)]">
+                    <TableCell className="text-xs text-(--color-text-secondary)">
                       {formatDate(entry.nextEnqueueAt)}
                     </TableCell>
-                    <TableCell className="text-xs text-[var(--color-text-secondary)]">
+                    <TableCell className="text-xs text-(--color-text-secondary)">
                       {formatDate(entry.prevEnqueueAt)}
                     </TableCell>
                     <TableCell onClick={(e) => e.stopPropagation()}>
@@ -213,9 +202,9 @@ function SchedulersPage() {
             </Table>
           </div>
         ) : (
-          <div className="flex items-center justify-center rounded border border-dashed border-[var(--color-divider)] py-16 text-sm text-[var(--color-text-secondary)]">
+          <div className="flex items-center justify-center rounded border border-dashed border-(--color-divider) py-16 text-sm text-(--color-text-secondary)">
             <div className="text-center">
-              <CalendarClock className="mx-auto mb-2 h-8 w-8 text-[var(--color-text-muted)]" />
+              <CalendarClock className="mx-auto mb-2 h-8 w-8 text-(--color-text-muted)" />
               <p>No scheduler entries found.</p>
               <p className="mt-1 text-xs">Register periodic tasks with asynq.Scheduler to see entries here.</p>
             </div>
@@ -237,7 +226,7 @@ function SchedulersPage() {
                   <DetailRow label="Prev Enqueue" value={formatDate(selectedEntry.prevEnqueueAt)} />
                 </div>
 
-                <Separator className="bg-[var(--color-divider)]" />
+                <Separator className="bg-(--color-divider)" />
 
                 <Button
                   variant="outline"
@@ -252,32 +241,16 @@ function SchedulersPage() {
 
                 {selectedEntry.taskPayload && (
                   <>
-                    <Separator className="bg-[var(--color-divider)]" />
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs font-semibold uppercase text-[var(--color-text-secondary)]">
-                          Payload
-                        </span>
-                        <button
-                          onClick={() => copyPayload(tryFormatJSON(selectedEntry.taskPayload))}
-                          className="flex items-center gap-1 text-[10px] text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors"
-                        >
-                          {payloadCopied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
-                          {payloadCopied ? "Copied!" : "Copy"}
-                        </button>
-                      </div>
-                      <pre className="max-h-48 overflow-auto rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-bg)] p-3 text-xs text-[var(--color-text-secondary)] whitespace-pre-wrap break-words">
-                        {tryFormatJSON(selectedEntry.taskPayload)}
-                      </pre>
-                    </div>
+                    <Separator className="bg-(--color-divider)" />
+                    <CodeBlock label="Payload" content={selectedEntry.taskPayload} />
                   </>
                 )}
 
                 {(selectedEntry.options?.length ?? 0) > 0 && (
                   <>
-                    <Separator className="bg-[var(--color-divider)]" />
+                    <Separator className="bg-(--color-divider)" />
                     <div className="space-y-2">
-                      <span className="text-xs font-semibold uppercase text-[var(--color-text-secondary)]">
+                      <span className="text-xs font-semibold uppercase text-(--color-text-secondary)">
                         Options
                       </span>
                       <div className="flex flex-wrap gap-1.5">
@@ -289,10 +262,10 @@ function SchedulersPage() {
                   </>
                 )}
 
-                <Separator className="bg-[var(--color-divider)]" />
+                <Separator className="bg-(--color-divider)" />
 
                 <div className="space-y-3">
-                  <span className="text-xs font-semibold uppercase text-[var(--color-text-secondary)]">
+                  <span className="text-xs font-semibold uppercase text-(--color-text-secondary)">
                     Enqueue History
                   </span>
                   {events.isLoading ? (
@@ -303,12 +276,12 @@ function SchedulersPage() {
                         {events.data!.events.map((ev, i) => (
                           <div
                             key={i}
-                            className="flex items-center justify-between rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-bg)] px-3 py-2"
+                            className="flex items-center justify-between rounded-lg border border-(--color-divider) bg-(--color-primary-bg) px-3 py-2"
                           >
-                            <span className="font-mono text-xs text-[var(--color-text-secondary)] truncate">
+                            <span className="font-mono text-xs text-(--color-text-secondary) truncate">
                               {ev.taskID}
                             </span>
-                            <span className="shrink-0 text-xs text-[var(--color-text-secondary)] ml-3">
+                            <span className="shrink-0 text-xs text-(--color-text-secondary) ml-3">
                               {formatDate(ev.enqueuedAt)}
                             </span>
                           </div>
@@ -316,7 +289,7 @@ function SchedulersPage() {
                       </div>
                       {events.data!.totalCount >= PAGE_SIZE && (
                         <div className="flex items-center justify-between pt-2">
-                          <span className="text-xs text-[var(--color-text-secondary)]">Page {eventsPage}</span>
+                          <span className="text-xs text-(--color-text-secondary)">Page {eventsPage}</span>
                           <div className="flex gap-1.5">
                             <Button
                               variant="outline"
@@ -339,7 +312,7 @@ function SchedulersPage() {
                       )}
                     </>
                   ) : (
-                    <p className="text-xs text-[var(--color-text-secondary)]">No enqueue events recorded yet.</p>
+                    <p className="text-xs text-(--color-text-secondary)">No enqueue events recorded yet.</p>
                   )}
                 </div>
               </div>
@@ -362,8 +335,8 @@ function DetailRow({
 }) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <span className="shrink-0 text-xs text-[var(--color-text-secondary)]">{label}</span>
-      <span className={`truncate text-right text-xs text-[var(--color-text-secondary)] ${mono ? "font-mono" : ""}`}>
+      <span className="shrink-0 text-xs text-(--color-text-secondary)">{label}</span>
+      <span className={`truncate text-right text-xs text-(--color-text-secondary) ${mono ? "font-mono" : ""}`}>
         {value || "\u2014"}
       </span>
     </div>

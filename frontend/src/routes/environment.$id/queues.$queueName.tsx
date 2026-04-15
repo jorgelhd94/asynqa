@@ -213,7 +213,7 @@ function QueueDetailPage() {
     return (
       <div className="p-4 space-y-4">
         <PageHeader title={queueName} />
-        <div className="flex items-center gap-3 rounded border border-[var(--color-error)]/30 bg-[var(--color-error)]/10 p-4 text-sm text-[var(--color-error)]">
+        <div className="flex items-center gap-3 rounded border border-(--color-error)/30 bg-(--color-error)/10 p-4 text-sm text-(--color-error)">
           <AlertTriangle className="h-4 w-4 shrink-0" />
           <span>
             Failed to load queue data.{" "}
@@ -281,28 +281,28 @@ function QueueDetailPage() {
           value={(info?.processedTotal ?? 0).toLocaleString()}
           subtitle={`${info?.processed ?? 0} today`}
           icon={Zap}
-          iconColor="text-[var(--color-success)]"
+          iconColor="text-(--color-success)"
         />
         <StatCard
           title="Failed"
           value={(info?.failedTotal ?? 0).toLocaleString()}
           subtitle={`${info?.failed ?? 0} today`}
           icon={AlertTriangle}
-          iconColor="text-[var(--color-error)]"
+          iconColor="text-(--color-error)"
         />
         <StatCard
           title="Latency"
           value={`${info?.latencyMs ?? 0}ms`}
           subtitle={formatBytes(info?.memoryUsage ?? 0)}
           icon={Clock}
-          iconColor="text-[var(--color-warning)]"
+          iconColor="text-(--color-warning)"
         />
       </div>
 
       {/* Processing history */}
       {history.length > 0 && (
-        <div className="rounded border border-[var(--color-divider)] bg-[var(--color-primary-light)] p-4">
-          <h2 className="mb-3 text-sm font-semibold text-[var(--color-text-primary)]">
+        <div className="rounded border border-(--color-divider) bg-(--color-primary-light) p-4">
+          <h2 className="mb-3 text-sm font-semibold text-(--color-text-primary)">
             Processing History (last 14 days)
           </h2>
           <div className="grid grid-cols-7 gap-2 lg:grid-cols-14">
@@ -311,13 +311,13 @@ function QueueDetailPage() {
               .map((day) => (
                 <div
                   key={day.date}
-                  className="flex flex-col items-center gap-1 rounded-lg border border-[var(--color-divider)] bg-[var(--color-primary-bg)] p-2 text-center"
+                  className="flex flex-col items-center gap-1 rounded-lg border border-(--color-divider) bg-(--color-primary-bg) p-2 text-center"
                 >
-                  <span className="text-xs text-[var(--color-text-secondary)]">
+                  <span className="text-xs text-(--color-text-secondary)">
                     {new Date(day.date).toLocaleDateString("en", { month: "short", day: "numeric" })}
                   </span>
-                  <span className="text-xs font-semibold text-[var(--color-success)]">{day.processed}</span>
-                  <span className="text-xs text-[var(--color-error)]">
+                  <span className="text-xs font-semibold text-(--color-success)">{day.processed}</span>
+                  <span className="text-xs text-(--color-error)">
                     {day.failed > 0 ? `${day.failed} failed` : "\u00A0"}
                   </span>
                 </div>
@@ -327,14 +327,14 @@ function QueueDetailPage() {
       )}
 
       {/* Task browser */}
-      <div className="rounded border border-[var(--color-divider)] bg-[var(--color-primary-light)]">
-        <div className="flex items-center gap-2 border-b border-[var(--color-divider)] px-4 py-3">
-          <Activity className="h-4 w-4 text-[var(--color-accent-val)]" />
-          <h2 className="text-sm font-semibold text-[var(--color-text-primary)]">Tasks</h2>
+      <div className="rounded border border-(--color-divider) bg-(--color-primary-light)">
+        <div className="flex items-center gap-2 border-b border-(--color-divider) px-4 py-3">
+          <Activity className="h-4 w-4 text-(--color-accent-val)" />
+          <h2 className="text-sm font-semibold text-(--color-text-primary)">Tasks</h2>
         </div>
 
         <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-          <div className="border-b border-[var(--color-divider)] px-4">
+          <div className="border-b border-(--color-divider) px-4">
             <TabsList className="h-auto bg-transparent p-0">
               {TASK_STATES.map((s) => {
                 const count = getStateCount(info, s.value);
@@ -524,8 +524,8 @@ function TaskStateContent({
     <div>
       {/* Bulk actions */}
       {bulkActions.length > 0 && totalCount > 0 && (
-        <div className="flex items-center gap-2 border-b border-[var(--color-divider)] px-4 py-2">
-          <span className="text-xs text-[var(--color-text-secondary)]">
+        <div className="flex items-center gap-2 border-b border-(--color-divider) px-4 py-2">
+          <span className="text-xs text-(--color-text-secondary)">
             {totalCount} task(s)
           </span>
           <div className="ml-auto flex gap-1.5">
@@ -553,20 +553,20 @@ function TaskStateContent({
           <Skeleton className="h-48 rounded-lg" />
         </div>
       ) : tasks.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-1 py-16 text-sm text-[var(--color-text-secondary)]">
+        <div className="flex flex-col items-center justify-center gap-1 py-16 text-sm text-(--color-text-secondary)">
           <p>{`No ${state} tasks`}</p>
           {state === "completed" && (
-            <p className="text-xs text-[var(--color-text-muted)]">Tasks require the Retention option to appear here</p>
+            <p className="text-xs text-(--color-text-muted)">Tasks require the Retention option to appear here</p>
           )}
         </div>
       ) : (
         <>
           <Table>
             <TableHeader>
-              <TableRow className="border-[var(--color-divider)] hover:bg-transparent">
-                <TableHead className="text-[var(--color-text-secondary)]">ID</TableHead>
-                <TableHead className="text-[var(--color-text-secondary)]">Type</TableHead>
-                <TableHead className="text-[var(--color-text-secondary)]">Payload</TableHead>
+              <TableRow className="border-(--color-divider) hover:bg-transparent">
+                <TableHead className="text-(--color-text-secondary)">ID</TableHead>
+                <TableHead className="text-(--color-text-secondary)">Type</TableHead>
+                <TableHead className="text-(--color-text-secondary)">Payload</TableHead>
                 {DATE_COLUMN_LABEL[state] && (
                   <TableHead>
                     <SortableColumnHeader
@@ -577,13 +577,13 @@ function TaskStateContent({
                   </TableHead>
                 )}
                 {state === "retry" && (
-                  <TableHead className="text-right text-[var(--color-text-secondary)]">Retries</TableHead>
+                  <TableHead className="text-right text-(--color-text-secondary)">Retries</TableHead>
                 )}
                 {(state === "retry" || state === "archived") && (
-                  <TableHead className="text-[var(--color-text-secondary)]">Last Error</TableHead>
+                  <TableHead className="text-(--color-text-secondary)">Last Error</TableHead>
                 )}
                 {state === "active" && (
-                  <TableHead className="text-center text-[var(--color-text-secondary)]">Status</TableHead>
+                  <TableHead className="text-center text-(--color-text-secondary)">Status</TableHead>
                 )}
                 <TableHead className="w-10" />
               </TableRow>
@@ -592,50 +592,50 @@ function TaskStateContent({
               {sortTasksByDate(tasks, state, sortDirection).map((t) => (
                 <TableRow
                   key={t.id}
-                  className="border-[var(--color-divider)] hover:bg-[var(--color-row-hover)] cursor-pointer transition-colors"
+                  className="border-(--color-divider) hover:bg-(--color-row-hover) cursor-pointer transition-colors"
                   onClick={() => onTaskSelect(t)}
                 >
-                  <TableCell className="font-mono text-xs text-[var(--color-text-secondary)]">
+                  <TableCell className="font-mono text-xs text-(--color-text-secondary)">
                     {t.id.slice(0, 8)}
                   </TableCell>
-                  <TableCell className="font-medium text-[var(--color-text-primary)]">
+                  <TableCell className="font-medium text-(--color-text-primary)">
                     {t.type}
                   </TableCell>
-                  <TableCell className="max-w-48 truncate text-xs text-[var(--color-text-secondary)]">
+                  <TableCell className="max-w-48 truncate text-xs text-(--color-text-secondary)">
                     {t.payload?.slice(0, 60)}
                   </TableCell>
                   {DATE_COLUMN_LABEL[state] && (
-                    <TableCell className="text-xs text-[var(--color-text-secondary)]">
+                    <TableCell className="text-xs text-(--color-text-secondary)">
                       {formatDate(getDateFieldForState(t, state))}
                     </TableCell>
                   )}
                   {state === "retry" && (
                     <TableCell className="text-right text-xs">
-                      <span className="text-[var(--color-warning)]">
+                      <span className="text-(--color-warning)">
                         {t.retried}/{t.maxRetry}
                       </span>
                     </TableCell>
                   )}
                   {(state === "retry" || state === "archived") && (
-                    <TableCell className="max-w-32 truncate text-xs text-[var(--color-error)]">
+                    <TableCell className="max-w-32 truncate text-xs text-(--color-error)">
                       {t.lastErr}
                     </TableCell>
                   )}
                   {state === "active" && (
                     <TableCell className="text-center">
                       {t.isOrphaned ? (
-                        <Badge variant="outline" className="border-[var(--color-error)] text-[var(--color-error)] text-xs">
+                        <Badge variant="outline" className="border-(--color-error) text-(--color-error) text-xs">
                           Orphaned
                         </Badge>
                       ) : (
-                        <Badge variant="outline" className="border-[var(--color-success)] text-[var(--color-success)] text-xs">
+                        <Badge variant="outline" className="border-(--color-success) text-(--color-success) text-xs">
                           Running
                         </Badge>
                       )}
                     </TableCell>
                   )}
                   {state === "completed" && (
-                    <TableCell className="text-xs text-[var(--color-text-secondary)]">
+                    <TableCell className="text-xs text-(--color-text-secondary)">
                       {formatDate(t.completedAt)}
                     </TableCell>
                   )}
@@ -643,7 +643,7 @@ function TaskStateContent({
                     {rowActions.length > 0 && (
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon-xs" className="text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">
+                          <Button variant="ghost" size="icon-xs" className="text-(--color-text-secondary) hover:text-(--color-text-primary)">
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -673,8 +673,8 @@ function TaskStateContent({
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between border-t border-[var(--color-divider)] px-4 py-3">
-              <span className="text-xs text-[var(--color-text-secondary)]">
+            <div className="flex items-center justify-between border-t border-(--color-divider) px-4 py-3">
+              <span className="text-xs text-(--color-text-secondary)">
                 Page {page} of {totalPages}
               </span>
               <div className="flex gap-1.5">

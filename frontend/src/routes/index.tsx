@@ -88,7 +88,7 @@ export default function IndexPage() {
 
   return (
     <div
-      className="min-h-screen w-full bg-[var(--color-primary-bg)] text-[var(--color-text-primary)]"
+      className="min-h-screen w-full bg-(--color-primary-bg) text-(--color-text-primary)"
     >
       <div className="mx-auto flex max-w-2xl flex-col items-center px-6 py-14">
         <HeroSection />
@@ -97,13 +97,13 @@ export default function IndexPage() {
           <EnvironmentsHeader total={environments.length} />
 
           {isLoading && (
-            <div className="py-8 text-center text-sm text-[var(--color-text-secondary)]">
+            <div className="py-8 text-center text-sm text-(--color-text-secondary)">
               Loading environments...
             </div>
           )}
 
           {!isLoading && environments.length === 0 && (
-            <div className="py-8 text-center text-sm text-[var(--color-text-secondary)]">
+            <div className="py-8 text-center text-sm text-(--color-text-secondary)">
               No saved environments. Create one to get started.
             </div>
           )}

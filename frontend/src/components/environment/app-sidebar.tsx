@@ -69,7 +69,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-[var(--color-divider)]">
+    <Sidebar collapsible="icon" className="border-r border-(--color-divider)">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -77,10 +77,10 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
               <DropdownMenuTrigger asChild>
                 <SidebarMenuButton
                   size="lg"
-                  className="data-[state=open]:bg-[var(--color-primary-light)]"
+                  className="data-[state=open]:bg-(--color-primary-light)"
                 >
-                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-[var(--color-accent-val)]/10">
-                    <Database className="h-3.5 w-3.5 text-[var(--color-accent-val)]" />
+                  <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-(--color-accent-val)/10">
+                    <Database className="h-3.5 w-3.5 text-(--color-accent-val)" />
                   </div>
                   <div className="grid flex-1 text-left text-xs leading-tight">
                     {isLoading ? (
@@ -90,20 +90,20 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                       </>
                     ) : (
                       <>
-                        <span className="truncate font-semibold text-[var(--color-text-primary)]">
+                        <span className="truncate font-semibold text-(--color-text-primary)">
                           {environment?.Name ?? "Unknown"}
                         </span>
-                        <span className="truncate text-xs text-[var(--color-text-muted)]">
+                        <span className="truncate text-xs text-(--color-text-muted)">
                           {environment?.Host}
                         </span>
                       </>
                     )}
                   </div>
-                  <ChevronsUpDown className="ml-auto h-3.5 w-3.5 text-[var(--color-text-muted)]" />
+                  <ChevronsUpDown className="ml-auto h-3.5 w-3.5 text-(--color-text-muted)" />
                 </SidebarMenuButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-[var(--radix-dropdown-menu-trigger-width)] min-w-56"
+                className="w-(--radix-dropdown-menu-trigger-width) min-w-56"
                 align="start"
                 side="bottom"
                 sideOffset={4}
@@ -111,7 +111,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                 {environments.map((env) => (
                   <DropdownMenuItem
                     key={env.ID}
-                    className={`gap-2 hover:!bg-[var(--color-row-hover)] ${env.ID === environmentId ? "bg-[var(--color-row-hover)]" : ""}`}
+                    className={`gap-2 hover:bg-(--color-row-hover)! ${env.ID === environmentId ? "bg-(--color-row-hover)" : ""}`}
                     onClick={() =>
                       navigate({
                         to: "/environment/$id/dashboard",
@@ -119,10 +119,10 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                       })
                     }
                   >
-                    <Database className="h-3.5 w-3.5 text-[var(--color-accent-val)]" />
+                    <Database className="h-3.5 w-3.5 text-(--color-accent-val)" />
                     <div className="grid text-xs leading-tight">
-                      <span className="font-medium text-[var(--color-text-primary)]">{env.Name}</span>
-                      <span className="text-xs text-[var(--color-text-muted)]">
+                      <span className="font-medium text-(--color-text-primary)">{env.Name}</span>
+                      <span className="text-xs text-(--color-text-muted)">
                         {env.Host}
                       </span>
                     </div>
@@ -147,7 +147,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
         <Collapsible.Root open={monitoringOpen} onOpenChange={setMonitoringOpen}>
           <SidebarGroup>
             <Collapsible.Trigger asChild>
-              <SidebarGroupLabel className="text-xs uppercase tracking-wider text-[var(--color-text-muted)] cursor-pointer hover:text-[var(--color-text-secondary)]">
+              <SidebarGroupLabel className="text-xs uppercase tracking-wider text-(--color-text-muted) cursor-pointer hover:text-(--color-text-secondary)">
                 <span>Monitoring</span>
                 <ChevronRight
                   className={`ml-auto h-3 w-3 transition-transform duration-200 ${monitoringOpen ? "rotate-90" : ""}`}
@@ -177,18 +177,18 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
           </SidebarGroup>
         </Collapsible.Root>
 
-        <SidebarSeparator className="bg-[var(--color-divider)]" />
+        <SidebarSeparator className="bg-(--color-divider)" />
 
         {/* Task Runner section - takes remaining space */}
         <SidebarGroup className="flex min-h-0 flex-1 flex-col">
           <div className="flex items-center justify-between px-2 py-1.5 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
-            <span className="text-xs uppercase tracking-wider text-[var(--color-text-muted)] group-data-[collapsible=icon]:hidden">
+            <span className="text-xs uppercase tracking-wider text-(--color-text-muted) group-data-[collapsible=icon]:hidden">
               Task Runner
             </span>
             <SidebarMenuButton
               tooltip="New Request"
               onClick={() => setNewRequestDialogOpen(true)}
-              className="h-5 w-5 p-0! flex items-center justify-center rounded text-[var(--color-text-muted)] hover:bg-[var(--color-row-hover)] hover:text-[var(--color-text-secondary)] group-data-[collapsible=icon]:h-8 group-data-[collapsible=icon]:w-8"
+              className="h-5 w-5 p-0! flex items-center justify-center rounded text-(--color-text-muted) hover:bg-(--color-row-hover) hover:text-(--color-text-secondary) group-data-[collapsible=icon]:h-8 group-data-[collapsible=icon]:w-8"
             >
               <Plus className="h-3.5 w-3.5" />
             </SidebarMenuButton>

@@ -37,11 +37,11 @@ export function RefreshIndicator({
     <button
       onClick={onRefresh}
       disabled={isFetching}
-      className="flex items-center gap-2 rounded border border-[var(--color-divider)] px-2.5 py-1 text-xs text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-accent-val)] transition-colors"
+      className="flex items-center gap-2 rounded border border-(--color-divider) px-2.5 py-1 text-xs text-(--color-text-muted) hover:text-(--color-text-primary) hover:border-(--color-accent-val) transition-colors"
       title="Click to refresh now"
     >
       {isFetching ? (
-        <RefreshCw className="h-4 w-4 animate-spin text-[var(--color-accent-val)]" />
+        <RefreshCw className="h-4 w-4 animate-spin text-(--color-accent-val)" />
       ) : (
         <svg className="h-4 w-4 -rotate-90" viewBox="0 0 20 20">
           <circle

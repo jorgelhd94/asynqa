@@ -5,6 +5,7 @@ import { useClipboard } from "@/hooks/use-clipboard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { JsonEditor } from "@/components/task-runner/json-editor";
+import { CodeBlock } from "@/components/environment/code-block";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
@@ -422,22 +423,21 @@ export function TaskRunnerForm({
                   </pre>
                 </div>
 
-                <div className="mt-4 space-y-1.5">
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
-                    Details
-                  </span>
-                  <pre className="rounded-lg border border-[--color-divider] bg-[--color-primary-contrast] p-3 font-mono text-[10px] leading-relaxed text-[--color-text-secondary]">
-{JSON.stringify(
-  {
-    taskID: enqueueMutation.data.taskID,
-    queue: queue.trim() || "default",
-    type: taskType.trim(),
-    status: "enqueued",
-  },
-  null,
-  2
-)}
-                  </pre>
+                <div className="mt-4">
+                  <CodeBlock
+                    label="Details"
+                    content={JSON.stringify(
+                      {
+                        taskID: enqueueMutation.data.taskID,
+                        queue: queue.trim() || "default",
+                        type: taskType.trim(),
+                        status: "enqueued",
+                      },
+                      null,
+                      2
+                    )}
+                    variant="success"
+                  />
                 </div>
               </div>
             )}
@@ -451,13 +451,12 @@ export function TaskRunnerForm({
                   </span>
                 </div>
 
-                <div className="mt-4 space-y-1.5">
-                  <span className="text-[10px] font-medium uppercase tracking-wider text-[--color-text-muted]">
-                    Error
-                  </span>
-                  <pre className="rounded-lg border border-[--color-divider] bg-[--color-primary-contrast] p-3 font-mono text-xs text-[--color-error] whitespace-pre-wrap">
-                    {enqueueMutation.error?.message}
-                  </pre>
+                <div className="mt-4">
+                  <CodeBlock
+                    label="Error"
+                    content={enqueueMutation.error?.message ?? "Unknown error"}
+                    variant="error"
+                  />
                 </div>
               </div>
             )}
