@@ -2,14 +2,41 @@ name: Release
 
 on:
   push:
-    tags:
-      - "v*"
+    branches:
+      - main
 
 permissions:
   contents: write
 
 jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+      exists: ${{ steps.check.outputs.exists }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version from wails.json
+        id: tag
+        run: |
+          VERSION=$(grep -o '"productVersion": *"[^"]*"' wails.json | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
+          echo "tag=v${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: Check if tag already exists
+        id: check
+        run: |
+          if git rev-parse "${{ steps.tag.outputs.tag }}" >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
   build:
+    needs: version
+    if: needs.version.outputs.exists == 'false'
     strategy:
       fail-fast: false
       matrix:
@@ -54,7 +81,7 @@ jobs:
           sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev
 
       - name: Build
-        run: wails build -platform ${{ matrix.platform }} -ldflags "-X main.version=${{ github.ref_name }}"
+        run: wails build -platform ${{ matrix.platform }} -ldflags "-X main.version=${{ needs.version.outputs.tag }}"
 
       - name: Package (Windows)
         if: runner.os == 'Windows'
@@ -72,17 +99,27 @@ jobs:
           path: ${{ matrix.asset }}
 
   release:
-    needs: build
+    needs: [version, build]
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts
           merge-multiple: true
 
+      - name: Create tag
+        run: |
+          git tag ${{ needs.version.outputs.tag }}
+          git push origin ${{ needs.version.outputs.tag }}
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ needs.version.outputs.tag }}
+          name: AsynQA ${{ needs.version.outputs.tag }}
           generate_release_notes: true
+          prerelease: true
           files: artifacts/*
