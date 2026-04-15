@@ -1,59 +1,89 @@
-# Welcome to Your New Wails3 Project!
+# AsynQA
 
-Congratulations on generating your Wails3 application! This README will guide you through the next steps to get your project up and running.
+A cross-platform desktop application for managing, monitoring, and inspecting [asynq](https://github.com/hibiken/asynq) task queues backed by Redis. Built with [Wails v2](https://wails.io/) for Go developers.
+
+> **Note:** AsynQA is designed specifically for Go/asynq workflows — it is not a general-purpose Redis client.
+
+## Features
+
+- **Dashboard** — real-time overview of queues, tasks, and workers
+- **Queue Management** — browse queues, pause/unpause, view task breakdowns by state
+- **Task Inspector** — view task details, payloads, retry info; run, archive, or delete tasks
+- **Task Runner** — compose and enqueue tasks with a built-in JSON editor (syntax highlighting, prettify)
+- **Saved Requests** — save, clone, and organize task runner requests
+- **Workers & Schedulers** — monitor active workers and scheduler entries
+- **Redis Info** — raw Redis server information
+- **Auto-Update** — checks GitHub Releases for new versions
+
+## Requirements
+
+- [Go](https://go.dev/) 1.25+
+- [Node.js](https://nodejs.org/) 22+
+- [Wails CLI](https://wails.io/docs/gettingstarted/installation) v2
+- A running Redis instance (for connecting to asynq queues)
+
+### Platform-specific
+
+- **Windows**: No additional dependencies
+- **Linux**: `libgtk-3-dev`, `libwebkit2gtk-4.0-dev`
+- **macOS**: Xcode Command Line Tools
 
 ## Getting Started
 
-1. Navigate to your project directory in the terminal.
+```bash
+# Clone the repository
+git clone https://github.com/jorgelhd94-tpp/asynqa.git
+cd asynqa
 
-2. To run your application in development mode, use the following command:
+# Run in development mode (hot-reload)
+wails dev
 
-   ```
-   wails3 dev
-   ```
+# Build for production
+wails build
+```
 
-   This will start your application and enable hot-reloading for both frontend and backend changes.
+The production binary will be in `build/bin/`.
 
-3. To build your application for production, use:
+## Tech Stack
 
-   ```
-   wails3 build
-   ```
-
-   This will create a production-ready executable in the `build` directory.
-
-## Exploring Wails3 Features
-
-Now that you have your project set up, it's time to explore the features that Wails3 offers:
-
-1. **Check out the examples**: The best way to learn is by example. Visit the `examples` directory in the `v3/examples` directory to see various sample applications.
-
-2. **Run an example**: To run any of the examples, navigate to the example's directory and use:
-
-   ```
-   go run .
-   ```
-
-   Note: Some examples may be under development during the alpha phase.
-
-3. **Explore the documentation**: Visit the [Wails3 documentation](https://v3.wails.io/) for in-depth guides and API references.
-
-4. **Join the community**: Have questions or want to share your progress? Join the [Wails Discord](https://discord.gg/JDdSxwjhGf) or visit the [Wails discussions on GitHub](https://github.com/wailsapp/wails/discussions).
+| Layer | Technology |
+|-------|-----------|
+| Backend | Go 1.25, Wails v2, GORM + SQLite |
+| Frontend | React 19, TypeScript, Vite 7, TanStack Router & Query |
+| Styling | Tailwind CSS v4, shadcn/ui |
+| Editor | CodeMirror 6 (JSON syntax highlighting) |
 
 ## Project Structure
 
-Take a moment to familiarize yourself with your project structure:
+```
+asynqa/
+  main.go                  # Wails app entry point
+  internal/                # Backend services and domain models
+    dashboard/             # Dashboard aggregation
+    environment/           # Redis environment management
+    queue/                 # Queue operations (via asynq inspector)
+    taskrunner/            # Task runner (enqueue + saved requests)
+    updater/               # Auto-update via GitHub Releases
+    worker/                # Worker monitoring
+    scheduler/             # Scheduler entries and events
+    redis/                 # Raw Redis info
+    domain/                # GORM models
+    shared/                # Shared utilities
+  infrastructure/
+    database/              # SQLite setup and migrations
+  frontend/
+    src/
+      routes/              # TanStack Router file-based routes
+      components/          # React components (ui/, environment/, task-runner/)
+      hooks/               # TanStack Query hooks
+    wailsjs/               # Auto-generated Wails bindings (do not edit)
+  .github/workflows/       # CI/CD (cross-platform release builds)
+```
 
-- `frontend/`: Contains your frontend code (HTML, CSS, JavaScript/TypeScript)
-- `main.go`: The entry point of your Go backend
-- `app.go`: Define your application structure and methods here
-- `wails.json`: Configuration file for your Wails project
+## Contributing
 
-## Next Steps
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines.
 
-1. Modify the frontend in the `frontend/` directory to create your desired UI.
-2. Add backend functionality in `main.go`.
-3. Use `wails3 dev` to see your changes in real-time.
-4. When ready, build your application with `wails3 build`.
+## License
 
-Happy coding with Wails3! If you encounter any issues or have questions, don't hesitate to consult the documentation or reach out to the Wails community.
+[MIT](LICENSE)

@@ -1,18 +1,16 @@
 import { Plus } from "lucide-react";
-import * as React from "react";
+import { forwardRef, type ButtonHTMLAttributes } from "react";
 import { Button } from "../ui/button";
 
-type AddEnvironmentButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement>;
-
-export const AddEnvironmentButton = React.forwardRef<
+export const AddEnvironmentButton = forwardRef<
   HTMLButtonElement,
-  AddEnvironmentButtonProps
+  ButtonHTMLAttributes<HTMLButtonElement>
 >(({ className = "", ...props }, ref) => {
   return (
     <Button
       ref={ref}
       variant="ghost"
-      className={`mt-2 w-full justify-center gap-2 rounded-2xl border border-dashed border-[--color-black-700] bg-[--color-black-900]/70 px-4 py-4 text-sm font-semibold text-[--color-black-100] transition hover:border-[--color-dark-orange-400] hover:text-[--color-black-50] hover:bg-[--color-dark-orange-500]/15 hover:shadow-[0_0_0_1px_rgba(255,123,0,0.35)] ${className}`}
+      className={`mt-2 w-full justify-center gap-2 border border-dashed border-(--color-divider) bg-(--color-primary-light) px-4 py-4 text-sm font-semibold text-(--color-text-secondary) transition hover:border-(--color-accent-val) hover:text-(--color-text-primary) hover:bg-(--color-accent-val)/10 ${className}`}
       {...props}
     >
       <Plus className="h-4 w-4" />
