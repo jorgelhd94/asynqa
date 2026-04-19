@@ -5,9 +5,9 @@ import (
 	"time"
 
 	"github.com/hibiken/asynq"
-	"github.com/jorgelhd94-tpp/asynqa/internal/domain"
-	env "github.com/jorgelhd94-tpp/asynqa/internal/environment"
-	"github.com/jorgelhd94-tpp/asynqa/internal/shared"
+	"github.com/jorgelhd94/asynqa/internal/domain"
+	env "github.com/jorgelhd94/asynqa/internal/environment"
+	"github.com/jorgelhd94/asynqa/internal/shared"
 )
 
 type TaskRunnerService struct {

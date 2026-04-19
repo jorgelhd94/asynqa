@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"github.com/hibiken/asynq"
-	"github.com/jorgelhd94-tpp/asynqa/internal/domain"
-	"github.com/jorgelhd94-tpp/asynqa/internal/shared"
+	"github.com/jorgelhd94/asynqa/internal/domain"
+	"github.com/jorgelhd94/asynqa/internal/shared"
 )
 
 type EnvironmentService struct {

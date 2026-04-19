@@ -24,7 +24,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@bindings/*": ["./bindings/github.com/jorgelhd94-tpp/asynqa/*"]
+      "@bindings/*": ["./bindings/github.com/jorgelhd94/asynqa/*"]
     }
   },
   "include": ["src", "bindings"]

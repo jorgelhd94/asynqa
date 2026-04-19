@@ -9,7 +9,7 @@ import (
 	"github.com/creativeprojects/go-selfupdate"
 )
 
-const repo = "jorgelhd94-tpp/asynqa"
+const repo = "jorgelhd94/asynqa"
 
 type UpdateInfo struct {
 	Available      bool   `json:"available"`

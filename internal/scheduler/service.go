@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/hibiken/asynq"
-	env "github.com/jorgelhd94-tpp/asynqa/internal/environment"
-	"github.com/jorgelhd94-tpp/asynqa/internal/shared"
+	env "github.com/jorgelhd94/asynqa/internal/environment"
+	"github.com/jorgelhd94/asynqa/internal/shared"
 )
 
 type SchedulerService struct {
