@@ -34,7 +34,7 @@ A cross-platform desktop application for managing, monitoring, and inspecting [a
 
 ```bash
 # Clone the repository
-git clone https://github.com/jorgelhd94-tpp/asynqa.git
+git clone https://github.com/jorgelhd94/asynqa.git
 cd asynqa
 
 # Run in development mode (hot-reload)

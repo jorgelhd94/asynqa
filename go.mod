@@ -1,4 +1,4 @@
-module github.com/jorgelhd94-tpp/asynqa
+module github.com/jorgelhd94/asynqa
 
 go 1.25
 

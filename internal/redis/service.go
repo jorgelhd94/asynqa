@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	env "github.com/jorgelhd94-tpp/asynqa/internal/environment"
+	env "github.com/jorgelhd94/asynqa/internal/environment"
 	goredis "github.com/redis/go-redis/v9"
 )
 

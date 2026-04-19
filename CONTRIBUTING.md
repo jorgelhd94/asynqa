@@ -11,7 +11,7 @@ Thanks for your interest in contributing! Here's how to get started.
 
 2. Clone and run:
    ```bash
-   git clone https://github.com/jorgelhd94-tpp/asynqa.git
+   git clone https://github.com/jorgelhd94/asynqa.git
    cd asynqa
    wails dev
    ```

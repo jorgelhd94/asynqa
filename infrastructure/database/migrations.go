@@ -1,7 +1,7 @@
 package database
 
 import (
-	"github.com/jorgelhd94-tpp/asynqa/internal/domain"
+	"github.com/jorgelhd94/asynqa/internal/domain"
 	"gorm.io/gorm"
 )
 
