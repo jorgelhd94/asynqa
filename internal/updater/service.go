@@ -57,7 +57,10 @@ func platformAssetFilter() string {
 }
 
 func newUpdater(source selfupdate.Source) (*selfupdate.Updater, error) {
-	cfg := selfupdate.Config{Source: source}
+	cfg := selfupdate.Config{
+		Source:    source,
+		Validator: &selfupdate.ChecksumValidator{UniqueFilename: "SHA256SUMS"},
+	}
 	if f := platformAssetFilter(); f != "" {
 		cfg.Filters = []string{f}
 	}
