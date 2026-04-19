@@ -723,11 +723,11 @@ export namespace updater {
 	    releaseNotes: string;
 	    url: string;
 	    manualOnly: boolean;
-
+	
 	    static createFrom(source: any = {}) {
 	        return new UpdateInfo(source);
 	    }
-
+	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.available = source["available"];
@@ -744,11 +744,11 @@ export namespace updater {
 	    message: string;
 	    url?: string;
 	    manualOnly?: boolean;
-
+	
 	    static createFrom(source: any = {}) {
 	        return new UpdateResult(source);
 	    }
-
+	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.success = source["success"];
