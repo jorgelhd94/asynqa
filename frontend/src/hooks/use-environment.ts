@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import * as EnvironmentService from "../../wailsjs/go/service/EnvironmentService";
+import * as EnvironmentService from "../../wailsjs/go/environment/EnvironmentService";
 
 export function useEnvironment(id: number) {
   return useQuery({

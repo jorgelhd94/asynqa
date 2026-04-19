@@ -27,3 +27,17 @@ Thumbs.db
 .task
 build/linux/appimage/build
 build/windows/nsis/MicrosoftEdgeWebview2Setup.exe
+
+# Go build artifacts
+*.exe
+*.dll
+*.so
+*.dylib
+
+.agents
+.claude
+.windsurf
+.windsurf/*
+
+skills-lock.json
+

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/environment/page-header";
 import { RefreshIndicator } from "@/components/environment/refresh-indicator";
+import { ErrorState } from "@/components/environment/error-state";
 import { useRedisInfo } from "@/hooks/use-redis-info";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
-  AlertTriangle,
   ChevronDown,
   ChevronRight,
   Code,
@@ -53,17 +53,12 @@ function RedisInfoPage() {
       <div className="p-4 space-y-4">
         <div className="space-y-6">
           <PageHeader title="Redis" />
-          <div className="flex items-center gap-3 rounded border border-(--color-error)/30 bg-(--color-error)/10 p-4 text-sm text-(--color-error)">
-            <AlertTriangle className="h-4 w-4 shrink-0" />
-            <span>
-              Failed to load Redis info.{" "}
-              {error?.message &&
-                (() => {
-                  try { return JSON.parse(error.message).message; }
-                  catch { return error.message; }
-                })()}
-            </span>
-          </div>
+          <ErrorState
+            title="Failed to load Redis info"
+            error={error}
+            onRetry={refetch}
+            isRetrying={isFetching}
+          />
         </div>
       </div>
     );

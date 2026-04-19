@@ -7,7 +7,7 @@ import {
   ChartLegendContent,
   type ChartConfig,
 } from "@/components/ui/chart"
-import type { dto } from "../../../wailsjs/go/models"
+import type { dashboard } from "../../../wailsjs/go/models"
 
 const STATE_COLORS: Record<string, string> = {
   pending: "#a3a3a3",
@@ -28,7 +28,7 @@ const chartConfig = {
   completed: { label: "Completed", color: STATE_COLORS.completed },
 } satisfies ChartConfig
 
-export function TaskDistributionChart({ queues }: { queues: dto.QueueStats[] }) {
+export function TaskDistributionChart({ queues }: { queues: dashboard.QueueStats[] }) {
   const totals = queues.reduce(
     (acc, q) => {
       acc.pending += q.pending

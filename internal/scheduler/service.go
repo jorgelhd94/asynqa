@@ -5,15 +5,15 @@ import (
 	"time"
 
 	"github.com/hibiken/asynq"
-	envstore "github.com/jorgelhd94-tpp/asynqa/internal/environment/store"
+	env "github.com/jorgelhd94-tpp/asynqa/internal/environment"
 	"github.com/jorgelhd94-tpp/asynqa/internal/shared"
 )
 
 type SchedulerService struct {
-	environmentStore *envstore.EnvironmentStore
+	environmentStore *env.EnvironmentStore
 }
 
-func NewSchedulerService(environmentStore *envstore.EnvironmentStore) *SchedulerService {
+func NewSchedulerService(environmentStore *env.EnvironmentStore) *SchedulerService {
 	return &SchedulerService{environmentStore: environmentStore}
 }
 

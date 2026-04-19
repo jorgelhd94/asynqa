@@ -1,60 +1,4 @@
-export namespace domain {
-	
-	export class Environment {
-	    ID: number;
-	    // Go type: time
-	    CreatedAt: any;
-	    // Go type: time
-	    UpdatedAt: any;
-	    // Go type: gorm
-	    DeletedAt: any;
-	    Name: string;
-	    Host: string;
-	    Password: string;
-	    DB: number;
-	    UseTLS: boolean;
-	    TLSSkipVerify: boolean;
-	
-	    static createFrom(source: any = {}) {
-	        return new Environment(source);
-	    }
-	
-	    constructor(source: any = {}) {
-	        if ('string' === typeof source) source = JSON.parse(source);
-	        this.ID = source["ID"];
-	        this.CreatedAt = this.convertValues(source["CreatedAt"], null);
-	        this.UpdatedAt = this.convertValues(source["UpdatedAt"], null);
-	        this.DeletedAt = this.convertValues(source["DeletedAt"], null);
-	        this.Name = source["Name"];
-	        this.Host = source["Host"];
-	        this.Password = source["Password"];
-	        this.DB = source["DB"];
-	        this.UseTLS = source["UseTLS"];
-	        this.TLSSkipVerify = source["TLSSkipVerify"];
-	    }
-	
-		convertValues(a: any, classs: any, asMap: boolean = false): any {
-		    if (!a) {
-		        return a;
-		    }
-		    if (a.slice && a.map) {
-		        return (a as any[]).map(elem => this.convertValues(elem, classs));
-		    } else if ("object" === typeof a) {
-		        if (asMap) {
-		            for (const key of Object.keys(a)) {
-		                a[key] = new classs(a[key]);
-		            }
-		            return a;
-		        }
-		        return new classs(a);
-		    }
-		    return a;
-		}
-	}
-
-}
-
-export namespace dto {
+export namespace dashboard {
 	
 	export class DailyStats {
 	    date: string;
@@ -134,6 +78,62 @@ export namespace dto {
 	        this.totalFailed = source["totalFailed"];
 	        this.history = this.convertValues(source["history"], DailyStats);
 	        this.serverCount = source["serverCount"];
+	    }
+	
+		convertValues(a: any, classs: any, asMap: boolean = false): any {
+		    if (!a) {
+		        return a;
+		    }
+		    if (a.slice && a.map) {
+		        return (a as any[]).map(elem => this.convertValues(elem, classs));
+		    } else if ("object" === typeof a) {
+		        if (asMap) {
+		            for (const key of Object.keys(a)) {
+		                a[key] = new classs(a[key]);
+		            }
+		            return a;
+		        }
+		        return new classs(a);
+		    }
+		    return a;
+		}
+	}
+
+}
+
+export namespace domain {
+	
+	export class Environment {
+	    ID: number;
+	    // Go type: time
+	    CreatedAt: any;
+	    // Go type: time
+	    UpdatedAt: any;
+	    // Go type: gorm
+	    DeletedAt: any;
+	    Name: string;
+	    Host: string;
+	    Password: string;
+	    DB: number;
+	    UseTLS: boolean;
+	    TLSSkipVerify: boolean;
+	
+	    static createFrom(source: any = {}) {
+	        return new Environment(source);
+	    }
+	
+	    constructor(source: any = {}) {
+	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.ID = source["ID"];
+	        this.CreatedAt = this.convertValues(source["CreatedAt"], null);
+	        this.UpdatedAt = this.convertValues(source["UpdatedAt"], null);
+	        this.DeletedAt = this.convertValues(source["DeletedAt"], null);
+	        this.Name = source["Name"];
+	        this.Host = source["Host"];
+	        this.Password = source["Password"];
+	        this.DB = source["DB"];
+	        this.UseTLS = source["UseTLS"];
+	        this.TLSSkipVerify = source["TLSSkipVerify"];
 	    }
 	
 		convertValues(a: any, classs: any, asMap: boolean = false): any {
@@ -722,6 +722,7 @@ export namespace updater {
 	    latestVersion: string;
 	    releaseNotes: string;
 	    url: string;
+	    manualOnly: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new UpdateInfo(source);
@@ -734,12 +735,15 @@ export namespace updater {
 	        this.latestVersion = source["latestVersion"];
 	        this.releaseNotes = source["releaseNotes"];
 	        this.url = source["url"];
+	        this.manualOnly = source["manualOnly"];
 	    }
 	}
 	export class UpdateResult {
 	    success: boolean;
 	    version: string;
 	    message: string;
+	    url?: string;
+	    manualOnly?: boolean;
 	
 	    static createFrom(source: any = {}) {
 	        return new UpdateResult(source);
@@ -750,6 +754,8 @@ export namespace updater {
 	        this.success = source["success"];
 	        this.version = source["version"];
 	        this.message = source["message"];
+	        this.url = source["url"];
+	        this.manualOnly = source["manualOnly"];
 	    }
 	}
 

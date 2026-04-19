@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.tag.outputs.tag }}
+      version: ${{ steps.tag.outputs.version }}
       exists: ${{ steps.check.outputs.exists }}
     steps:
       - uses: actions/checkout@v4
@@ -23,6 +24,7 @@ jobs:
         id: tag
         run: |
           VERSION=$(grep -o '"productVersion": *"[^"]*"' wails.json | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
           echo "tag=v${VERSION}" >> "$GITHUB_OUTPUT"
 
       - name: Check if tag already exists
@@ -44,19 +46,19 @@ jobs:
           - os: windows-latest
             platform: windows/amd64
             output: asynqa.exe
-            asset: asynqa_windows_amd64.zip
+            asset: asynqa_${{ needs.version.outputs.tag }}_windows_amd64.zip
             nsis: true
             build-tags: ""
           - os: ubuntu-latest
             platform: linux/amd64
             output: asynqa
-            asset: asynqa_linux_amd64.tar.gz
+            asset: asynqa_${{ needs.version.outputs.tag }}_linux_amd64.tar.gz
             nsis: false
             build-tags: webkit2_41
           - os: macos-latest
             platform: darwin/universal
             output: asynqa.app
-            asset: asynqa_darwin_universal.tar.gz
+            asset: asynqa_${{ needs.version.outputs.tag }}_darwin_universal.tar.gz
             nsis: false
             build-tags: ""
 
@@ -88,15 +90,13 @@ jobs:
 
       - name: Install NSIS
         if: matrix.nsis
-        run: choco install nsis -y
+        run: |
+          choco install nsis -y
+          echo "C:\Program Files (x86)\NSIS" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
         shell: pwsh
 
       - name: Build
-        run: wails build -platform ${{ matrix.platform }} ${{ matrix.build-tags && format('-tags {0}', matrix.build-tags) }} -ldflags "-X main.version=${{ needs.version.outputs.tag }}"
-
-      - name: Build NSIS installer
-        if: matrix.nsis
-        run: wails build -platform ${{ matrix.platform }} -nsis -ldflags "-X main.version=${{ needs.version.outputs.tag }}"
+        run: wails build -platform ${{ matrix.platform }} ${{ matrix.build-tags && format('-tags {0}', matrix.build-tags) }} ${{ matrix.nsis && '-nsis' || '' }} -ldflags "-X main.version=${{ needs.version.outputs.version }}"
 
       - name: Package (Windows portable)
         if: runner.os == 'Windows'
@@ -114,7 +114,7 @@ jobs:
         if: matrix.nsis
         uses: actions/upload-artifact@v4
         with:
-          name: asynqa_windows_amd64_installer.exe
+          name: asynqa_${{ needs.version.outputs.tag }}_windows_amd64_installer.exe
           path: build/bin/*-amd64-installer.exe
 
       - name: Package (Linux/macOS)
@@ -140,6 +140,12 @@ jobs:
           path: artifacts
           merge-multiple: true
 
+      - name: Generate SHA256SUMS
+        run: |
+          cd artifacts
+          sha256sum * > SHA256SUMS
+          cat SHA256SUMS
+
       - name: Create tag
         run: |
           git tag ${{ needs.version.outputs.tag }}
@@ -151,5 +157,4 @@ jobs:
           tag_name: ${{ needs.version.outputs.tag }}
           name: AsynQA ${{ needs.version.outputs.tag }}
           generate_release_notes: true
-          prerelease: true
           files: artifacts/*
