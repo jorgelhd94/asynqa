@@ -3,6 +3,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { PageHeader } from "@/components/environment/page-header";
 import { StatCard } from "@/components/environment/stat-card";
 import { RefreshIndicator } from "@/components/environment/refresh-indicator";
+import { ErrorState } from "@/components/environment/error-state";
 import {
   useQueues,
   usePauseQueue,
@@ -39,7 +40,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import {
   Activity,
-  AlertTriangle,
   Layers,
   ListTodo,
   MoreHorizontal,
@@ -93,20 +93,12 @@ function QueuesPage() {
     return (
       <div className="p-4 space-y-4">
         <PageHeader title="Queues" />
-        <div className="flex items-center gap-3 rounded border border-(--color-error)/30 bg-(--color-error)/10 p-4 text-sm text-(--color-error)">
-          <AlertTriangle className="h-4 w-4 shrink-0" />
-          <span>
-            Failed to load queue data.{" "}
-            {error?.message &&
-              (() => {
-                try {
-                  return JSON.parse(error.message).message;
-                } catch {
-                  return error.message;
-                }
-              })()}
-          </span>
-        </div>
+        <ErrorState
+          title="Failed to load queue data"
+          error={error}
+          onRetry={refetch}
+          isRetrying={isFetching}
+        />
       </div>
     );
   }

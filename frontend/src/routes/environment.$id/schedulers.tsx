@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/environment/page-header";
 import { RefreshIndicator } from "@/components/environment/refresh-indicator";
 import { StatCard } from "@/components/environment/stat-card";
+import { ErrorState } from "@/components/environment/error-state";
 import { useSchedulerEntries, useEnqueueEvents, useRunSchedulerEntry } from "@/hooks/use-schedulers";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -24,7 +25,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import {
   Activity,
-  AlertTriangle,
   CalendarClock,
   ChevronLeft,
   ChevronRight,
@@ -99,17 +99,12 @@ function SchedulersPage() {
       <div className="p-4 space-y-4">
         <div className="space-y-6">
           <PageHeader title="Schedulers" />
-          <div className="flex items-center gap-3 rounded border border-(--color-error)/30 bg-(--color-error)/10 p-4 text-sm text-(--color-error)">
-            <AlertTriangle className="h-4 w-4 shrink-0" />
-            <span>
-              Failed to load scheduler data.{" "}
-              {error?.message &&
-                (() => {
-                  try { return JSON.parse(error.message).message; }
-                  catch { return error.message; }
-                })()}
-            </span>
-          </div>
+          <ErrorState
+            title="Failed to load scheduler data"
+            error={error}
+            onRetry={refetch}
+            isRetrying={isFetching}
+          />
         </div>
       </div>
     );

@@ -6,16 +6,16 @@ import (
 
 	"github.com/hibiken/asynq"
 	"github.com/jorgelhd94-tpp/asynqa/internal/domain"
-	envstore "github.com/jorgelhd94-tpp/asynqa/internal/environment/store"
+	env "github.com/jorgelhd94-tpp/asynqa/internal/environment"
 	"github.com/jorgelhd94-tpp/asynqa/internal/shared"
 )
 
 type TaskRunnerService struct {
-	environmentStore *envstore.EnvironmentStore
+	environmentStore *env.EnvironmentStore
 	requestStore     *TaskRunnerRequestStore
 }
 
-func NewTaskRunnerService(environmentStore *envstore.EnvironmentStore, requestStore *TaskRunnerRequestStore) *TaskRunnerService {
+func NewTaskRunnerService(environmentStore *env.EnvironmentStore, requestStore *TaskRunnerRequestStore) *TaskRunnerService {
 	return &TaskRunnerService{
 		environmentStore: environmentStore,
 		requestStore:     requestStore,

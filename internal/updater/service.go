@@ -17,12 +17,15 @@ type UpdateInfo struct {
 	LatestVersion  string `json:"latestVersion"`
 	ReleaseNotes   string `json:"releaseNotes"`
 	URL            string `json:"url"`
+	ManualOnly     bool   `json:"manualOnly"`
 }
 
 type UpdateResult struct {
-	Success bool   `json:"success"`
-	Version string `json:"version"`
-	Message string `json:"message"`
+	Success    bool   `json:"success"`
+	Version    string `json:"version"`
+	Message    string `json:"message"`
+	URL        string `json:"url,omitempty"`
+	ManualOnly bool   `json:"manualOnly,omitempty"`
 }
 
 type UpdaterService struct {
@@ -37,9 +40,34 @@ func (s *UpdaterService) GetCurrentVersion() string {
 	return s.version
 }
 
+// platformAssetFilter returns a regex that uniquely matches the release asset
+// for the current OS/arch. go-selfupdate's default OS/arch matcher does not
+// understand darwin_universal and can pick the NSIS installer over the
+// portable zip on Windows, so we bypass it with an explicit filter.
+func platformAssetFilter() string {
+	switch runtime.GOOS {
+	case "windows":
+		return `windows_amd64\.zip$`
+	case "linux":
+		return `linux_amd64\.tar\.gz$`
+	case "darwin":
+		return `darwin_universal\.tar\.gz$`
+	}
+	return ""
+}
+
+func newUpdater(source selfupdate.Source) (*selfupdate.Updater, error) {
+	cfg := selfupdate.Config{Source: source}
+	if f := platformAssetFilter(); f != "" {
+		cfg.Filters = []string{f}
+	}
+	return selfupdate.NewUpdater(cfg)
+}
+
 func (s *UpdaterService) CheckForUpdate() (UpdateInfo, error) {
 	info := UpdateInfo{
 		CurrentVersion: s.version,
+		ManualOnly:     runtime.GOOS == "darwin",
 	}
 
 	if s.version == "dev" {
@@ -52,10 +80,7 @@ func (s *UpdaterService) CheckForUpdate() (UpdateInfo, error) {
 		return info, fmt.Errorf("failed to create update source: %w", err)
 	}
 
-	updater, err := selfupdate.NewUpdater(selfupdate.Config{
-		Source:    source,
-		Validator: nil,
-	})
+	updater, err := newUpdater(source)
 	if err != nil {
 		return info, fmt.Errorf("failed to create updater: %w", err)
 	}
@@ -91,10 +116,7 @@ func (s *UpdaterService) ApplyUpdate() (UpdateResult, error) {
 		return UpdateResult{}, fmt.Errorf("failed to create update source: %w", err)
 	}
 
-	updater, err := selfupdate.NewUpdater(selfupdate.Config{
-		Source:    source,
-		Validator: nil,
-	})
+	updater, err := newUpdater(source)
 	if err != nil {
 		return UpdateResult{}, fmt.Errorf("failed to create updater: %w", err)
 	}
@@ -109,6 +131,19 @@ func (s *UpdaterService) ApplyUpdate() (UpdateResult, error) {
 			Success: true,
 			Version: s.version,
 			Message: "Already up to date",
+		}, nil
+	}
+
+	// In-place update on macOS would overwrite the inner binary of the .app
+	// bundle, leaving Info.plist/resources stale and likely breaking the
+	// install. Redirect the user to download the new version manually.
+	if runtime.GOOS == "darwin" {
+		return UpdateResult{
+			Success:    false,
+			Version:    latest.Version(),
+			Message:    "Automatic updates are not supported on macOS. Please download the latest version manually.",
+			URL:        latest.URL,
+			ManualOnly: true,
 		}, nil
 	}
 

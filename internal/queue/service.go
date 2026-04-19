@@ -5,15 +5,15 @@ import (
 	"time"
 
 	"github.com/hibiken/asynq"
-	envstore "github.com/jorgelhd94-tpp/asynqa/internal/environment/store"
+	env "github.com/jorgelhd94-tpp/asynqa/internal/environment"
 	"github.com/jorgelhd94-tpp/asynqa/internal/shared"
 )
 
 type QueueService struct {
-	environmentStore *envstore.EnvironmentStore
+	environmentStore *env.EnvironmentStore
 }
 
-func NewQueueService(environmentStore *envstore.EnvironmentStore) *QueueService {
+func NewQueueService(environmentStore *env.EnvironmentStore) *QueueService {
 	return &QueueService{environmentStore: environmentStore}
 }
 

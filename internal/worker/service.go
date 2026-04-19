@@ -5,15 +5,15 @@ import (
 	"time"
 
 	"github.com/hibiken/asynq"
-	envstore "github.com/jorgelhd94-tpp/asynqa/internal/environment/store"
+	env "github.com/jorgelhd94-tpp/asynqa/internal/environment"
 	"github.com/jorgelhd94-tpp/asynqa/internal/shared"
 )
 
 type WorkerService struct {
-	environmentStore *envstore.EnvironmentStore
+	environmentStore *env.EnvironmentStore
 }
 
-func NewWorkerService(environmentStore *envstore.EnvironmentStore) *WorkerService {
+func NewWorkerService(environmentStore *env.EnvironmentStore) *WorkerService {
 	return &WorkerService{environmentStore: environmentStore}
 }
 

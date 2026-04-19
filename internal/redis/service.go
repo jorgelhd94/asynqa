@@ -7,15 +7,15 @@ import (
 	"strings"
 	"time"
 
+	env "github.com/jorgelhd94-tpp/asynqa/internal/environment"
 	goredis "github.com/redis/go-redis/v9"
-	envstore "github.com/jorgelhd94-tpp/asynqa/internal/environment/store"
 )
 
 type RedisService struct {
-	environmentStore *envstore.EnvironmentStore
+	environmentStore *env.EnvironmentStore
 }
 
-func NewRedisService(environmentStore *envstore.EnvironmentStore) *RedisService {
+func NewRedisService(environmentStore *env.EnvironmentStore) *RedisService {
 	return &RedisService{environmentStore: environmentStore}
 }
 

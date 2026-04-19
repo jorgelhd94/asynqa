@@ -8,9 +8,8 @@ import (
 	"os"
 
 	"github.com/jorgelhd94-tpp/asynqa/infrastructure/database"
-	dashservice "github.com/jorgelhd94-tpp/asynqa/internal/dashboard/service"
-	envservice "github.com/jorgelhd94-tpp/asynqa/internal/environment/service"
-	envstore "github.com/jorgelhd94-tpp/asynqa/internal/environment/store"
+	dashservice "github.com/jorgelhd94-tpp/asynqa/internal/dashboard"
+	env "github.com/jorgelhd94-tpp/asynqa/internal/environment"
 	queuepkg "github.com/jorgelhd94-tpp/asynqa/internal/queue"
 	redispkg "github.com/jorgelhd94-tpp/asynqa/internal/redis"
 	"github.com/jorgelhd94-tpp/asynqa/internal/scheduler"
@@ -54,10 +53,10 @@ func main() {
 	defer sqlDB.Close()
 
 	// Stores
-	environmentStore := envstore.NewEnvironmentStore(db)
+	environmentStore := env.NewEnvironmentStore(db)
 
 	// Services
-	environmentService := envservice.NewEnvironmentService(environmentStore)
+	environmentService := env.NewEnvironmentService(environmentStore)
 	dashboardService := dashservice.NewDashboardService(environmentStore)
 	queueService := queuepkg.NewQueueService(environmentStore)
 	workerService := worker.NewWorkerService(environmentStore)
