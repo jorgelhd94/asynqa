@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import * as DashboardService from "../../wailsjs/go/service/DashboardService";
+import * as DashboardService from "../../wailsjs/go/dashboard/DashboardService";
 
 export function useDashboard(environmentId: number) {
   return useQuery({

@@ -140,6 +140,12 @@ jobs:
           path: artifacts
           merge-multiple: true
 
+      - name: Generate SHA256SUMS
+        run: |
+          cd artifacts
+          sha256sum * > SHA256SUMS
+          cat SHA256SUMS
+
       - name: Create tag
         run: |
           git tag ${{ needs.version.outputs.tag }}

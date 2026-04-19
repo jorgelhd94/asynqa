@@ -36,6 +36,8 @@ build/windows/nsis/MicrosoftEdgeWebview2Setup.exe
 
 .agents
 .claude
+.windsurf
+.windsurf/*
 
 skills-lock.json
 

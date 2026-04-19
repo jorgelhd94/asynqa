@@ -13,7 +13,7 @@ import {
   ChartLegendContent,
   type ChartConfig,
 } from "@/components/ui/chart"
-import type { dto } from "../../../wailsjs/go/models"
+import type { dashboard } from "../../../wailsjs/go/models"
 
 const chartConfig = {
   pending: { label: "Pending", color: "#a3a3a3" },
@@ -23,7 +23,7 @@ const chartConfig = {
   archived: { label: "Archived", color: "#f43f5e" },
 } satisfies ChartConfig
 
-export function QueueSizeChart({ queues }: { queues: dto.QueueStats[] }) {
+export function QueueSizeChart({ queues }: { queues: dashboard.QueueStats[] }) {
   const data = queues.map((q) => ({
     name: q.queue,
     pending: q.pending,

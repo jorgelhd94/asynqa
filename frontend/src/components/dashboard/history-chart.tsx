@@ -13,7 +13,7 @@ import {
   ChartLegendContent,
   type ChartConfig,
 } from "@/components/ui/chart"
-import type { dto } from "../../../wailsjs/go/models"
+import type { dashboard } from "../../../wailsjs/go/models"
 
 const chartConfig = {
   processed: { label: "Succeeded", color: "#10b981" },
@@ -25,7 +25,7 @@ function formatDate(dateStr: string) {
   return d.toLocaleDateString("en", { month: "short", day: "numeric" })
 }
 
-export function HistoryChart({ history }: { history: dto.DailyStats[] }) {
+export function HistoryChart({ history }: { history: dashboard.DailyStats[] }) {
   const data = [...history]
     .sort((a, b) => a.date.localeCompare(b.date))
     .map((d) => ({
