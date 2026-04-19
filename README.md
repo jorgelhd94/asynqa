@@ -4,7 +4,14 @@ A cross-platform desktop application for managing, monitoring, and inspecting [a
 
 > **Note:** AsynQA is designed specifically for Go/asynq workflows — it is not a general-purpose Redis client.
 
-<img width="792" height="495" alt="image" src="https://github.com/user-attachments/assets/2d8ae6c8-6290-444c-a075-d42258cbe8a9" />
+<img width="1365" height="720" alt="1" src="https://github.com/user-attachments/assets/32bc630f-e1f7-44d8-8e9d-a56c9dd68e4f" />
+&nbsp;
+<img width="1729" height="910" alt="2" src="https://github.com/user-attachments/assets/954a19ac-60c8-4272-b296-3773b1f407bf" />
+&nbsp;
+<img width="1365" height="720" alt="3" src="https://github.com/user-attachments/assets/0765f318-c006-4e6d-a834-075b0b660314" />
+&nbsp;
+<img width="1365" height="721" alt="4" src="https://github.com/user-attachments/assets/ef9abf18-6c52-42eb-a1f2-b73759197803" />
+
 
 ## Features
 
