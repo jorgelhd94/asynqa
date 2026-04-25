@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Download, ExternalLink, RefreshCw } from "lucide-react";
-import { sileo } from "sileo";
-import { useCheckForUpdate, useApplyUpdate } from "@/hooks/use-updater";
+import { Download, ExternalLink } from "lucide-react";
+import { useCheckForUpdate } from "@/hooks/use-updater";
 import { BrowserOpenURL } from "../../../wailsjs/runtime/runtime";
 import {
   AlertDialog,
@@ -20,50 +19,13 @@ type UpdateIndicatorProps = {
 
 export function UpdateIndicator({ size = "sm" }: UpdateIndicatorProps) {
   const { data: updateInfo } = useCheckForUpdate();
-  const applyUpdate = useApplyUpdate();
   const [dialogOpen, setDialogOpen] = useState(false);
 
   if (!updateInfo?.available) return null;
 
-  const manualOnly = updateInfo.manualOnly;
-
-  const handleAction = () => {
-    if (manualOnly) {
-      if (updateInfo.url) BrowserOpenURL(updateInfo.url);
-      setDialogOpen(false);
-      return;
-    }
-    applyUpdate.mutate(undefined, {
-      onSuccess: (result) => {
-        setDialogOpen(false);
-        if (result.manualOnly && result.url) {
-          BrowserOpenURL(result.url);
-          sileo.info({
-            title: "Manual update required",
-            description: result.message,
-          });
-          return;
-        }
-        if (result.success) {
-          sileo.success({
-            title: `Updated to v${result.version}`,
-            description: "Please restart the application.",
-          });
-          return;
-        }
-        sileo.error({
-          title: "Update failed",
-          description: result.message || "Unknown error",
-        });
-      },
-      onError: (error) => {
-        setDialogOpen(false);
-        sileo.error({
-          title: "Update failed",
-          description: error.message,
-        });
-      },
-    });
+  const handleOpenReleasePage = () => {
+    if (updateInfo.url) BrowserOpenURL(updateInfo.url);
+    setDialogOpen(false);
   };
 
   const triggerClass =
@@ -87,33 +49,14 @@ export function UpdateIndicator({ size = "sm" }: UpdateIndicatorProps) {
             <AlertDialogDescription>
               A new version <strong>v{updateInfo.latestVersion}</strong> is available.
               You are currently on <strong>v{updateInfo.currentVersion}</strong>.
-              {manualOnly
-                ? " Automatic updates are not supported on macOS. Open the release page to download the new version manually."
-                : " The application will need to restart after updating."}
+              Open the release page to download the latest installer.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Later</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={handleAction}
-              disabled={applyUpdate.isPending}
-            >
-              {applyUpdate.isPending ? (
-                <>
-                  <RefreshCw className="h-3.5 w-3.5 animate-spin" />
-                  Updating...
-                </>
-              ) : manualOnly ? (
-                <>
-                  <ExternalLink className="h-3.5 w-3.5" />
-                  Open release page
-                </>
-              ) : (
-                <>
-                  <Download className="h-3.5 w-3.5" />
-                  Update Now
-                </>
-              )}
+            <AlertDialogAction onClick={handleOpenReleasePage}>
+              <ExternalLink className="h-3.5 w-3.5" />
+              Open release page
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -14,14 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optional **Desktop Shortcut** component on the Windows installer (enabled by default, can be unchecked from the Components page).
 
 ### Changed
-- Auto-updater feedback: success and failure of `Update Now` now surface as toasts. Previously the dialog stayed open silently on success and errors were swallowed entirely.
+- The in-app updater no longer attempts an in-place binary swap. Clicking **update available** now opens the GitHub release page in the browser so the user can download and run the latest installer manually. The previous mechanism failed silently on admin / `Program Files` installs (the running process cannot overwrite its own `.exe` without UAC) and was already manual on macOS — the redirect makes the flow uniform across platforms.
 - A larger **update available** indicator is now shown in the top-right of the Manage Environments screen, in addition to the compact one in the per-environment status bar.
 
 ### Fixed
 - Long environment names and Redis hosts no longer overflow their containers. Affected views: environments landing list, sidebar environment switcher (header trigger and dropdown items), and saved requests in the Task Runner sidebar. Text truncates with an ellipsis and the full value is shown on hover via a native tooltip.
 
 ### Notes
-- Upgrading from `v0.0.1`: the previous installer forced an admin-only install in `Program Files`, so the in-app updater cannot replace the binary without elevation. Download the `v0.1.1` installer from the GitHub release page and run it manually. From `v0.1.1` onward, in-app updates will work as long as you choose the per-user install mode.
+- Upgrading from `v0.0.1`: download the `v0.1.1` installer from the GitHub release page and run it manually. All future updates work the same way — the **update available** button in the app links straight to the release page.
 
 ## [0.0.1] - Initial release
 

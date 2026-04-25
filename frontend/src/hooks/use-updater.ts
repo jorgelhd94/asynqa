@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import * as UpdaterService from "../../wailsjs/go/updater/UpdaterService";
 
 export function useCurrentVersion() {
@@ -15,11 +15,5 @@ export function useCheckForUpdate() {
     queryFn: () => UpdaterService.CheckForUpdate(),
     staleTime: 5 * 60 * 1000, // 5 minutes
     refetchOnWindowFocus: false,
-  });
-}
-
-export function useApplyUpdate() {
-  return useMutation({
-    mutationFn: () => UpdaterService.ApplyUpdate(),
   });
 }
