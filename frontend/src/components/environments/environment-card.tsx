@@ -35,24 +35,30 @@ export function EnvironmentCard({
       <div className="absolute left-0 top-0 h-full w-0.5 bg-(--color-divider) transition-colors group-hover:bg-(--color-accent-val)" />
 
       <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center bg-(--color-primary-dark) transition-colors group-hover:bg-(--color-accent-subtle)">
+        <div className="flex min-w-0 flex-1 items-center gap-3">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center bg-(--color-primary-dark) transition-colors group-hover:bg-(--color-accent-subtle)">
             {connecting ? (
               <Loader2 className="h-5 w-5 animate-spin text-(--color-accent-val)" />
             ) : (
               <Database className="h-5 w-5 text-(--color-text-muted) transition-colors group-hover:text-(--color-accent-val)" />
             )}
           </div>
-          <div>
-            <div className="text-base font-semibold leading-tight text-(--color-text-primary)">
+          <div className="min-w-0 flex-1">
+            <div
+              className="truncate text-base font-semibold leading-tight text-(--color-text-primary)"
+              title={env.Name}
+            >
               {env.Name}
             </div>
-            <div className="text-xs text-(--color-text-muted) transition-colors group-hover:text-(--color-text-secondary)">
+            <div
+              className="truncate text-xs text-(--color-text-muted) transition-colors group-hover:text-(--color-text-secondary)"
+              title={connecting ? undefined : env.Host}
+            >
               {connecting ? "Connecting..." : env.Host}
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 opacity-0 transition-opacity group-hover:opacity-100">
+        <div className="flex shrink-0 items-center gap-1.5 opacity-0 transition-opacity group-hover:opacity-100">
           <Button
             variant="ghost"
             size="icon-sm"

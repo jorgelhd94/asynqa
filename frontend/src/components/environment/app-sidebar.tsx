@@ -82,7 +82,7 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                   <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded bg-(--color-accent-val)/10">
                     <Database className="h-3.5 w-3.5 text-(--color-accent-val)" />
                   </div>
-                  <div className="grid flex-1 text-left text-xs leading-tight">
+                  <div className="grid min-w-0 flex-1 text-left text-xs leading-tight">
                     {isLoading ? (
                       <>
                         <Skeleton className="h-3 w-20" />
@@ -90,10 +90,16 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                       </>
                     ) : (
                       <>
-                        <span className="truncate font-semibold text-(--color-text-primary)">
+                        <span
+                          className="truncate font-semibold text-(--color-text-primary)"
+                          title={environment?.Name}
+                        >
                           {environment?.Name ?? "Unknown"}
                         </span>
-                        <span className="truncate text-xs text-(--color-text-muted)">
+                        <span
+                          className="truncate text-xs text-(--color-text-muted)"
+                          title={environment?.Host}
+                        >
                           {environment?.Host}
                         </span>
                       </>
@@ -119,10 +125,18 @@ export function AppSidebar({ environmentId }: AppSidebarProps) {
                       })
                     }
                   >
-                    <Database className="h-3.5 w-3.5 text-(--color-accent-val)" />
-                    <div className="grid text-xs leading-tight">
-                      <span className="font-medium text-(--color-text-primary)">{env.Name}</span>
-                      <span className="text-xs text-(--color-text-muted)">
+                    <Database className="h-3.5 w-3.5 shrink-0 text-(--color-accent-val)" />
+                    <div className="grid min-w-0 flex-1 text-xs leading-tight">
+                      <span
+                        className="truncate font-medium text-(--color-text-primary)"
+                        title={env.Name}
+                      >
+                        {env.Name}
+                      </span>
+                      <span
+                        className="truncate text-xs text-(--color-text-muted)"
+                        title={env.Host}
+                      >
                         {env.Host}
                       </span>
                     </div>
