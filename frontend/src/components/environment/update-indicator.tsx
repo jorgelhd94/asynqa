@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Download, ExternalLink, RefreshCw } from "lucide-react";
+import { sileo } from "sileo";
 import { useCheckForUpdate, useApplyUpdate } from "@/hooks/use-updater";
 import { BrowserOpenURL } from "../../../wailsjs/runtime/runtime";
 import {
@@ -13,7 +14,11 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-export function UpdateIndicator() {
+type UpdateIndicatorProps = {
+  size?: "sm" | "md";
+};
+
+export function UpdateIndicator({ size = "sm" }: UpdateIndicatorProps) {
   const { data: updateInfo } = useCheckForUpdate();
   const applyUpdate = useApplyUpdate();
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -30,20 +35,48 @@ export function UpdateIndicator() {
     }
     applyUpdate.mutate(undefined, {
       onSuccess: (result) => {
+        setDialogOpen(false);
         if (result.manualOnly && result.url) {
           BrowserOpenURL(result.url);
+          sileo.info({
+            title: "Manual update required",
+            description: result.message,
+          });
+          return;
         }
+        if (result.success) {
+          sileo.success({
+            title: `Updated to v${result.version}`,
+            description: "Please restart the application.",
+          });
+          return;
+        }
+        sileo.error({
+          title: "Update failed",
+          description: result.message || "Unknown error",
+        });
+      },
+      onError: (error) => {
+        setDialogOpen(false);
+        sileo.error({
+          title: "Update failed",
+          description: error.message,
+        });
       },
     });
   };
 
+  const triggerClass =
+    size === "md"
+      ? "flex items-center gap-2 border border-(--color-accent-val)/40 bg-(--color-accent-val)/10 px-3 py-1.5 text-sm text-(--color-accent-val) hover:border-(--color-accent-val) hover:bg-(--color-accent-val)/15 transition-colors"
+      : "flex items-center gap-1 text-xs text-(--color-accent-val) hover:text-(--color-accent-light) transition-colors";
+
+  const triggerIconClass = size === "md" ? "h-3.5 w-3.5" : "h-2.5 w-2.5";
+
   return (
     <>
-      <button
-        onClick={() => setDialogOpen(true)}
-        className="flex items-center gap-1 text-xs text-(--color-accent-val) hover:text-(--color-accent-light) transition-colors"
-      >
-        <Download className="h-2.5 w-2.5" />
+      <button onClick={() => setDialogOpen(true)} className={triggerClass}>
+        <Download className={triggerIconClass} />
         <span>v{updateInfo.latestVersion} available</span>
       </button>
 

@@ -151,10 +151,25 @@ jobs:
           git tag ${{ needs.version.outputs.tag }}
           git push origin ${{ needs.version.outputs.tag }}
 
+      - name: Extract release notes from CHANGELOG
+        run: |
+          VERSION="${{ needs.version.outputs.version }}"
+          awk -v ver="$VERSION" '
+            /^## \[/ {
+              if (in_section) exit
+              if ($0 ~ "^## \\[" ver "\\]") { in_section=1; next }
+            }
+            in_section { print }
+          ' CHANGELOG.md > RELEASE_NOTES.md
+          if [ ! -s RELEASE_NOTES.md ]; then
+            echo "_No changelog entry for v${VERSION}._" > RELEASE_NOTES.md
+          fi
+          cat RELEASE_NOTES.md
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ needs.version.outputs.tag }}
           name: AsynQA ${{ needs.version.outputs.tag }}
-          generate_release_notes: true
+          body_path: RELEASE_NOTES.md
           files: artifacts/*
