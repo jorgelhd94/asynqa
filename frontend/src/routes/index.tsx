@@ -4,6 +4,7 @@ import { EnvironmentDialog } from "@/components/environments/environment-dialog"
 import { DeleteEnvironmentDialog } from "@/components/environments/delete-dialog";
 import { EnvironmentsHeader } from "@/components/environments/header";
 import { HeroSection } from "@/components/environments/hero-section";
+import { UpdateIndicator } from "@/components/environment/update-indicator";
 import type { Environment } from "@/components/environments/types";
 import {
   useEnvironments,
@@ -88,8 +89,11 @@ export default function IndexPage() {
 
   return (
     <div
-      className="min-h-screen w-full bg-(--color-primary-bg) text-(--color-text-primary)"
+      className="relative min-h-screen w-full bg-(--color-primary-bg) text-(--color-text-primary)"
     >
+      <div className="absolute right-6 top-6">
+        <UpdateIndicator size="md" />
+      </div>
       <div className="mx-auto flex max-w-2xl flex-col items-center px-6 py-14">
         <HeroSection />
 
