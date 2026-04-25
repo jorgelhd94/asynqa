@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.0] - 2026-04-25
+## [0.1.1] - 2026-04-25
 
 ### Added
 - Windows installer (NSIS) now lets you choose between installing for **all users** (`Program Files`, requires elevation) or **current user only** (`%LOCALAPPDATA%\Programs`, no admin needed). Per-user installs make the in-app auto-updater work without UAC, since the binary lives in a writable location.
@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Long environment names and Redis hosts no longer overflow their containers. Affected views: environments landing list, sidebar environment switcher (header trigger and dropdown items), and saved requests in the Task Runner sidebar. Text truncates with an ellipsis and the full value is shown on hover via a native tooltip.
 
 ### Notes
-- Upgrading from `v0.0.1`: the previous installer forced an admin-only install in `Program Files`, so the in-app updater cannot replace the binary without elevation. Download the `v0.1.0` installer from the GitHub release page and run it manually. From `v0.1.0` onward, in-app updates will work as long as you choose the per-user install mode.
+- Upgrading from `v0.0.1`: the previous installer forced an admin-only install in `Program Files`, so the in-app updater cannot replace the binary without elevation. Download the `v0.1.1` installer from the GitHub release page and run it manually. From `v0.1.1` onward, in-app updates will work as long as you choose the per-user install mode.
 
 ## [0.0.1] - Initial release
 
@@ -36,6 +36,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Environments: manage multiple Redis/asynq connections.
 - Auto-Updater: checks GitHub Releases for new versions (via `creativeprojects/go-selfupdate`).
 
-[Unreleased]: https://github.com/jorgelhd94/asynqa/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/jorgelhd94/asynqa/compare/v0.0.1...v0.1.0
+[Unreleased]: https://github.com/jorgelhd94/asynqa/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/jorgelhd94/asynqa/compare/v0.0.1...v0.1.1
 [0.0.1]: https://github.com/jorgelhd94/asynqa/releases/tag/v0.0.1
