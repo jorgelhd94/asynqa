@@ -204,7 +204,7 @@ export function SidebarSavedRequests({ environmentId, newDialogOpen, onNewDialog
                     params={{ id, requestId: String(req.id) }}
                   >
                     <Send className="h-3 w-3" />
-                    <span className="truncate">{req.name}</span>
+                    <span className="truncate" title={req.name}>{req.name}</span>
                   </Link>
                 </SidebarMenuButton>
                 <DropdownMenu>
